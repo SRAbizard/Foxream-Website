@@ -1321,5 +1321,15 @@
     "Media & Meta": "メディア・メタ情報",
     "Social instagram": "Instagram",
     "Social facebook": "Facebook",
-    "Social tiktok": "TikTok"
+    "Social tiktok": "TikTok",
+    "Driver": "ドライバー",
+    "Truck, taxi, bus": "トラック・タクシー・バス",
+    "Factory & food": "工場・食品",
+    "Manufacturing, food processing": "製造・飲食料品製造",
+    "Construction & automotive": "建設・自動車整備",
+    "Construction, vehicle maintenance": "建設・自動車整備",
+    "Hotel & cleaning": "ホテル・清掃",
+    "Hospitality, building cleaning": "宿泊・ビルクリーニング",
+    "Farming & livestock": "農業・畜産",
+    "Agriculture, livestock": "耕種農業・畜産農業"
 }

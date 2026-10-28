@@ -1320,5 +1320,15 @@
     "Media & Meta": "Media & Meta",
     "Social instagram": "Instagram",
     "Social facebook": "Facebook",
-    "Social tiktok": "TikTok"
+    "Social tiktok": "TikTok",
+    "Driver": "Driver",
+    "Truck, taxi, bus": "Truk, taksi, bus",
+    "Factory & food": "Pabrik & makanan",
+    "Manufacturing, food processing": "Manufaktur, pengolahan makanan",
+    "Construction & automotive": "Konstruksi & otomotif",
+    "Construction, vehicle maintenance": "Konstruksi, pemeliharaan otomotif",
+    "Hotel & cleaning": "Hotel & kebersihan",
+    "Hospitality, building cleaning": "Perhotelan, building cleaning",
+    "Farming & livestock": "Pertanian & peternakan",
+    "Agriculture, livestock": "Pertanian, peternakan"
 }

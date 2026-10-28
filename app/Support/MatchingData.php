@@ -99,11 +99,11 @@ class MatchingData
                 [__('None yet'), __('Starting from zero'), 0], [__('N5 / beginner'), __('Hiragana & katakana'), 1], [__('N4 / JFT A2'), __('Basic conversation'), 2], [__('N3 or higher'), __('Fluent'), 3]]],
             ['q' => __('Which field interests you?'), 'k' => 'field', 'o' => [
                 [__('Caregiving'), 'Kaigo', ['kaigo']],
-                [__('Factory'), __('Manufacturing, machining'), ['pabrik', 'kikai-kakou']],
-                [__('Restaurant & hotel'), __('Hospitality'), ['restoran', 'perhotelan']],
-                [__('Driver & logistics'), '', ['driver', 'logistics']],
-                [__('Engineering & IT'), __('Engineer, CAD, programmer'), ['engineer']],
-                [__('Other fields'), __('Cleaning, farming, livestock'), ['building-cleaning', 'peternakan']]]],
+                [__('Driver'), __('Truck, taxi, bus'), ['driver-truck', 'driver-taksi', 'driver-bus']],
+                [__('Factory & food'), __('Manufacturing, food processing'), ['manufaktur', 'pengolahan-makanan']],
+                [__('Construction & automotive'), __('Construction, vehicle maintenance'), ['konstruksi', 'otomotif']],
+                [__('Hotel & cleaning'), __('Hospitality, building cleaning'), ['perhotelan', 'building-cleaning']],
+                [__('Farming & livestock'), __('Agriculture, livestock'), ['pertanian', 'peternakan']]]],
             ['q' => __('Your highest education?'), 'k' => 'edu', 'o' => [
                 [__('High school / vocational'), 'SMA / SMK', 0], [__('Diploma (D3)'), '', 1], [__('Bachelor in engineering / IT'), '', 2], [__('Other bachelor'), '', 3]]],
         ];

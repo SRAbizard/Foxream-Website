@@ -2,6 +2,7 @@
 
 namespace App\Filament\Student\Pages;
 
+use App\Models\JobCategory;
 use App\Models\User;
 use App\Support\Certificates;
 use App\Support\Rirekisho;
@@ -128,7 +129,10 @@ class MyProfile extends Page implements HasForms
                             DatePicker::make('studentProfile.passport_expires_at')->label(__('Passport expires'))->displayFormat('d M Y'),
                         ]),
                         Section::make(__('Work in Japan'))->columns(3)->components([
-                            TextInput::make('studentProfile.desired_job')->label(__('Position applied for'))->placeholder(__('e.g. Food processing'))->maxLength(160)->columnSpanFull(),
+                            // Stored as the field slug; the CV prints its Japanese name.
+                            Select::make('studentProfile.desired_job')->label(__('Position applied for'))
+                                ->options(fn () => JobCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->slug => $c->t('name')]))
+                                ->native(false)->columnSpanFull(),
                             TextInput::make('studentProfile.japan_visits_study')->label(__('Visits to Japan: study'))->numeric()->minValue(0)->maxValue(99)->suffix(__('times')),
                             TextInput::make('studentProfile.japan_visits_work')->label(__('Visits to Japan: work, incl. working holiday'))->numeric()->minValue(0)->maxValue(99)->suffix(__('times')),
                             TextInput::make('studentProfile.japan_visits_other')->label(__('Visits to Japan: other, e.g. travel'))->numeric()->minValue(0)->maxValue(99)->suffix(__('times')),

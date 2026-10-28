@@ -232,7 +232,8 @@ function boot() {
     function evaluate(a) {
         const cats = a.field || [];
         let route, why;
-        if (cats.includes('engineer') && (a.edu === 1 || a.edu === 2)) { route = 'engineer'; why = t.whyEngineer; }
+        // The fields are all SSW; an engineering/IT degree is what opens Gijinkoku.
+        if (a.edu === 2) { route = 'engineer'; why = t.whyEngineer; }
         else if (a.lang >= 2) { route = 'ssw'; why = t.whySsw; }
         else if (a.age <= 2) { route = 'intern'; why = t.whyIntern; }
         else { route = 'ssw'; why = t.whySswPrep; }

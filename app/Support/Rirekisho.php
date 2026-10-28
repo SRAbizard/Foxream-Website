@@ -74,7 +74,7 @@ class Rirekisho
             'nationality'  => self::NATIONALITIES[$p?->nationality ?: 'Indonesia'] ?? $p->nationality,
             'birth'        => $birth,
             'age'          => $birth?->age,
-            'desired_job'  => $desiredJob ?: $p?->desired_job,
+            'desired_job'  => self::desiredJob($desiredJob ?: $p?->desired_job),
             'address_kana' => $p?->address_kana,
             // Only "CITY, PROVINCE", as in the filled-in example.
             'address'      => Str::upper(collect([$p?->city, $p?->province])->filter()->implode(', ')),
@@ -136,6 +136,16 @@ class Rirekisho
             ->filter(fn ($l) => filled($l['text']))
             ->sortBy(fn ($l) => sprintf('%04d%02d', $l['y'] ? (int) $l['y'] : 9999, (int) $l['m']))
             ->values()->all();
+    }
+
+    /** A field slug becomes its Japanese name; older free-text entries print as typed. */
+    private static function desiredJob(?string $job): ?string
+    {
+        if (blank($job)) {
+            return null;
+        }
+
+        return \App\Models\JobCategory::where('slug', $job)->first()?->t('name', 'ja') ?? $job;
     }
 
     /**

@@ -20,17 +20,21 @@ class RecruitmentSeeder extends Seeder
 
     private function seedJobCategories(): void
     {
+        // The twelve SSW (Tokutei Ginou) fields on offer; Japanese names are
+        // the official field names and go into the CV's 応募職種.
         $cats = [
-            ['driver',           ['id'=>'Driver',         'en'=>'Driver',           'ja'=>'ドライバー'],          'heroicon-o-truck'],
-            ['kaigo',            ['id'=>'Kaigo',          'en'=>'Caregiver',        'ja'=>'介護'],                  'heroicon-o-heart'],
-            ['engineer',         ['id'=>'Engineer',       'en'=>'Engineer',         'ja'=>'エンジニア'],            'heroicon-o-cog-6-tooth'],
-            ['restoran',         ['id'=>'Restoran',       'en'=>'Restaurant',       'ja'=>'飲食'],                  'heroicon-o-cake'],
-            ['perhotelan',       ['id'=>'Perhotelan',     'en'=>'Hospitality',      'ja'=>'ホスピタリティ'],        'heroicon-o-home-modern'],
-            ['pabrik',           ['id'=>'Pabrik',         'en'=>'Manufacturing',    'ja'=>'製造'],                  'heroicon-o-building-office'],
-            ['building-cleaning',['id'=>'Building Cleaning','en'=>'Building Cleaning','ja'=>'ビルクリーニング'],     'heroicon-o-sparkles'],
-            ['peternakan',       ['id'=>'Peternakan',     'en'=>'Livestock',        'ja'=>'畜産'],                  'heroicon-o-globe-asia-australia'],
-            ['kikai-kakou',      ['id'=>'Kikai Kakou',    'en'=>'Machine Processing','ja'=>'機械加工'],             'heroicon-o-wrench-screwdriver'],
-            ['logistics',        ['id'=>'Logistics',      'en'=>'Logistics',        'ja'=>'物流'],                  'heroicon-o-archive-box'],
+            ['driver-truck',       ['id'=>'SSW Driver Truck',          'en'=>'SSW Truck Driver',           'ja'=>'自動車運送業（トラック）'], 'heroicon-o-truck'],
+            ['driver-taksi',       ['id'=>'SSW Driver Taksi',          'en'=>'SSW Taxi Driver',            'ja'=>'自動車運送業（タクシー）'], 'heroicon-o-map-pin'],
+            ['driver-bus',         ['id'=>'SSW Driver Bus',            'en'=>'SSW Bus Driver',             'ja'=>'自動車運送業（バス）'],     'heroicon-o-user-group'],
+            ['kaigo',              ['id'=>'SSW Perawat Lansia',        'en'=>'SSW Caregiver',              'ja'=>'介護'],                     'heroicon-o-heart'],
+            ['konstruksi',         ['id'=>'SSW Konstruksi',            'en'=>'SSW Construction',           'ja'=>'建設'],                     'heroicon-o-building-office-2'],
+            ['manufaktur',         ['id'=>'SSW Manufaktur',            'en'=>'SSW Manufacturing',          'ja'=>'工業製品製造業'],           'heroicon-o-cog-6-tooth'],
+            ['pengolahan-makanan', ['id'=>'SSW Pengolahan Makanan',    'en'=>'SSW Food Processing',        'ja'=>'飲食料品製造業'],           'heroicon-o-cake'],
+            ['pertanian',          ['id'=>'SSW Pertanian',             'en'=>'SSW Agriculture',            'ja'=>'農業（耕種農業）'],         'heroicon-o-sun'],
+            ['peternakan',         ['id'=>'SSW Peternakan',            'en'=>'SSW Livestock',              'ja'=>'農業（畜産農業）'],         'heroicon-o-globe-asia-australia'],
+            ['building-cleaning',  ['id'=>'SSW Building Cleaning',     'en'=>'SSW Building Cleaning',      'ja'=>'ビルクリーニング'],         'heroicon-o-sparkles'],
+            ['perhotelan',         ['id'=>'SSW Perhotelan',            'en'=>'SSW Hospitality',            'ja'=>'宿泊'],                     'heroicon-o-home-modern'],
+            ['otomotif',           ['id'=>'SSW Pemeliharaan Otomotif', 'en'=>'SSW Automotive Maintenance', 'ja'=>'自動車整備'],               'heroicon-o-wrench-screwdriver'],
         ];
         foreach ($cats as $i => [$slug, $name, $icon]) {
             JobCategory::firstOrCreate(['slug' => $slug], ['name' => $name, 'icon' => $icon, 'sort_order' => $i + 1]);
@@ -99,7 +103,7 @@ class RecruitmentSeeder extends Seeder
         $vacancies = [
             [
                 'slug' => 'civil-engineer-pt-sakura-indah',
-                'company' => 'pt-sakura-indah', 'job' => 'engineer', 'visa' => 'engineering',
+                'company' => 'pt-sakura-indah', 'job' => null, 'visa' => 'engineering',
                 'title' => ['id'=>'Civil Engineer','en'=>'Civil Engineer','ja'=>'土木エンジニア'],
                 'desc'  => ['id'=>'<p>Bertanggung jawab atas perencanaan dan pengawasan proyek konstruksi sipil di Tokyo.</p>','en'=>'<p>Plan and supervise civil construction projects in Tokyo.</p>','ja'=>'<p>東京での土木建設プロジェクトの計画と監督。</p>'],
                 'req'   => ['id'=>'<ul><li>Lulusan teknik sipil</li><li>JLPT N3 minimum</li></ul>','en'=>'<ul><li>Civil engineering degree</li><li>JLPT N3 minimum</li></ul>','ja'=>'<ul><li>土木工学学位</li><li>JLPT N3 以上</li></ul>'],
@@ -108,7 +112,7 @@ class RecruitmentSeeder extends Seeder
             ],
             [
                 'slug' => 'it-software-engineer-nippon-tech',
-                'company' => 'nippon-tech', 'job' => 'engineer', 'visa' => 'engineering',
+                'company' => 'nippon-tech', 'job' => null, 'visa' => 'engineering',
                 'title' => ['id'=>'IT Software Engineer','en'=>'IT Software Engineer','ja'=>'IT ソフトウェアエンジニア'],
                 'desc'  => ['id'=>'<p>Bangun aplikasi web modern dengan stack Laravel + Vue.</p>','en'=>'<p>Build modern web applications with Laravel + Vue stack.</p>','ja'=>'<p>Laravel と Vue で最新のウェブアプリを開発。</p>'],
                 'city' => 'Osaka', 'prefecture' => 'Osaka',
@@ -132,7 +136,7 @@ class RecruitmentSeeder extends Seeder
             ],
             [
                 'slug' => 'food-production-asahi',
-                'company' => 'asahi-foods', 'job' => 'pabrik', 'visa' => 'tokutei-ginou',
+                'company' => 'asahi-foods', 'job' => 'pengolahan-makanan', 'visa' => 'tokutei-ginou',
                 'title' => ['id'=>'Food Production','en'=>'Food Production','ja'=>'食品製造'],
                 'desc'  => ['id'=>'<p>Operator lini produksi makanan di pabrik Asahi Foods Sapporo.</p>','en'=>'<p>Food production line operator at Asahi Foods Sapporo plant.</p>','ja'=>'<p>札幌アサヒフーズ工場での食品製造ライン作業。</p>'],
                 'city' => 'Sapporo', 'prefecture' => 'Hokkaido',
@@ -140,7 +144,7 @@ class RecruitmentSeeder extends Seeder
             ],
             [
                 'slug' => 'office-administrator-yamato',
-                'company' => 'yamato-trading', 'job' => 'logistics', 'visa' => 'engineering',
+                'company' => 'yamato-trading', 'job' => null, 'visa' => 'engineering',
                 'title' => ['id'=>'Office Administrator','en'=>'Office Administrator','ja'=>'オフィス管理者'],
                 'desc'  => ['id'=>'<p>Mendukung operasional kantor perdagangan Yamato di Yokohama.</p>','en'=>'<p>Support office operations at Yamato Trading in Yokohama.</p>','ja'=>'<p>横浜のヤマト商事でのオフィス運営をサポート。</p>'],
                 'city' => 'Yokohama', 'prefecture' => 'Kanagawa',
