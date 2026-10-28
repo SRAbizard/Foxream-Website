@@ -6,6 +6,7 @@ use App\Models\JobCategory;
 use App\Models\User;
 use App\Support\Certificates;
 use App\Support\Rirekisho;
+use App\Support\SelfPrTranslator;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
@@ -26,6 +27,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Facades\RateLimiter;
 
 class MyProfile extends Page implements HasForms
 {
@@ -60,7 +62,7 @@ class MyProfile extends Page implements HasForms
                 'height_cm', 'weight_kg', 'blood_type',
                 'smoker', 'drinker', 'photo_path',
                 'name_kana', 'nationality', 'desired_job', 'address_kana', 'line_id',
-                'japan_visits_study', 'japan_visits_work', 'japan_visits_other', 'self_pr', 'cv_other',
+                'japan_visits_study', 'japan_visits_work', 'japan_visits_other', 'self_pr', 'self_pr_ja', 'cv_other',
             ]) ?? [],
             // Only the levels still offered (SMA and up).
             'educations'      => $user->educations->filter(fn ($e) => isset(Rirekisho::EDUCATION_LEVELS[$e->level]))->map->only(['level','institution','major','start_year','start_month','end_year','end_month','is_current'])->all(),
@@ -138,8 +140,36 @@ class MyProfile extends Page implements HasForms
                             TextInput::make('studentProfile.japan_visits_other')->label(__('Visits to Japan: other, e.g. travel'))->numeric()->minValue(0)->maxValue(99)->suffix(__('times')),
                         ]),
                         Section::make(__('Self introduction'))->components([
-                            Textarea::make('studentProfile.self_pr')->label(__('Self introduction'))->hiddenLabel()->rows(7)->maxLength(1500)
-                                ->helperText(__('Your strengths, motivation to work in Japan and goals. Japanese is best; Indonesian or English is fine for a first draft.')),
+                            Textarea::make('studentProfile.self_pr')->label(__('Your self introduction'))->rows(7)->maxLength(1500)
+                                ->helperText(__('Your strengths, motivation to work in Japan and goals, in Indonesian, English or Japanese.'))
+                                ->hintAction(
+                                    Action::make('translateSelfPr')->label(__('Translate to Japanese'))->icon('heroicon-o-language')
+                                        ->action(function (Get $get, Set $set) {
+                                            $text = trim((string) $get('studentProfile.self_pr'));
+                                            if ($text === '') {
+                                                Notification::make()->title(__('Write your self introduction first.'))->warning()->send();
+
+                                                return;
+                                            }
+                                            // Each call is billed; ten an hour is plenty for drafting.
+                                            if (RateLimiter::tooManyAttempts('self-pr:'.auth()->id(), 10)) {
+                                                Notification::make()->title(__('Too many translations. Please try again later.'))->warning()->send();
+
+                                                return;
+                                            }
+                                            RateLimiter::hit('self-pr:'.auth()->id(), 3600);
+                                            try {
+                                                $set('studentProfile.self_pr_ja', SelfPrTranslator::translate($text));
+                                            } catch (\RuntimeException $e) {
+                                                Notification::make()->title($e->getMessage())->danger()->send();
+
+                                                return;
+                                            }
+                                            Notification::make()->title(__('Translated. Check the Japanese, then save.'))->success()->send();
+                                        }),
+                                ),
+                            Textarea::make('studentProfile.self_pr_ja')->label(__('Japanese version (goes into the CV)'))->rows(7)->maxLength(3000)
+                                ->helperText(__('Filled by the Translate button. You can edit it; the CV uses this text when it is filled in.')),
                         ]),
                     ]),
 

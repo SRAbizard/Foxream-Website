@@ -95,7 +95,7 @@ class Rirekisho
             'education'    => self::education($user),
             'work'         => self::work($user),
             'licenses'     => self::licenses($p?->licenses),
-            'self_pr'      => $p?->self_pr,
+            'self_pr'      => $p?->self_pr_ja ?: $p?->self_pr,
             'other'        => self::other($p),
         ];
     }

@@ -1330,5 +1330,19 @@
     "Hotel & cleaning": "Hotel & kebersihan",
     "Hospitality, building cleaning": "Perhotelan, building cleaning",
     "Farming & livestock": "Pertanian & peternakan",
-    "Agriculture, livestock": "Pertanian, peternakan"
+    "Agriculture, livestock": "Pertanian, peternakan",
+    "Your self introduction": "Perkenalan diri kamu",
+    "Your strengths, motivation to work in Japan and goals, in Indonesian, English or Japanese.": "Kelebihan, motivasi bekerja di Jepang, dan tujuanmu. Boleh dalam bahasa Indonesia, Inggris, atau Jepang.",
+    "Translate to Japanese": "Terjemahkan ke bahasa Jepang",
+    "Write your self introduction first.": "Tulis perkenalan diri kamu dulu.",
+    "Too many translations. Please try again later.": "Terlalu banyak terjemahan. Silakan coba lagi nanti.",
+    "Translated. Check the Japanese, then save.": "Sudah diterjemahkan. Periksa teks Jepangnya, lalu simpan.",
+    "Japanese version (goes into the CV)": "Versi bahasa Jepang (masuk ke CV)",
+    "Filled by the Translate button. You can edit it; the CV uses this text when it is filled in.": "Diisi oleh tombol Terjemahkan. Boleh diedit; kalau kolom ini terisi, CV memakai teks ini.",
+    "Translation is not set up yet. Please tell the admin.": "Fitur terjemahan belum diaktifkan. Silakan hubungi admin.",
+    "The translator is busy. Please try again in a minute.": "Penerjemah sedang sibuk. Silakan coba lagi sebentar lagi.",
+    "Translation is not set up correctly. Please tell the admin.": "Pengaturan terjemahan belum benar. Silakan hubungi admin.",
+    "Translation failed. Please try again.": "Terjemahan gagal. Silakan coba lagi.",
+    "This text could not be translated. Please rewrite it and try again.": "Teks ini tidak bisa diterjemahkan. Silakan tulis ulang lalu coba lagi.",
+    "The text is too long to translate. Please shorten it.": "Teksnya terlalu panjang untuk diterjemahkan. Silakan dipersingkat."
 }
