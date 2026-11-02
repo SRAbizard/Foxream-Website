@@ -62,6 +62,7 @@ class MyApplications extends Page
                 $app = Application::where('user_id', auth()->id())->whereNotNull('contract_path')
                     ->findOrFail($arguments['application'] ?? 0);
                 $app->update(['signed_contract_path' => $data['file'], 'signed_contract_at' => now()]);
+                \App\Models\AccessLog::record('contract_signed', $app->jobVacancy?->t('title'));
 
                 foreach (User::studentManagers() as $admin) {
                     $admin->notify(new ApplicationNews(

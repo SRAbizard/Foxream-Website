@@ -106,6 +106,10 @@ class JobController extends Controller
             ],
         );
 
+        if ($application->wasRecentlyCreated) {
+            \App\Models\AccessLog::record('job_applied', $vacancy->t('title'));
+        }
+
         $msg = $application->wasRecentlyCreated
             ? __('Application submitted! We will reach out within a few days.')
             : __('You have already applied for this position.');

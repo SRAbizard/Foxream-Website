@@ -115,6 +115,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function languages(): HasMany         { return $this->hasMany(StudentLanguage::class); }
     public function studentDocuments(): HasMany  { return $this->hasMany(StudentDocument::class)->latest(); }
     public function applications(): HasMany      { return $this->hasMany(Application::class)->latest(); }
+    public function accessLogs(): HasMany        { return $this->hasMany(AccessLog::class)->latest('created_at'); }
 
     /**
      * Convenience: get or auto-create the 1:1 profile row.

@@ -23,6 +23,7 @@ class CvPdfController extends Controller
         if (! $request->user()) {
             return redirect()->guest(route('filament.student.auth.login'));
         }
+        \App\Models\AccessLog::record('cv_downloaded', strtoupper($format));
 
         return $this->send($request, $request->user(), $format);
     }

@@ -48,7 +48,7 @@ class MyProfile extends Page implements HasForms
         $user = auth()->user();
         // Ensure profile row exists
         $user->profile();
-        $user->refresh()->load('studentProfile', 'educations', 'workExperiences', 'familyMembers');
+        $user->refresh()->load('studentProfile', 'educations', 'workExperiences');
 
         $this->form->fill([
             'name'  => $user->name,
@@ -71,7 +71,6 @@ class MyProfile extends Page implements HasForms
                 'start_year' => $w->start_date?->year, 'start_month' => $w->start_date?->month,
                 'end_year' => $w->end_date?->year, 'end_month' => $w->end_date?->month,
             ])->all(),
-            'familyMembers'   => $user->familyMembers->map->only(['relation','name','occupation','phone','address'])->all(),
             'certificates'    => Certificates::byGroup($user->studentProfile?->licenses),
         ]);
     }
@@ -230,26 +229,6 @@ class MyProfile extends Page implements HasForms
                             ->defaultItems(0),
                     ]),
 
-                    Tab::make(__('Family'))->icon('heroicon-o-users')->schema([
-                        Repeater::make('familyMembers')->label(__('Family'))->hiddenLabel()
-                            ->addActionLabel(__('Add family member'))
-                            ->columns(2)
-                            ->collapsible()
-                            ->itemLabel(fn (array $state): ?string => $state['name'] ?? __('New entry'))
-                            ->components([
-                                Select::make('relation')->label(__('Relation'))
-                                    ->options([
-                                        'father'=>__('Father'),'mother'=>__('Mother'),'guardian'=>__('Guardian'),
-                                        'sibling'=>__('Sibling'),'spouse'=>__('Spouse'),'child'=>__('Child'),'other'=>__('Other'),
-                                    ])->required()->native(false),
-                                TextInput::make('name')->label(__('Name'))->required()->maxLength(160),
-                                TextInput::make('occupation')->label(__('Occupation'))->maxLength(120),
-                                TextInput::make('phone')->label(__('Phone'))->tel()->maxLength(32),
-                                Textarea::make('address')->label(__('Address'))->rows(2)->columnSpanFull(),
-                            ])
-                            ->defaultItems(0),
-                    ]),
-
                     Tab::make(__('Licences & certifications'))->icon('heroicon-o-check-badge')->schema([
                         $this->certificateSection('language', __('Language certificates'), __('Add language certificate')),
                         $this->certificateSection('ssw', __('SSW certificates'), __('Add SSW certificate')),
@@ -336,6 +315,7 @@ class MyProfile extends Page implements HasForms
     public function save(): void
     {
         $state = $this->form->getState();
+        \App\Models\AccessLog::record('profile_saved');
 
         /** @var User $user */
         $user = auth()->user();
@@ -376,7 +356,6 @@ class MyProfile extends Page implements HasForms
             'start_date' => $monthDate($w['start_year'] ?? null, $w['start_month'] ?? null),
             'end_date' => $monthDate($w['end_year'] ?? null, $w['end_month'] ?? null),
         ])->all());
-        $this->syncRelation($user->familyMembers(), $state['familyMembers'] ?? []);
 
         Notification::make()
             ->title(__('Profile updated'))

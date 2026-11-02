@@ -58,6 +58,13 @@ class ViewStudent extends Page
                 ->color('gray')
                 ->button(),
 
+            \Filament\Actions\ActionGroup::make(array_map(fn ($a) => $a->record($this->record), StudentResource::accountActions()))
+                ->label(__('Account'))
+                ->icon('heroicon-o-cog-6-tooth')
+                ->color('gray')
+                ->button()
+                ->visible(fn () => auth()->user()?->hasRole('superadmin')),
+
             Action::make('confirm_visa')
                 ->label(__('Confirm visa target'))
                 ->icon('heroicon-o-check-badge')

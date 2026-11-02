@@ -13,4 +13,9 @@ class CreateDocument extends CreateRecord
     {
         return DocumentResource::mutateFormDataBeforeCreate($data);
     }
+
+    protected function afterCreate(): void
+    {
+        \App\Models\AccessLog::record('document_uploaded', \App\Models\DocumentType::labelFor((string) $this->record->type));
+    }
 }

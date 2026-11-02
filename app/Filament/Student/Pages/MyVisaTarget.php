@@ -251,6 +251,7 @@ class MyVisaTarget extends Page implements HasForms
         foreach (User::studentManagers() as $admin) {
             $admin->notify(new VisaTargetRequested($profile->fresh()));
         }
+        \App\Models\AccessLog::record('visa_requested', VisaCategory::find($state['primary_visa_category_id'])?->t('name'));
 
         Notification::make()
             ->title(__('Request submitted'))

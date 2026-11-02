@@ -255,4 +255,35 @@
             </ul>
         </div>
     @endif
+
+    {{-- Recent activity --}}
+    @php $logs = $student->accessLogs()->limit(20)->get(); @endphp
+    <div class="fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 p-6">
+        <div class="mb-4 flex items-center justify-between gap-3">
+            <h3 class="font-semibold text-gray-950 dark:text-white">{{ __('Recent activity') }}</h3>
+            <span class="text-xs text-gray-500">
+                {{ __('Last login') }}: {{ $student->last_login_at?->diffForHumans() ?? '—' }}
+            </span>
+        </div>
+        @if($logs->isEmpty())
+            <p class="text-sm text-gray-500">{{ __('No activity recorded yet.') }}</p>
+        @else
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <tbody>
+                        @foreach($logs as $log)
+                            <tr class="border-b border-gray-100 dark:border-white/5 last:border-0">
+                                <td class="py-2 pr-4 whitespace-nowrap text-xs text-gray-500">{{ $log->created_at->format('d M Y H:i') }}</td>
+                                <td class="py-2 pr-4">
+                                    <x-filament::badge :color="in_array($log->action, \App\Models\AccessLog::WARNINGS, true) ? 'warning' : 'gray'">{{ $log->label() }}</x-filament::badge>
+                                </td>
+                                <td class="py-2 pr-4 text-gray-700 dark:text-gray-200">{{ $log->description }}</td>
+                                <td class="py-2 text-xs text-gray-500 whitespace-nowrap">{{ $log->ip_address }} · {{ $log->device }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
 </x-filament-panels::page>
