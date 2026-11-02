@@ -122,7 +122,8 @@ class ApplicationResource extends Resource
             TextColumn::make('vacancy.title')->label(__('Job'))
                 ->getStateUsing(fn ($record) => $record->vacancy?->t('title') ?? '—')
                 ->limit(40)->searchable(),
-            TextColumn::make('vacancy.company.name')->label(__('Company'))->toggleable(),
+            TextColumn::make('vacancy.company.name')->label(__('Company'))->toggleable()
+                ->description(fn ($record) => $record->vacancy?->company?->tsk?->name ? __('TSK').': '.$record->vacancy->company->tsk->name : null),
             TextColumn::make('status')->label(__('Step'))->badge()
                 ->formatStateUsing(fn ($state) => __('application.status.'.$state))
                 ->color(fn ($state) => Application::STATUS_COLORS[$state] ?? 'gray'),
@@ -133,7 +134,7 @@ class ApplicationResource extends Resource
                 ->placeholder('—'),
             TextColumn::make('created_at')->label(__('Applied'))->dateTime('d M Y H:i')->sortable(),
         ])
-        ->modifyQueryUsing(fn ($query) => $query->with('user', 'vacancy.company', 'schedules'))
+        ->modifyQueryUsing(fn ($query) => $query->with('user', 'vacancy.company.tsk', 'schedules'))
         ->defaultSort('created_at', 'desc')
         ->recordActions(\App\Filament\Support\DeleteActions::row(
             __('Its schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.'),
@@ -148,6 +149,10 @@ class ApplicationResource extends Resource
                 ->options(collect(Application::STATUSES)->mapWithKeys(fn ($s) => [$s => __('application.status.'.$s)])),
             SelectFilter::make('job_vacancy_id')->label(__('Job'))->searchable()
                 ->options(fn () => \App\Models\JobVacancy::orderByDesc('published_at')->get()->mapWithKeys(fn ($v) => [$v->id => $v->t('title')])),
+            SelectFilter::make('tsk')->label(__('TSK'))->searchable()
+                ->options(fn () => \App\Models\Tsk::orderBy('name')->pluck('name', 'id'))
+                ->query(fn ($query, array $data) => $query->when($data['value'] ?? null,
+                    fn ($q, $id) => $q->whereHas('vacancy.company', fn ($c) => $c->where('tsk_id', $id)))),
             SelectFilter::make('company')->label(__('Company'))->searchable()
                 ->options(fn () => \App\Models\Company::orderBy('name')->pluck('name', 'id'))
                 ->query(fn ($query, array $data) => $query->when($data['value'] ?? null,

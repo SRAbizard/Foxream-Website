@@ -1584,5 +1584,19 @@
     "Every application to these jobs is deleted too. This cannot be undone.": "これらの求人への応募もすべて削除されます。元に戻せません。",
     "Job postings and students with this visa target lose it and must be set again. This cannot be undone.": "このビザの求人と学生はビザが外れ、再設定が必要になります。元に戻せません。",
     "Job postings and students with these visa targets lose them and must be set again. This cannot be undone.": "これらのビザの求人と学生はビザが外れ、再設定が必要になります。元に戻せません。",
-    "Its job postings and every application to them are deleted too. This cannot be undone.": "この会社の求人とその応募もすべて削除されます。元に戻せません。"
+    "Its job postings and every application to them are deleted too. This cannot be undone.": "この会社の求人とその応募もすべて削除されます。元に戻せません。",
+    "TSK": "登録支援機関",
+    "The registered support organisation (登録支援機関) this company works with.": "この会社が契約している登録支援機関。",
+    "Registration number": "登録番号",
+    "No TSK": "登録支援機関なし",
+    "Add company": "会社を追加",
+    "A company that already has another TSK moves to this one.": "別の登録支援機関に属する会社は、この機関に移ります。",
+    "New company": "新しい会社",
+    "Remove from this TSK": "この登録支援機関から外す",
+    "No companies yet": "会社はまだありません",
+    "TSK (registered support organisation)": "登録支援機関",
+    "Name in Japanese": "日本語名",
+    "For the team only: agreements, fees, things to remember.": "チーム用メモ：契約内容、費用、留意点など。",
+    "Its companies and their job postings stay, without a TSK.": "会社と求人は残りますが、登録支援機関なしになります。",
+    "Their companies and job postings stay, without a TSK.": "会社と求人は残りますが、登録支援機関なしになります。"
 }

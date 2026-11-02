@@ -1583,5 +1583,19 @@
     "Every application to these jobs is deleted too. This cannot be undone.": "Semua lamaran ke lowongan ini ikut terhapus. Tidak bisa dibatalkan.",
     "Job postings and students with this visa target lose it and must be set again. This cannot be undone.": "Lowongan dan siswa dengan visa ini akan kehilangan visanya dan harus diatur ulang. Tidak bisa dibatalkan.",
     "Job postings and students with these visa targets lose them and must be set again. This cannot be undone.": "Lowongan dan siswa dengan visa ini akan kehilangan visanya dan harus diatur ulang. Tidak bisa dibatalkan.",
-    "Its job postings and every application to them are deleted too. This cannot be undone.": "Lowongan perusahaan ini beserta semua lamarannya ikut terhapus. Tidak bisa dibatalkan."
+    "Its job postings and every application to them are deleted too. This cannot be undone.": "Lowongan perusahaan ini beserta semua lamarannya ikut terhapus. Tidak bisa dibatalkan.",
+    "TSK": "TSK",
+    "The registered support organisation (登録支援機関) this company works with.": "Lembaga pendukung terdaftar (登録支援機関 / TSK) yang bekerja sama dengan perusahaan ini.",
+    "Registration number": "Nomor registrasi",
+    "No TSK": "Tanpa TSK",
+    "Add company": "Tambah perusahaan",
+    "A company that already has another TSK moves to this one.": "Perusahaan yang sudah punya TSK lain akan dipindahkan ke TSK ini.",
+    "New company": "Perusahaan baru",
+    "Remove from this TSK": "Keluarkan dari TSK ini",
+    "No companies yet": "Belum ada perusahaan",
+    "TSK (registered support organisation)": "TSK (lembaga pendukung terdaftar)",
+    "Name in Japanese": "Nama dalam bahasa Jepang",
+    "For the team only: agreements, fees, things to remember.": "Hanya untuk tim: kesepakatan, biaya, hal yang perlu diingat.",
+    "Its companies and their job postings stay, without a TSK.": "Perusahaan dan lowongannya tetap ada, tapi tanpa TSK.",
+    "Their companies and job postings stay, without a TSK.": "Perusahaan dan lowongannya tetap ada, tapi tanpa TSK."
 }

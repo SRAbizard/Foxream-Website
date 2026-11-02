@@ -51,6 +51,15 @@ class CompanyResource extends Resource
     {
         return $schema->components([
             Section::make(__('Basics'))->columns(2)->components([
+                \Filament\Forms\Components\Select::make('tsk_id')->label(__('TSK'))
+                    ->relationship('tsk', 'name')
+                    ->searchable()->preload()
+                    ->helperText(__('The registered support organisation (登録支援機関) this company works with.'))
+                    ->createOptionForm([
+                        TextInput::make('name')->label(__('Name'))->required()->maxLength(160),
+                        TextInput::make('registration_number')->label(__('Registration number'))->maxLength(40),
+                    ])
+                    ->columnSpanFull(),
                 TextInput::make('name')->required()->maxLength(120),
                 TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(120)
                     ->live(onBlur: true)->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? ''))),
@@ -74,6 +83,7 @@ class CompanyResource extends Resource
         return $table->columns([
             ImageColumn::make('logo_path')->disk('public')->circular()->label(''),
             TextColumn::make('name')->searchable()->sortable()->weight('bold'),
+            TextColumn::make('tsk.name')->label(__('TSK'))->badge()->color('gray')->placeholder('—')->sortable(),
             TextColumn::make('industry')->toggleable(),
             TextColumn::make('city')->toggleable(),
             TextColumn::make('country')->toggleable(),
@@ -82,6 +92,8 @@ class CompanyResource extends Resource
         ])
         ->defaultSort('name')
         ->filters([
+            \Filament\Tables\Filters\SelectFilter::make('tsk_id')->label(__('TSK'))
+                ->relationship('tsk', 'name')->searchable()->preload(),
             \Filament\Tables\Filters\TernaryFilter::make('is_verified')->label(__('Verified')),
             \Filament\Tables\Filters\TernaryFilter::make('is_active')->label(__('Active')),
             \Filament\Tables\Filters\SelectFilter::make('industry')->label(__('Industry'))

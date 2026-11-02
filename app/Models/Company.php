@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['slug', 'name', 'logo_path', 'website', 'industry', 'country', 'city', 'description', 'is_verified', 'is_active'])]
+#[Fillable(['tsk_id', 'slug', 'name', 'logo_path', 'website', 'industry', 'country', 'city', 'description', 'is_verified', 'is_active'])]
 class Company extends Model
 {
     use HasJsonTranslations;
@@ -21,6 +21,12 @@ class Company extends Model
             'is_verified' => 'boolean',
             'is_active'   => 'boolean',
         ];
+    }
+
+    /** The TSK (登録支援機関) this company works with. */
+    public function tsk(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Tsk::class);
     }
 
     public function vacancies(): HasMany

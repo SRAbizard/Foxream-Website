@@ -66,8 +66,14 @@ class JobVacancyResource extends Resource
             Section::make(__('Basics'))->columns(2)->components([
                 TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(120)
                     ->live(onBlur: true)->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? ''))),
+                // Companies grouped by their TSK: TSK → company → job posting.
                 Select::make('company_id')->label(__('Company'))->required()
-                    ->options(fn () => Company::orderBy('name')->pluck('name', 'id'))->searchable(),
+                    ->options(fn () => Company::with('tsk')->orderBy('name')->get()
+                        ->groupBy(fn ($c) => $c->tsk?->name ?? __('No TSK'))
+                        ->sortKeys()
+                        ->map(fn ($companies) => $companies->pluck('name', 'id')->all())
+                        ->all())
+                    ->searchable(),
                 Select::make('job_category_id')->label(__('Job Category'))
                     ->options(fn () => JobCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')]))->searchable(),
                 Select::make('visa_category_id')->label(__('Visa Category'))
@@ -165,7 +171,8 @@ class JobVacancyResource extends Resource
                 ->getStateUsing(fn ($record) => $record->t('title'))
                 ->searchable(query: fn ($q, $search) => $q->where('title->id', 'like', "%{$search}%")->orWhere('title->en', 'like', "%{$search}%"))
                 ->limit(50)->wrap(),
-            TextColumn::make('company.name')->label(__('Company'))->searchable()->toggleable(),
+            TextColumn::make('company.name')->label(__('Company'))->searchable()->toggleable()
+                ->description(fn ($record) => $record->company?->tsk?->name ? __('TSK').': '.$record->company->tsk->name : null),
             TextColumn::make('jobCategory.name')->label(__('Category'))
                 ->getStateUsing(fn ($record) => $record->jobCategory?->t('name') ?? '—')
                 ->badge(),
@@ -186,6 +193,10 @@ class JobVacancyResource extends Resource
                 ->options(fn () => VisaCategory::all()->mapWithKeys(fn ($v) => [$v->id => $v->t('name')])),
             SelectFilter::make('job_category_id')->label(__('Job Category'))
                 ->options(fn () => JobCategory::all()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')])),
+            SelectFilter::make('tsk')->label(__('TSK'))->searchable()
+                ->options(fn () => \App\Models\Tsk::orderBy('name')->pluck('name', 'id'))
+                ->query(fn ($query, array $data) => $query->when($data['value'] ?? null,
+                    fn ($q, $id) => $q->whereHas('company', fn ($c) => $c->where('tsk_id', $id)))),
             SelectFilter::make('company_id')->label(__('Company'))
                 ->options(fn () => Company::orderBy('name')->pluck('name', 'id'))->searchable(),
             SelectFilter::make('publication')->label(__('Status'))
