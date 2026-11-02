@@ -13,10 +13,10 @@ class SetLocale
         $supported = array_keys(config('passion.locales', []));
         $fallback  = config('passion.default_locale', config('app.locale', 'id'));
 
+        // Indonesian until the visitor picks a language; the browser's language is not used.
         $locale = $request->query('lang')
             ?? $request->session()->get('locale')
             ?? optional($request->user())->locale
-            ?? $request->getPreferredLanguage($supported)
             ?? $fallback;
 
         if (! in_array($locale, $supported, true)) {

@@ -61,7 +61,7 @@ class MyProfile extends Page implements HasForms
                 'emergency_contact_name', 'emergency_contact_relation', 'emergency_contact_phone',
                 'height_cm', 'weight_kg', 'blood_type',
                 'eats_pork', 'smoker', 'drinker', 'photo_path',
-                'name_kana', 'nationality', 'desired_job', 'address_kana', 'line_id',
+                'nationality', 'desired_job', 'line_id',
                 'japan_visits_study', 'japan_visits_work', 'japan_visits_other', 'self_pr', 'self_pr_ja', 'cv_other',
             ]) ?? [],
             // Only the levels still offered (SMA and up).
@@ -108,7 +108,6 @@ class MyProfile extends Page implements HasForms
                     Tab::make(__('Biodata'))->icon('heroicon-o-identification')->schema([
                         Section::make(__('Personal information'))->columns(2)->components([
                             TextInput::make('studentProfile.full_name')->label(__('Full legal name'))->maxLength(160),
-                            TextInput::make('studentProfile.name_kana')->label(__('Name in katakana'))->placeholder('ブディ　サントソ')->maxLength(160),
                             TextInput::make('studentProfile.nickname')->label(__('Nickname'))->maxLength(80),
                             Select::make('studentProfile.gender')->label(__('Gender'))
                                 ->options(['male' => __('Male'), 'female' => __('Female')])->native(false),
@@ -179,7 +178,6 @@ class MyProfile extends Page implements HasForms
                     Tab::make(__('Address'))->icon('heroicon-o-home')->schema([
                         Section::make()->columns(2)->components([
                             Textarea::make('studentProfile.address')->label(__('Street address'))->rows(2)->columnSpanFull(),
-                            TextInput::make('studentProfile.address_kana')->label(__('City & province in katakana'))->placeholder('タシクマラヤ、西ジャワ')->maxLength(255)->columnSpanFull(),
                             TextInput::make('studentProfile.city')->label(__('City'))->maxLength(80),
                             TextInput::make('studentProfile.province')->label(__('Province'))->maxLength(80),
                             TextInput::make('studentProfile.postal_code')->label(__('Postal code'))->maxLength(16),
@@ -312,6 +310,30 @@ class MyProfile extends Page implements HasForms
         ];
     }
 
+    /**
+     * The CV's katakana lines, filled in for the student: the name by how
+     * it sounds, "City, Province" translated by DeepL (西ジャワ州バンドン)
+     * when it changed. If DeepL fails the old translation stays.
+     */
+    private function kanaFields(\App\Models\StudentProfile $profile, array $data, ?string $accountName): array
+    {
+        $fields = ['name_kana' => \App\Support\Katakana::fromName(($data['full_name'] ?? null) ?: $accountName)];
+
+        $address = collect([$data['city'] ?? null, $data['province'] ?? null])->map(fn ($v) => trim((string) $v))->filter()->implode(', ');
+        $before  = collect([$profile->city, $profile->province])->map(fn ($v) => trim((string) $v))->filter()->implode(', ');
+        if ($address === '') {
+            $fields['address_kana'] = null;
+        } elseif ($address !== $before || blank($profile->address_kana)) {
+            try {
+                $fields['address_kana'] = JapaneseTranslator::translate($address);
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
+
+        return $fields;
+    }
+
     public function save(): void
     {
         $state = $this->form->getState();
@@ -333,6 +355,7 @@ class MyProfile extends Page implements HasForms
             $profileData[$visits] = (int) ($profileData[$visits] ?? 0);   // NOT NULL columns
         }
         $profileData['licenses'] = Certificates::flatten($state['certificates'] ?? []);
+        $profileData += $this->kanaFields($profile, $profileData, $state['name'] ?? $user->name);
         $profile->update($profileData);
 
         // Sync 1:n relations: educations. High-school streams (IPA, IPS) come from a fixed list.

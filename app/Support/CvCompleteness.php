@@ -22,12 +22,10 @@ class CvCompleteness
         $checks = [
             __('Photo')                              => filled($p?->photo_path),
             __('Full legal name')                    => filled($p?->full_name),
-            __('Name in katakana')                   => filled($p?->name_kana),
             __('Gender')                             => filled($p?->gender),
             __('Birth date')                         => filled($p?->birthdate),
             __('Religion')                           => filled($p?->religion),
             __('City & province')                    => filled($p?->city) && filled($p?->province),
-            __('Address in katakana')                => filled($p?->address_kana),
             __('Phone')                              => filled($user->phone),
             __('Position applied for')               => filled($p?->desired_job),
             __('Education')                          => $user->educations->contains(fn ($e) => isset(Rirekisho::EDUCATION_LEVELS[$e->level])),

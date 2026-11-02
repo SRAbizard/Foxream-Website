@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\StudentEducation;
+use App\Models\StudentProfile;
+use App\Support\Katakana;
 use App\Models\StudentWorkExperience;
 use App\Support\JapaneseTranslator;
 use App\Support\Rirekisho;
@@ -36,5 +38,19 @@ Artisan::command('cv:translate-history', function () {
         $total += $todo->count();
     }
 
+    // The CV's katakana lines, now filled in automatically: only where still empty.
+    foreach (StudentProfile::whereNull('name_kana')->orWhere('name_kana', '')->with('user')->get() as $profile) {
+        $profile->update(['name_kana' => Katakana::fromName($profile->full_name ?: $profile->user?->name)]);
+        $total++;
+    }
+    foreach (StudentProfile::where(fn ($q) => $q->whereNull('address_kana')->orWhere('address_kana', ''))->where(fn ($q) => $q->whereNotNull('city')->orWhereNotNull('province'))->get() as $profile) {
+        $address = collect([$profile->city, $profile->province])->map(fn ($v) => trim((string) $v))->filter()->implode(', ');
+        if ($address !== '') {
+            $profile->update(['address_kana' => JapaneseTranslator::translate($address)]);
+            $this->line("{$address} → {$profile->address_kana}");
+            $total++;
+        }
+    }
+
     $this->info($total ? "Translated {$total} item(s)." : 'Nothing to translate.');
-})->purpose('Translate existing job titles and majors into Japanese for the CV');
+})->purpose('Translate existing job titles, majors and addresses into Japanese for the CV');
