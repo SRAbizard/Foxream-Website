@@ -6,28 +6,51 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['user_id', 'job_vacancy_id', 'status', 'cover_letter', 'admin_notes', 'reviewed_at', 'reviewed_by'])]
 class Application extends Model
 {
-    public const STATUSES = [
+    /**
+     * The steps of an application in order, from applying to departure.
+     * The admin moves the application along; rejected and withdrawn end it.
+     */
+    public const STAGES = [
         'submitted',
-        'under_review',
-        'interview_scheduled',
-        'offered',
-        'accepted',
-        'rejected',
-        'withdrawn',
+        'screening_id',
+        'screening_jp',
+        'interview',
+        'passed',
+        'contract',
+        'coe',
+        'visa',
+        'departure',
+        'departed',
     ];
 
+    public const STATUSES = [...self::STAGES, 'rejected', 'withdrawn'];
+
     public const STATUS_COLORS = [
-        'submitted'           => 'gray',
-        'under_review'        => 'info',
-        'interview_scheduled' => 'warning',
-        'offered'             => 'primary',
-        'accepted'            => 'success',
-        'rejected'            => 'danger',
-        'withdrawn'           => 'gray',
+        'submitted'    => 'gray',
+        'screening_id' => 'info',
+        'screening_jp' => 'info',
+        'interview'    => 'warning',
+        'passed'       => 'success',
+        'contract'     => 'success',
+        'coe'          => 'success',
+        'visa'         => 'success',
+        'departure'    => 'primary',
+        'departed'     => 'primary',
+        'rejected'     => 'danger',
+        'withdrawn'    => 'gray',
+    ];
+
+    /** The schedule type that belongs to each step, for the admin's "add schedule". */
+    public const STAGE_SCHEDULE = [
+        'submitted'    => 'screening_id',
+        'screening_id' => 'screening_id',
+        'screening_jp' => 'screening_jp',
+        'interview'    => 'interview',
     ];
 
     protected function casts(): array
@@ -53,6 +76,13 @@ class Application extends Model
         return $this->vacancy();
     }
 
+    /** Screenings, interviews and kaiwa practice, the soonest first; dates still to come last. */
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(ApplicationSchedule::class)
+            ->orderByRaw('starts_at IS NULL')->orderBy('starts_at');
+    }
+
     protected static function booted(): void
     {
         static::updated(function (self $app) {
@@ -76,5 +106,21 @@ class Application extends Model
     public function getStatusLabelAttribute(): string
     {
         return __('application.status.'.$this->status);
+    }
+
+    /** The step after this one, or null at the end or when the application ended. */
+    public function nextStage(): ?string
+    {
+        $i = array_search($this->status, self::STAGES, true);
+
+        return $i === false ? null : (self::STAGES[$i + 1] ?? null);
+    }
+
+    /** Has the application reached (or passed) this step? */
+    public function reached(string $stage): bool
+    {
+        $at = array_search($this->status, self::STAGES, true);
+
+        return $at !== false && $at >= array_search($stage, self::STAGES, true);
     }
 }

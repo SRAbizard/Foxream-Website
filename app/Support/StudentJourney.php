@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Filament\Student\Pages\MyApplications;
 use App\Filament\Student\Pages\MyProfile;
 use App\Filament\Student\Pages\MyVisaTarget;
+use App\Filament\Student\Resources\Documents\DocumentResource;
 use App\Models\Application;
 use App\Models\User;
 
@@ -15,13 +16,18 @@ use App\Models\User;
  */
 class StudentJourney
 {
-    /** Application status => the journey step it stands at. */
+    /** Application step => the journey step it stands at (12 = all done). */
     private const APPLICATION_STEP = [
-        'submitted'           => 5,
-        'under_review'        => 5,
-        'interview_scheduled' => 7,
-        'offered'             => 8,
-        'accepted'            => 8,
+        'submitted'    => 5,
+        'screening_id' => 5,
+        'screening_jp' => 6,
+        'interview'    => 7,
+        'passed'       => 8,
+        'contract'     => 9,
+        'coe'          => 9,
+        'visa'         => 10,
+        'departure'    => 11,
+        'departed'     => 12,
     ];
 
     /**
@@ -32,10 +38,10 @@ class StudentJourney
     {
         $user->loadMissing('studentProfile.primaryVisa');
         $profile = $user->studentProfile;
-        $visa    = $profile?->visa_target_status;
         $cv      = CvCompleteness::for($user);
-        $applied = $user->applications()->active()->pluck('status');
-        $atStep  = $applied->map(fn ($s) => self::APPLICATION_STEP[$s] ?? 5)->max();
+        $apps    = $user->applications()->active()->with('schedules')->get();
+        $lead    = $apps->sortByDesc(fn ($a) => self::APPLICATION_STEP[$a->status] ?? 5)->first();
+        $atStep  = $lead ? self::APPLICATION_STEP[$lead->status] ?? 5 : null;
 
         $titles = [
             1  => __('Create an account'),
@@ -56,34 +62,52 @@ class StudentJourney
             1 => true,
             2 => $profile?->hasConfirmedVisa() ?? false,
             3 => $cv['complete'],
-            4 => $applied->isNotEmpty(),
+            4 => $apps->isNotEmpty(),
         ];
         foreach (range(5, 11) as $n) {
             $done[$n] = $atStep !== null && $atStep > $n;
         }
         $current = collect($done)->search(false) ?: null;
 
-        $hints = [
-            2 => match ($visa) {
+        return collect($titles)->map(function ($title, $n) use ($done, $current, $user, $profile, $cv, $lead) {
+            [$hint, $action] = $n === $current ? self::next($n, $user, $profile, $cv, $lead) : [null, null];
+
+            return [
+                'n'      => $n,
+                'title'  => $title,
+                'state'  => $done[$n] ? 'done' : ($n === $current ? 'current' : 'upcoming'),
+                'hint'   => $hint,
+                'action' => $action ? ['label' => $action[0], 'url' => $action[1]] : null,
+            ];
+        })->values()->all();
+    }
+
+    /** What to do at the current step: [hint, [button label, url] or null]. */
+    private static function next(int $n, User $user, $profile, array $cv, ?Application $lead): array
+    {
+        $applications = [__('My Applications'), MyApplications::getUrl(panel: 'student')];
+        $schedule = $lead?->schedules->first(fn ($s) => $s->isUpcoming());
+        $when = $schedule
+            ? __(':type: :when', ['type' => $schedule->type_label, 'when' => $schedule->when ?? __('date to follow')])
+            : __('We will let you know the date and the meeting link.');
+
+        return match ($n) {
+            2 => match ($profile?->visa_target_status) {
                 'pending', 'changed' => [__('Waiting for our team to approve your visa target.'), null],
                 'rejected'           => [__('Your request was not approved. See the reason and try again.'), [__('Visa target'), MyVisaTarget::getUrl(panel: 'student')]],
                 default              => [__('Choose Tokutei Ginou, Gijinkoku or Internship and send the certificates it needs.'), [__('Choose a visa target'), MyVisaTarget::getUrl(panel: 'student')]],
             },
             3 => [__('Still empty: :items.', ['items' => implode(', ', $cv['missing'])]), [__('Complete my CV'), MyProfile::getUrl(panel: 'student')]],
             4 => [__('Pick a job that matches your visa and field.'), [__('Browse jobs'), route('job.index', ['visa' => $profile?->primaryVisa?->slug])]],
-        ];
-
-        return collect($titles)->map(function ($title, $n) use ($done, $current, $hints, $applied) {
-            $state = $done[$n] ? 'done' : ($n === $current ? 'current' : 'upcoming');
-            [$hint, $action] = $n === $current ? ($hints[$n] ?? [null, $applied->isNotEmpty() ? [__('My Applications'), MyApplications::getUrl(panel: 'student')] : null]) : [null, null];
-
-            return [
-                'n'      => $n,
-                'title'  => $title,
-                'state'  => $state,
-                'hint'   => $hint,
-                'action' => $action ? ['label' => $action[0], 'url' => $action[1]] : null,
-            ];
-        })->values()->all();
+            5, 6 => [$when, $applications],
+            7 => [$when.' '.__('Meanwhile, practise kaiwa with our Indonesia team and in PJI Learning.'), $applications],
+            8 => [__('Upload the documents for your visa. The passport can wait until the employment contract is issued.'), [__('My Documents'), DocumentResource::getUrl('index', panel: 'student')]],
+            9 => [$lead?->status === 'coe'
+                    ? __('Your contract is signed. Now we wait for the COE to be issued.')
+                    : __('Sign the employment contract when it is issued, then we apply for the COE.'), $applications],
+            10 => [__('Our team helps you apply for the visa. Keep your documents ready.'), $applications],
+            11 => [__('Your departure date and flight ticket will appear here.'), $applications],
+            default => [null, null],
+        };
     }
 }

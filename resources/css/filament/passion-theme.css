@@ -445,6 +445,8 @@ body:has(.pj-auth) .fi-simple-main .fi-link { color: var(--pj-red) !important; f
 .pjm-stages li:not(:last-child)::after {
     content: "→"; position: absolute; right: -.62rem; top: 34%; font-weight: 900; color: var(--pj-red); z-index: 1;
 }
+/* Two rows of five steps: no arrow off the end of a row. */
+.pjm-stages li:nth-child(5n)::after { content: none; }
 .pjm-stage {
     display: grid; gap: .25rem; padding: .85rem .8rem; height: 100%; border-radius: 14px; border: 2.5px solid var(--pj-line);
     background: var(--pj-washi); color: var(--pj-ink); transition: transform .15s, box-shadow .15s, background-color .15s;

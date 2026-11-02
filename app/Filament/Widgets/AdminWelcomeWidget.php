@@ -51,7 +51,7 @@ class AdminWelcomeWidget extends Widget
         $students = fn () => User::role('student');
 
         $pending = [
-            'apps'     => Application::whereIn('status', ['submitted', 'under_review'])->count(),
+            'apps'     => Application::where('status', 'submitted')->count(),
             'newApps'  => Application::where('status', 'submitted')->count(),
             'docs'     => StudentDocument::where('status', 'pending')->count(),
             'messages' => ContactMessage::whereNull('read_at')->count(),
@@ -65,14 +65,14 @@ class AdminWelcomeWidget extends Widget
                 StudentDocumentResource::getUrl('index', ['filters' => ['status' => ['value' => 'pending']]])),
             $this->kpi(__('Unread messages'), $pending['messages'], ContactMessage::query(), 'heroicon-o-envelope', 'ai', ContactMessageResource::getUrl('index')),
             $this->kpi(__('Open job postings'), JobVacancy::published()->count(), JobVacancy::query(), 'heroicon-o-briefcase', 'matcha', JobVacancyResource::getUrl('index')),
-            $this->kpi(__('Interviews scheduled'), Application::where('status', 'interview_scheduled')->count(), null, 'heroicon-o-calendar-days', 'washi',
-                ApplicationResource::getUrl('index', ['filters' => ['status' => ['value' => 'interview_scheduled']]])),
+            $this->kpi(__('In interview'), Application::where('status', 'interview')->count(), null, 'heroicon-o-calendar-days', 'washi',
+                ApplicationResource::getUrl('index', ['filters' => ['status' => ['value' => 'interview']]])),
         ];
 
         // Pipeline — the happy path, plus the exits.
         $counts = Application::selectRaw('status, count(*) as c')->groupBy('status')->pluck('c', 'status');
         $stageUrl = fn (string $s) => ApplicationResource::getUrl('index', ['filters' => ['status' => ['value' => $s]]]);
-        $pipeline = collect(['submitted', 'under_review', 'interview_scheduled', 'offered', 'accepted'])
+        $pipeline = collect(Application::STAGES)
             ->map(fn ($s) => ['status' => $s, 'label' => __('application.status.'.$s), 'count' => (int) ($counts[$s] ?? 0), 'url' => $stageUrl($s)]);
         $exits = collect(['rejected', 'withdrawn'])
             ->map(fn ($s) => ['status' => $s, 'label' => __('application.status.'.$s), 'count' => (int) ($counts[$s] ?? 0), 'url' => $stageUrl($s)]);

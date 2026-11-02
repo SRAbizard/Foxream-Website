@@ -19,8 +19,11 @@ class StatsWidget extends BaseWidget
         $appsActive = Application::where('user_id', $userId)
             ->whereNotIn('status', ['rejected', 'withdrawn'])->count();
 
-        $interviews = Application::where('user_id', $userId)
-            ->where('status', 'interview_scheduled')->count();
+        // Screenings, interviews and kaiwa practice still to come.
+        $interviews = \App\Models\ApplicationSchedule::whereHas('application', fn ($q) => $q->where('user_id', $userId)->active())
+            ->whereNull('result')
+            ->where(fn ($q) => $q->whereNull('starts_at')->orWhere('starts_at', '>', now()))
+            ->count();
 
         $docsPending  = StudentDocument::where('user_id', $userId)->where('status', 'pending')->count();
         $docsVerified = StudentDocument::where('user_id', $userId)->where('status', 'verified')->count();
@@ -36,8 +39,8 @@ class StatsWidget extends BaseWidget
                 ->color($appsActive > 0 ? 'info' : 'gray')
                 ->url(\App\Filament\Student\Pages\MyApplications::getUrl()),
 
-            Stat::make(__('Interviews scheduled'), $interviews)
-                ->description($interviews > 0 ? __('Get ready for your mensetsu!') : __('None yet'))
+            Stat::make(__('Upcoming schedule'), $interviews)
+                ->description($interviews > 0 ? __('Screening, interview or kaiwa practice') : __('None yet'))
                 ->descriptionIcon('heroicon-m-calendar-days')
                 ->color($interviews > 0 ? 'success' : 'gray')
                 ->url(\App\Filament\Student\Pages\MyApplications::getUrl()),

@@ -30,7 +30,7 @@ class ApplicationResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::whereIn('status', ['submitted', 'under_review'])->count();
+        $count = static::getModel()::where('status', 'submitted')->count();
         return $count > 0 ? (string) $count : null;
     }
 
@@ -60,8 +60,9 @@ class ApplicationResource extends Resource
     {
         return $schema->components([
             Section::make(__('Application'))->columns(2)->components([
-                Select::make('status')
+                Select::make('status')->label(__('Step'))
                     ->options(collect(Application::STATUSES)->mapWithKeys(fn ($s) => [$s => __('application.status.'.$s)]))
+                    ->helperText(__('Usually moved with the button at the top. The student is notified of every change.'))
                     ->required()
                     ->native(false),
                 Textarea::make('admin_notes')->label(__('Admin notes'))->rows(4)->columnSpanFull(),
@@ -78,16 +79,27 @@ class ApplicationResource extends Resource
                 ->getStateUsing(fn ($record) => $record->vacancy?->t('title') ?? '—')
                 ->limit(40)->searchable(),
             TextColumn::make('vacancy.company.name')->label(__('Company'))->toggleable(),
-            TextColumn::make('status')->badge()
+            TextColumn::make('status')->label(__('Step'))->badge()
                 ->formatStateUsing(fn ($state) => __('application.status.'.$state))
                 ->color(fn ($state) => Application::STATUS_COLORS[$state] ?? 'gray'),
+            TextColumn::make('next_schedule')->label(__('Next schedule'))
+                ->state(fn (Application $record) => ($s = $record->schedules->first(fn ($s) => $s->isUpcoming()))
+                    ? $s->type_label.' · '.($s->starts_at?->format('d M H:i') ?? __('To follow'))
+                    : null)
+                ->placeholder('—'),
             TextColumn::make('created_at')->label(__('Applied'))->dateTime('d M Y H:i')->sortable(),
         ])
+        ->modifyQueryUsing(fn ($query) => $query->with('user', 'vacancy.company', 'schedules'))
         ->defaultSort('created_at', 'desc')
         ->filters([
             SelectFilter::make('status')
                 ->options(collect(Application::STATUSES)->mapWithKeys(fn ($s) => [$s => __('application.status.'.$s)])),
         ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [RelationManagers\SchedulesRelationManager::class];
     }
 
     public static function getPages(): array

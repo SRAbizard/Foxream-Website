@@ -242,8 +242,13 @@
                                 @if($app->vacancy?->visaCategory) · <span class="text-primary-600 dark:text-primary-400">{{ $app->vacancy->visaCategory->t('name') }}</span> @endif
                             </p>
                         </div>
-                        <div class="text-xs uppercase tracking-wider font-bold px-2 py-1 rounded-md bg-gray-100 dark:bg-gray-800">
-                            {{ __('application.status.'.$app->status) }}
+                        <div class="flex items-center gap-3 shrink-0">
+                            <x-filament::badge :color="\App\Models\Application::STATUS_COLORS[$app->status] ?? 'gray'">
+                                {{ __('application.status.'.$app->status) }}
+                            </x-filament::badge>
+                            <a href="{{ \App\Filament\Resources\Applications\ApplicationResource::getUrl('edit', ['record' => $app]) }}" class="text-primary-600 hover:underline text-xs whitespace-nowrap">
+                                {{ __('Steps & schedules') }} →
+                            </a>
                         </div>
                     </li>
                 @endforeach

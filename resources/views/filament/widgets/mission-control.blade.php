@@ -82,7 +82,7 @@
                 @foreach($pipeline as $i => $s)
                     <li>
                         <a href="{{ $s['url'] }}" class="pjm-stage">
-                            <span class="pjm-stage-n">0{{ $i + 1 }}</span>
+                            <span class="pjm-stage-n">{{ sprintf('%02d', $i + 1) }}</span>
                             <b x-data="{ v: {{ $s['count'] }} }" x-init="{{ $countUp }}" x-text="v">{{ $s['count'] }}</b>
                             <span class="pjm-stage-label">{{ $s['label'] }}</span>
                             <span class="pjm-bar"><i style="--w: {{ round($s['count'] / $pipeMax * 100) }}%"></i></span>
