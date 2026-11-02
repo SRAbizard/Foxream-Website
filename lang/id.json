@@ -1345,5 +1345,7 @@
     "Translation failed. Please try again.": "Terjemahan gagal. Silakan coba lagi.",
     "This text could not be translated. Please rewrite it and try again.": "Teks ini tidak bisa diterjemahkan. Silakan tulis ulang lalu coba lagi.",
     "The text is too long to translate. Please shorten it.": "Teksnya terlalu panjang untuk diterjemahkan. Silakan dipersingkat.",
-    "This month's translation quota is used up. Please try again next month or tell the admin.": "Kuota terjemahan bulan ini sudah habis. Silakan coba lagi bulan depan atau hubungi admin."
+    "This month's translation quota is used up. Please try again next month or tell the admin.": "Kuota terjemahan bulan ini sudah habis. Silakan coba lagi bulan depan atau hubungi admin.",
+    "Translated and saved to your CV. You can still edit the Japanese.": "Sudah diterjemahkan dan tersimpan ke CV. Teks Jepangnya masih bisa diedit.",
+    "Filled and saved by the Translate button. If you edit it, click Save changes.": "Diisi dan disimpan otomatis oleh tombol Terjemahkan. Kalau kamu mengeditnya, klik Simpan perubahan."
 }

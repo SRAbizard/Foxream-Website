@@ -159,17 +159,20 @@ class MyProfile extends Page implements HasForms
                                             }
                                             RateLimiter::hit('self-pr:'.auth()->id(), 3600);
                                             try {
-                                                $set('studentProfile.self_pr_ja', SelfPrTranslator::translate($text));
+                                                $japanese = SelfPrTranslator::translate($text);
                                             } catch (\RuntimeException $e) {
                                                 Notification::make()->title($e->getMessage())->danger()->send();
 
                                                 return;
                                             }
-                                            Notification::make()->title(__('Translated. Check the Japanese, then save.'))->success()->send();
+                                            $set('studentProfile.self_pr_ja', $japanese);
+                                            // Saved straight away so the CV has it even if the page is never saved.
+                                            auth()->user()->profile()->update(['self_pr' => $text, 'self_pr_ja' => $japanese]);
+                                            Notification::make()->title(__('Translated and saved to your CV. You can still edit the Japanese.'))->success()->send();
                                         }),
                                 ),
                             Textarea::make('studentProfile.self_pr_ja')->label(__('Japanese version (goes into the CV)'))->rows(7)->maxLength(3000)
-                                ->helperText(__('Filled by the Translate button. You can edit it; the CV uses this text when it is filled in.')),
+                                ->helperText(__('Filled and saved by the Translate button. If you edit it, click Save changes.')),
                         ]),
                     ]),
 
