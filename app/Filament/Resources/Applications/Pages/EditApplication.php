@@ -45,7 +45,7 @@ class EditApplication extends EditRecord
                     $this->moveTo('rejected');
                 }),
 
-            DeleteAction::make(),
+            DeleteAction::make()->visible(fn () => auth()->user()?->hasRole('superadmin')),
         ];
     }
 

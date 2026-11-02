@@ -135,9 +135,42 @@ class ApplicationResource extends Resource
         ])
         ->modifyQueryUsing(fn ($query) => $query->with('user', 'vacancy.company', 'schedules'))
         ->defaultSort('created_at', 'desc')
+        ->recordActions(\App\Filament\Support\DeleteActions::row(
+            __('Its schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.'),
+            fn () => auth()->user()?->hasRole('superadmin'),
+        ))
+        ->toolbarActions(\App\Filament\Support\DeleteActions::bulk(
+            __('Their schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.'),
+            fn () => auth()->user()?->hasRole('superadmin'),
+        ))
         ->filters([
-            SelectFilter::make('status')
+            SelectFilter::make('status')->label(__('Step'))
                 ->options(collect(Application::STATUSES)->mapWithKeys(fn ($s) => [$s => __('application.status.'.$s)])),
+            SelectFilter::make('job_vacancy_id')->label(__('Job'))->searchable()
+                ->options(fn () => \App\Models\JobVacancy::orderByDesc('published_at')->get()->mapWithKeys(fn ($v) => [$v->id => $v->t('title')])),
+            SelectFilter::make('company')->label(__('Company'))->searchable()
+                ->options(fn () => \App\Models\Company::orderBy('name')->pluck('name', 'id'))
+                ->query(fn ($query, array $data) => $query->when($data['value'] ?? null,
+                    fn ($q, $id) => $q->whereHas('vacancy', fn ($v) => $v->where('company_id', $id)))),
+            SelectFilter::make('visa')->label(__('Visa'))
+                ->options(fn () => \App\Models\VisaCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($v) => [$v->id => $v->t('name')]))
+                ->query(fn ($query, array $data) => $query->when($data['value'] ?? null,
+                    fn ($q, $id) => $q->whereHas('vacancy', fn ($v) => $v->where('visa_category_id', $id)))),
+            SelectFilter::make('field')->label(__('Job Category'))
+                ->options(fn () => \App\Models\JobCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')]))
+                ->query(fn ($query, array $data) => $query->when($data['value'] ?? null,
+                    fn ($q, $id) => $q->whereHas('vacancy', fn ($v) => $v->where('job_category_id', $id)))),
+            \Filament\Tables\Filters\Filter::make('applied')
+                ->schema([
+                    DatePicker::make('from')->label(__('Applied from'))->native(false),
+                    DatePicker::make('until')->label(__('Applied until'))->native(false),
+                ])
+                ->query(fn ($query, array $data) => $query
+                    ->when($data['from'] ?? null, fn ($q, $d) => $q->whereDate('created_at', '>=', $d))
+                    ->when($data['until'] ?? null, fn ($q, $d) => $q->whereDate('created_at', '<=', $d))),
+            \Filament\Tables\Filters\Filter::make('upcoming')->label(__('Has an upcoming schedule'))
+                ->query(fn ($query) => $query->whereHas('schedules', fn ($s) => $s->whereNull('result')
+                    ->where(fn ($w) => $w->whereNull('starts_at')->orWhere('starts_at', '>', now())))),
         ]);
     }
 

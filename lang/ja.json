@@ -1568,5 +1568,21 @@
     "Open :field jobs for your visa target.": "目標ビザの:field求人。",
     "Choose the position you are applying for in My Profile to see jobs in your field.": "マイプロフィールで応募職種を選ぶと、分野に合った求人が表示されます。",
     "No open :field jobs for your visa target right now. We will add more soon.": "現在、目標ビザの:field求人はありません。近日追加予定です。",
-    "See all :field jobs": ":fieldの求人をすべて見る"
+    "See all :field jobs": ":fieldの求人をすべて見る",
+    "Its schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.": "予定と契約書・COE・ビザ・航空券のファイルも削除されます。元に戻せません。",
+    "Their schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.": "予定と契約書・COE・ビザ・航空券のファイルも削除されます。元に戻せません。",
+    "Applied from": "応募日（から）",
+    "Applied until": "応募日（まで）",
+    "Has an upcoming schedule": "今後の予定あり",
+    "No job postings": "求人なし",
+    "Its job postings stay, without a field. Students who chose this field must choose again.": "求人は残りますが分野なしになります。この分野を選んだ学生は選び直す必要があります。",
+    "Their job postings stay, without a field. Students who chose these fields must choose again.": "求人は残りますが分野なしになります。これらの分野を選んだ学生は選び直す必要があります。",
+    "Draft": "下書き",
+    "Expired": "期限切れ",
+    "No applicants yet": "応募者なし",
+    "Every application to this job is deleted too. This cannot be undone.": "この求人への応募もすべて削除されます。元に戻せません。",
+    "Every application to these jobs is deleted too. This cannot be undone.": "これらの求人への応募もすべて削除されます。元に戻せません。",
+    "Job postings and students with this visa target lose it and must be set again. This cannot be undone.": "このビザの求人と学生はビザが外れ、再設定が必要になります。元に戻せません。",
+    "Job postings and students with these visa targets lose them and must be set again. This cannot be undone.": "これらのビザの求人と学生はビザが外れ、再設定が必要になります。元に戻せません。",
+    "Its job postings and every application to them are deleted too. This cannot be undone.": "この会社の求人とその応募もすべて削除されます。元に戻せません。"
 }

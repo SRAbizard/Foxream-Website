@@ -188,7 +188,24 @@ class JobVacancyResource extends Resource
                 ->options(fn () => JobCategory::all()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')])),
             SelectFilter::make('company_id')->label(__('Company'))
                 ->options(fn () => Company::orderBy('name')->pluck('name', 'id'))->searchable(),
-        ]);
+            SelectFilter::make('publication')->label(__('Status'))
+                ->options([
+                    'published' => __('Published'),
+                    'draft'     => __('Draft'),
+                    'expired'   => __('Expired'),
+                ])
+                ->query(fn ($query, array $data) => match ($data['value'] ?? null) {
+                    'published' => $query->published(),
+                    'draft'     => $query->where(fn ($q) => $q->whereNull('published_at')->orWhere('published_at', '>', now())),
+                    'expired'   => $query->whereNotNull('expires_at')->where('expires_at', '<', now()->toDateString()),
+                    default     => $query,
+                }),
+            \Filament\Tables\Filters\TernaryFilter::make('is_featured')->label(__('Featured')),
+            \Filament\Tables\Filters\Filter::make('without_applicants')->label(__('No applicants yet'))
+                ->query(fn ($query) => $query->doesntHave('applications')),
+        ])
+        ->recordActions(\App\Filament\Support\DeleteActions::row(__('Every application to this job is deleted too. This cannot be undone.')))
+        ->toolbarActions(\App\Filament\Support\DeleteActions::bulk(__('Every application to these jobs is deleted too. This cannot be undone.')));
     }
 
     public static function getPages(): array

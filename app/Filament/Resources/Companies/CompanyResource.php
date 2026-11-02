@@ -27,6 +27,9 @@ class CompanyResource extends Resource
     protected static string | UnitEnum | null $navigationGroup = 'Recruitment';
     protected static ?int $navigationSort = 1;
 
+    /** Shown before deleting: a company's jobs, and the applications for them, go with it. */
+    private const DELETE_WARNING = 'Its job postings and every application to them are deleted too. This cannot be undone.';
+
     public static function getNavigationLabel(): string { return __('Companies'); }
     public static function getNavigationGroup(): ?string { return __('Recruitment'); }
     public static function getModelLabel(): string { return __('Company'); }
@@ -76,7 +79,20 @@ class CompanyResource extends Resource
             TextColumn::make('country')->toggleable(),
             IconColumn::make('is_verified')->boolean()->label(__('Verified')),
             TextColumn::make('vacancies_count')->counts('vacancies')->label(__('Jobs')),
-        ])->defaultSort('name');
+        ])
+        ->defaultSort('name')
+        ->filters([
+            \Filament\Tables\Filters\TernaryFilter::make('is_verified')->label(__('Verified')),
+            \Filament\Tables\Filters\TernaryFilter::make('is_active')->label(__('Active')),
+            \Filament\Tables\Filters\SelectFilter::make('industry')->label(__('Industry'))
+                ->options(fn () => Company::whereNotNull('industry')->distinct()->orderBy('industry')->pluck('industry', 'industry')),
+            \Filament\Tables\Filters\SelectFilter::make('country')->label(__('Country'))
+                ->options(fn () => Company::whereNotNull('country')->distinct()->orderBy('country')->pluck('country', 'country')),
+            \Filament\Tables\Filters\Filter::make('without_jobs')->label(__('No job postings'))
+                ->query(fn ($query) => $query->doesntHave('vacancies')),
+        ])
+        ->recordActions(\App\Filament\Support\DeleteActions::row(__(self::DELETE_WARNING)))
+        ->toolbarActions(\App\Filament\Support\DeleteActions::bulk(__(self::DELETE_WARNING)));
     }
 
     public static function getPages(): array

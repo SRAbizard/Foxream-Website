@@ -56,7 +56,14 @@ class JobCategoryResource extends Resource
             TextColumn::make('slug')->copyable(),
             ColorColumn::make('color'),
             TextColumn::make('vacancies_count')->counts('vacancies')->label(__('Jobs')),
-        ])->defaultSort('sort_order');
+        ])
+        ->defaultSort('sort_order')
+        ->filters([
+            \Filament\Tables\Filters\Filter::make('without_jobs')->label(__('No job postings'))
+                ->query(fn ($query) => $query->doesntHave('vacancies')),
+        ])
+        ->recordActions(\App\Filament\Support\DeleteActions::row(__('Its job postings stay, without a field. Students who chose this field must choose again.')))
+        ->toolbarActions(\App\Filament\Support\DeleteActions::bulk(__('Their job postings stay, without a field. Students who chose these fields must choose again.')));
     }
 
     public static function getPages(): array

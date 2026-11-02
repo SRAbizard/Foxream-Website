@@ -86,7 +86,14 @@ class VisaCategoryResource extends Resource
                 ->label(__('Required docs'))
                 ->formatStateUsing(fn ($state) => is_array($state) ? count($state).' '.__('types') : '0')
                 ->badge()->color('info')->alignCenter(),
-        ])->defaultSort('sort_order');
+        ])
+        ->defaultSort('sort_order')
+        ->filters([
+            \Filament\Tables\Filters\Filter::make('without_jobs')->label(__('No job postings'))
+                ->query(fn ($query) => $query->doesntHave('vacancies')),
+        ])
+        ->recordActions(\App\Filament\Support\DeleteActions::row(__('Job postings and students with this visa target lose it and must be set again. This cannot be undone.')))
+        ->toolbarActions(\App\Filament\Support\DeleteActions::bulk(__('Job postings and students with these visa targets lose them and must be set again. This cannot be undone.')));
     }
 
     public static function getPages(): array

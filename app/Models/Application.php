@@ -99,6 +99,13 @@ class Application extends Model
 
     protected static function booted(): void
     {
+        // The application's files go with it (schedules cascade in the database).
+        static::deleted(function (self $app) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete(array_filter([
+                $app->contract_path, $app->signed_contract_path, $app->coe_path, $app->visa_path, $app->ticket_path,
+            ]));
+        });
+
         static::updated(function (self $app) {
             if (! $app->user) {
                 return;

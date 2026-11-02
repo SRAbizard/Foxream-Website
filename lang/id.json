@@ -1567,5 +1567,21 @@
     "Open :field jobs for your visa target.": "Lowongan :field untuk target visamu.",
     "Choose the position you are applying for in My Profile to see jobs in your field.": "Pilih posisi yang dilamar di Profil Saya untuk melihat lowongan sesuai bidangmu.",
     "No open :field jobs for your visa target right now. We will add more soon.": "Belum ada lowongan :field untuk target visamu saat ini. Kami akan segera menambahkannya.",
-    "See all :field jobs": "Lihat semua lowongan :field"
+    "See all :field jobs": "Lihat semua lowongan :field",
+    "Its schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.": "Jadwal serta berkas kontrak, COE, visa, dan tiketnya ikut terhapus. Tidak bisa dibatalkan.",
+    "Their schedules and the contract, COE, visa and ticket files are deleted too. This cannot be undone.": "Jadwal serta berkas kontrak, COE, visa, dan tiketnya ikut terhapus. Tidak bisa dibatalkan.",
+    "Applied from": "Melamar dari tanggal",
+    "Applied until": "Melamar sampai tanggal",
+    "Has an upcoming schedule": "Ada jadwal mendatang",
+    "No job postings": "Tanpa lowongan",
+    "Its job postings stay, without a field. Students who chose this field must choose again.": "Lowongannya tetap ada, tapi tanpa bidang. Siswa yang memilih bidang ini harus memilih ulang.",
+    "Their job postings stay, without a field. Students who chose these fields must choose again.": "Lowongannya tetap ada, tapi tanpa bidang. Siswa yang memilih bidang ini harus memilih ulang.",
+    "Draft": "Draf",
+    "Expired": "Kedaluwarsa",
+    "No applicants yet": "Belum ada pelamar",
+    "Every application to this job is deleted too. This cannot be undone.": "Semua lamaran ke lowongan ini ikut terhapus. Tidak bisa dibatalkan.",
+    "Every application to these jobs is deleted too. This cannot be undone.": "Semua lamaran ke lowongan ini ikut terhapus. Tidak bisa dibatalkan.",
+    "Job postings and students with this visa target lose it and must be set again. This cannot be undone.": "Lowongan dan siswa dengan visa ini akan kehilangan visanya dan harus diatur ulang. Tidak bisa dibatalkan.",
+    "Job postings and students with these visa targets lose them and must be set again. This cannot be undone.": "Lowongan dan siswa dengan visa ini akan kehilangan visanya dan harus diatur ulang. Tidak bisa dibatalkan.",
+    "Its job postings and every application to them are deleted too. This cannot be undone.": "Lowongan perusahaan ini beserta semua lamarannya ikut terhapus. Tidak bisa dibatalkan."
 }
