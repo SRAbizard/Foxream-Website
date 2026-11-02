@@ -120,7 +120,7 @@
                         @endif
                         <div class="min-w-0 flex-1">
                             <h2 class="font-semibold text-white truncate group-hover:text-brand-400 transition">{{ $v->t('title') }}</h2>
-                            <p class="text-xs text-surface-400 truncate">{{ $v->company->name }}</p>
+                            <p class="text-xs text-surface-400 truncate">{{ $v->company->localName() }}</p>
                         </div>
                         @if($v->is_featured)
                             <span class="text-brand-400 text-xs">★</span>

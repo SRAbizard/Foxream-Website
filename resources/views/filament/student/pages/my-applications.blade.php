@@ -23,7 +23,7 @@
                         {{ $app->jobVacancy?->t('title') ?? '—' }}
                     </a>
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        {{ $app->jobVacancy?->company?->name }}
+                        {{ $app->jobVacancy?->company?->localName() }}
                         @if($app->jobVacancy?->visaCategory) · {{ $app->jobVacancy->visaCategory->t('name') }} @endif
                         · {{ __('Applied') }} {{ $app->created_at->format('d M Y') }}
                     </p>

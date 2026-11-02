@@ -43,7 +43,7 @@
             </div>
         @endif
         <div class="flex-1 min-w-0">
-            <p class="text-sm text-surface-400">{{ $vacancy->company->name }}</p>
+            <p class="text-sm text-surface-400">{{ $vacancy->company->localName() }}</p>
             <h1 class="mt-1 font-display text-3xl sm:text-4xl font-extrabold text-white">{{ $vacancy->t('title') }}</h1>
             <div class="mt-3 flex flex-wrap gap-1.5">
                 @if($vacancy->jobCategory)<span class="text-[10px] uppercase tracking-wider font-semibold px-2 py-1 rounded-md bg-surface-800 text-surface-300">{{ $vacancy->jobCategory->t('name') }}</span>@endif
@@ -184,7 +184,7 @@
             <div class="mt-6 grid gap-4 md:grid-cols-3">
                 @foreach($related as $r)
                     <a href="{{ route('job.show', $r->slug) }}" class="glass-card p-5 hover:border-brand-500/50 transition">
-                        <p class="text-xs text-surface-400">{{ $r->company->name }}</p>
+                        <p class="text-xs text-surface-400">{{ $r->company->localName() }}</p>
                         <h3 class="mt-1 font-semibold text-white">{{ $r->t('title') }}</h3>
                         <p class="mt-2 text-xs text-emerald-400">{{ $r->salary_range }}</p>
                     </a>

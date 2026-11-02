@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['tsk_id', 'slug', 'name', 'logo_path', 'website', 'industry', 'country', 'city', 'description', 'is_verified', 'is_active'])]
+#[Fillable(['tsk_id', 'slug', 'name', 'name_ja','logo_path', 'website', 'industry', 'country', 'city', 'description', 'is_verified', 'is_active'])]
 class Company extends Model
 {
     use HasJsonTranslations;
@@ -21,6 +21,12 @@ class Company extends Model
             'is_verified' => 'boolean',
             'is_active'   => 'boolean',
         ];
+    }
+
+    /** The Japanese name on the Japanese site when there is one, else the name. */
+    public function localName(): string
+    {
+        return app()->getLocale() === 'ja' && filled($this->name_ja) ? $this->name_ja : $this->name;
     }
 
     /** The TSK (登録支援機関) this company works with. */

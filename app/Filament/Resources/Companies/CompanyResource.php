@@ -61,6 +61,8 @@ class CompanyResource extends Resource
                     ])
                     ->columnSpanFull(),
                 TextInput::make('name')->required()->maxLength(120),
+                TextInput::make('name_ja')->label(__('Name in Japanese'))->maxLength(160)->placeholder('株式会社〇〇')
+                    ->helperText(__('Shown instead of the name on the Japanese site.')),
                 TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(120)
                     ->live(onBlur: true)->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? ''))),
                 TextInput::make('industry')->maxLength(80),
@@ -82,7 +84,8 @@ class CompanyResource extends Resource
     {
         return $table->columns([
             ImageColumn::make('logo_path')->disk('public')->circular()->label(''),
-            TextColumn::make('name')->searchable()->sortable()->weight('bold'),
+            TextColumn::make('name')->searchable(['name', 'name_ja'])->sortable()->weight('bold')
+                ->description(fn ($record) => $record->name_ja),
             TextColumn::make('tsk.name')->label(__('TSK'))->badge()->color('gray')->placeholder('—')->sortable(),
             TextColumn::make('industry')->toggleable(),
             TextColumn::make('city')->toggleable(),

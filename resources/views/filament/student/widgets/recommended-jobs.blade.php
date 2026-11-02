@@ -16,7 +16,7 @@
                         <a href="{{ route('job.show', $job->slug) }}" class="block h-full rounded-xl p-4 ring-1 ring-gray-950/5 hover:ring-primary-500 dark:ring-white/10 transition">
                             <p class="text-sm font-semibold text-gray-950 dark:text-white line-clamp-2">{{ $job->t('title') }}</p>
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                {{ $job->company?->name }}@if($job->location_display) · {{ $job->location_display }}@endif
+                                {{ $job->company?->localName() }}@if($job->location_display) · {{ $job->location_display }}@endif
                             </p>
                         </a>
                     </li>
