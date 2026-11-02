@@ -24,7 +24,20 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles;
+    use Notifiable {
+        notify as private sendNotice;
+    }
+
+    /**
+     * A mail server that is down must not break the page (sign-up, an
+     * admin moving an application): the failure is logged and the rest
+     * still happens. The in-app notice is stored before the e-mail is sent.
+     */
+    public function notify($instance): void
+    {
+        rescue(fn () => $this->sendNotice($instance));
+    }
 
     /**
      * Defaults applied to every new User instance — even before save.

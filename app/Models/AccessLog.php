@@ -14,7 +14,7 @@ class AccessLog extends Model
     public const UPDATED_AT = null;
 
     /** Actions shown highlighted: possible misuse. */
-    public const WARNINGS = ['login_failed'];
+    public const WARNINGS = ['login_failed', 'account_deleted'];
 
     protected $guarded = ['id'];
 
@@ -44,6 +44,7 @@ class AccessLog extends Model
             'document_uploaded' => __('Document uploaded'),
             'job_applied'       => __('Applied for a job'),
             'contract_signed'   => __('Signed contract uploaded'),
+            'account_deleted'   => __('Account deleted'),
         ];
     }
 
@@ -57,7 +58,7 @@ class AccessLog extends Model
         $request = request();
 
         static::create([
-            'user_id'     => $userId ?? $request->user()?->id,
+            'user_id'     => $userId ?? auth()->id(),
             'action'      => $action,
             'description' => $description !== null ? mb_substr($description, 0, 250) : null,
             'ip_address'  => $request->ip(),

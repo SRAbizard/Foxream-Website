@@ -43,6 +43,12 @@ class RecordAccess
         AccessLog::record('registered', null, $event->user->getAuthIdentifier());
     }
 
+    /** Filament's sign-up page fires its own event instead of Laravel's. */
+    public function handleFilamentRegistered(\Filament\Auth\Events\Registered $event): void
+    {
+        AccessLog::record('registered', null, $event->getUser()->getAuthIdentifier());
+    }
+
     public function handleVerified(Verified $event): void
     {
         AccessLog::record('email_verified', null, $event->user->getAuthIdentifier());

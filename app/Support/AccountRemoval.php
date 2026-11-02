@@ -32,5 +32,8 @@ class AccountRemoval
         });
 
         Storage::disk('public')->delete($files);
+
+        // Kept under the admin who deleted it, so the history shows who removed which account.
+        \App\Models\AccessLog::record('account_deleted', $user->name.' <'.$user->email.'>');
     }
 }
