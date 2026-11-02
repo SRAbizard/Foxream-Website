@@ -1345,5 +1345,6 @@
     "Translation is not set up correctly. Please tell the admin.": "翻訳の設定に問題があります。管理者にお知らせください。",
     "Translation failed. Please try again.": "翻訳できませんでした。もう一度お試しください。",
     "This text could not be translated. Please rewrite it and try again.": "この文章は翻訳できませんでした。書き直してからもう一度お試しください。",
-    "The text is too long to translate. Please shorten it.": "文章が長すぎて翻訳できません。短くしてください。"
+    "The text is too long to translate. Please shorten it.": "文章が長すぎて翻訳できません。短くしてください。",
+    "This month's translation quota is used up. Please try again next month or tell the admin.": "今月の翻訳の上限に達しました。来月もう一度お試しいただくか、管理者にお知らせください。"
 }

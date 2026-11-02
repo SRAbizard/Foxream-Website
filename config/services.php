@@ -28,10 +28,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    // Claude API: translates the student's 自己PR into Japanese for the CV.
-    'anthropic' => [
-        'key' => env('ANTHROPIC_API_KEY'),
-        'model' => env('ANTHROPIC_MODEL', 'claude-opus-5-5'),
+    // DeepL: translates the student's 自己PR into Japanese for the CV.
+    'deepl' => [
+        'key' => env('DEEPL_API_KEY'),
     ],
 
     'slack' => [

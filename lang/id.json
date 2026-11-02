@@ -1344,5 +1344,6 @@
     "Translation is not set up correctly. Please tell the admin.": "Pengaturan terjemahan belum benar. Silakan hubungi admin.",
     "Translation failed. Please try again.": "Terjemahan gagal. Silakan coba lagi.",
     "This text could not be translated. Please rewrite it and try again.": "Teks ini tidak bisa diterjemahkan. Silakan tulis ulang lalu coba lagi.",
-    "The text is too long to translate. Please shorten it.": "Teksnya terlalu panjang untuk diterjemahkan. Silakan dipersingkat."
+    "The text is too long to translate. Please shorten it.": "Teksnya terlalu panjang untuk diterjemahkan. Silakan dipersingkat.",
+    "This month's translation quota is used up. Please try again next month or tell the admin.": "Kuota terjemahan bulan ini sudah habis. Silakan coba lagi bulan depan atau hubungi admin."
 }

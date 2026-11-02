@@ -119,7 +119,7 @@
     @php
         // Admin → Website Settings → Homepage → Scrolling text; automatic text when a band is empty.
         $catNames = \App\Support\SiteSettings::marquee('red')
-            ?? $categories->map(fn ($c) => trim(($c->t('name', 'ja') !== $c->t('name') ? $c->t('name', 'ja').' ' : '').$c->t('name')))->all();
+            ?? $categories->map(fn ($c) => $c->t('name'))->all();
         $promises = \App\Support\SiteSettings::marquee('ink')
             ?? [__('Official job openings'), __('Verified partner companies'), __('Online & offline mensetsu'), __('Guided until departure'), __('Transparent costs')];
     @endphp

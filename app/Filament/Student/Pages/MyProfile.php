@@ -151,7 +151,7 @@ class MyProfile extends Page implements HasForms
 
                                                 return;
                                             }
-                                            // Each call is billed; ten an hour is plenty for drafting.
+                                            // Keeps the monthly DeepL quota safe; ten an hour is plenty for drafting.
                                             if (RateLimiter::tooManyAttempts('self-pr:'.auth()->id(), 10)) {
                                                 Notification::make()->title(__('Too many translations. Please try again later.'))->warning()->send();
 
