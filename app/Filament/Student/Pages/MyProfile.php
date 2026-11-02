@@ -101,7 +101,8 @@ class MyProfile extends Page implements HasForms
                                 ->automaticallyResizeImagesMode('cover')
                                 ->automaticallyResizeImagesToWidth('600')
                                 ->automaticallyResizeImagesToHeight('800')
-                                ->panelAspectRatio('3:4'),
+                                ->panelAspectRatio('3:4')
+                                ->extraAttributes(['style' => 'max-width: 12rem']),   // passport-photo size, also on phones
                         ]),
                     ]),
 
@@ -354,11 +355,21 @@ class MyProfile extends Page implements HasForms
         $profileData['licenses'] = Certificates::flatten($state['certificates'] ?? []);
         $profile->update($profileData);
 
-        // Sync 1:n relations: educations
-        $this->syncRelation($user->educations(), $state['educations'] ?? []);
+        // Sync 1:n relations: educations. High-school streams (IPA, IPS) come from a fixed list.
+        $educations = collect($state['educations'] ?? []);
+        $majorsJa = $this->japaneseTitles(
+            $user->educations()->whereNotNull('major_ja')->pluck('major_ja', 'major')->all(),
+            $educations->pluck('major')->reject(fn ($m) => isset(Rirekisho::SCHOOL_STREAMS_JA[mb_strtoupper(trim((string) $m))]))->all(),
+        );
+        $this->syncRelation($user->educations(), $educations->map(fn ($e) => $e + [
+            'major_ja' => $majorsJa[trim((string) ($e['major'] ?? ''))] ?? null,
+        ])->all());
         // Work history is entered as month + year; stored as the first of the month.
         $monthDate = fn ($y, $m) => $y ? sprintf('%04d-%02d-01', $y, $m ?: 1) : null;
-        $positionsJa = $this->japanesePositions($user, collect($state['workExperiences'] ?? [])->pluck('position')->all());
+        $positionsJa = $this->japaneseTitles(
+            $user->workExperiences()->whereNotNull('position_ja')->pluck('position_ja', 'position')->all(),
+            collect($state['workExperiences'] ?? [])->pluck('position')->all(),
+        );
         $this->syncRelation($user->workExperiences(), collect($state['workExperiences'] ?? [])->map(fn ($w) => [
             'company' => $w['company'] ?? null, 'position' => $w['position'] ?? null, 'is_current' => (bool) ($w['is_current'] ?? false),
             'position_ja' => $positionsJa[trim((string) ($w['position'] ?? ''))] ?? null,
@@ -374,16 +385,17 @@ class MyProfile extends Page implements HasForms
     }
 
     /**
-     * Japanese job titles for the CV, keyed by the title as typed. Titles
-     * already translated are reused; new ones go to DeepL in one request.
-     * When translation is unavailable the CV keeps the typed title.
+     * Japanese for job titles and majors on the CV, keyed by the text as
+     * typed. Ones already translated ($known) are reused; new ones go to
+     * DeepL in one request. When translation is unavailable the CV keeps
+     * the typed text.
      *
+     * @param  array<string, string>  $known
      * @return array<string, string>
      */
-    private function japanesePositions(User $user, array $positions): array
+    private function japaneseTitles(array $known, array $texts): array
     {
-        $known = $user->workExperiences()->whereNotNull('position_ja')->pluck('position_ja', 'position')->all();
-        $new = collect($positions)->map(fn ($p) => trim((string) $p))->filter()->unique()
+        $new = collect($texts)->map(fn ($p) => trim((string) $p))->filter()->unique()
             ->reject(fn ($p) => isset($known[$p]))->values()->all();
 
         if ($new && JapaneseTranslator::enabled()) {

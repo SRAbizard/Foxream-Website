@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\StudentEducation;
 use App\Models\StudentWorkExperience;
 use App\Support\JapaneseTranslator;
+use App\Support\Rirekisho;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -9,21 +11,30 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Job titles saved before position_ja existed; new ones are translated when a profile is saved.
-Artisan::command('cv:translate-positions', function () {
-    $todo = StudentWorkExperience::whereNull('position_ja')->where('position', '!=', '')
-        ->pluck('position')->map(fn ($p) => trim($p))->filter()->unique()->values();
-    if ($todo->isEmpty()) {
-        return $this->info('Nothing to translate.');
+// Job titles and majors saved before position_ja / major_ja existed; new ones
+// are translated when a profile is saved. High-school streams (IPA, IPS) come
+// from Rirekisho::SCHOOL_STREAMS_JA and are skipped.
+Artisan::command('cv:translate-history', function () {
+    $jobs = [
+        [StudentWorkExperience::class, 'position', 'position_ja'],
+        [StudentEducation::class, 'major', 'major_ja'],
+    ];
+    $total = 0;
+
+    foreach ($jobs as [$model, $column, $target]) {
+        $todo = $model::whereNull($target)->where($column, '!=', '')
+            ->pluck($column)->map(fn ($v) => trim($v))->filter()->unique()
+            ->reject(fn ($v) => isset(Rirekisho::SCHOOL_STREAMS_JA[mb_strtoupper($v)]))->values();
+
+        foreach ($todo->chunk(50) as $chunk) {
+            $japanese = JapaneseTranslator::many($chunk->values()->all());
+            foreach ($chunk->values() as $i => $text) {
+                $model::whereNull($target)->whereRaw("TRIM({$column}) = ?", [$text])->update([$target => $japanese[$i]]);
+                $this->line("{$text} → {$japanese[$i]}");
+            }
+        }
+        $total += $todo->count();
     }
 
-    foreach ($todo->chunk(50) as $chunk) {
-        $japanese = JapaneseTranslator::many($chunk->values()->all());
-        foreach ($chunk->values() as $i => $position) {
-            StudentWorkExperience::whereNull('position_ja')->whereRaw('TRIM(position) = ?', [$position])
-                ->update(['position_ja' => $japanese[$i]]);
-            $this->line("{$position} → {$japanese[$i]}");
-        }
-    }
-    $this->info("Translated {$todo->count()} job title(s).");
-})->purpose('Translate existing work-history job titles into Japanese for the CV');
+    $this->info($total ? "Translated {$total} item(s)." : 'Nothing to translate.');
+})->purpose('Translate existing job titles and majors into Japanese for the CV');

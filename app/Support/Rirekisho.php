@@ -20,6 +20,12 @@ class Rirekisho
     public const ROWS = ['education' => 4, 'work' => 10, 'licenses' => 4];
 
     /** Education levels a student can enter: senior high school and up. */
+    /** High school levels in Japanese on the CV; degrees (D1–S3) stay as they are. */
+    public const SCHOOL_LEVELS_JA = ['sma' => '高等学校', 'smk' => '職業高等学校'];
+
+    /** Indonesian high-school streams DeepL does not know; written straight from this list. */
+    public const SCHOOL_STREAMS_JA = ['IPA' => '理系', 'MIPA' => '理系', 'IPS' => '文系', 'BAHASA' => '語学系'];
+
     public const EDUCATION_LEVELS = [
         'sma' => 'SMA', 'smk' => 'SMK',
         'd1' => 'D1', 'd2' => 'D2', 'd3' => 'D3', 'd4' => 'D4',
@@ -125,8 +131,9 @@ class Rirekisho
             ->filter(fn ($e) => isset(self::EDUCATION_LEVELS[$e->level]))
             ->sortBy(fn ($e) => sprintf('%04d%02d', $e->start_year ?? $e->end_year ?? 0, $e->start_month ?? 0))
             ->map(function ($e) {
-                $level  = self::EDUCATION_LEVELS[$e->level];
-                $detail = collect([$e->major, $level])->filter()->implode(' – ');
+                $level  = self::SCHOOL_LEVELS_JA[$e->level] ?? self::EDUCATION_LEVELS[$e->level];
+                $major  = $e->major_ja ?: (self::SCHOOL_STREAMS_JA[Str::upper(trim((string) $e->major))] ?? $e->major);
+                $detail = collect([$major, $level])->filter()->implode(' – ');
 
                 return [
                     'from_y' => $e->start_year, 'from_m' => $e->start_month,
