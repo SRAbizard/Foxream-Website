@@ -22,6 +22,7 @@ class DocumentType extends Model
             'label'       => 'array',
             'description' => 'array',
             'is_active'   => 'boolean',
+            'after_contract' => 'boolean',
         ];
     }
 

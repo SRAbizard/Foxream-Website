@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['user_id', 'job_vacancy_id', 'status', 'cover_letter', 'admin_notes', 'reviewed_at', 'reviewed_by'])]
+#[Fillable([
+    'user_id', 'job_vacancy_id', 'status', 'cover_letter', 'admin_notes', 'reviewed_at', 'reviewed_by',
+    'contract_path', 'signed_contract_path', 'signed_contract_at', 'coe_issued_at', 'coe_path',
+    'visa_issued_at', 'visa_path', 'departure_at', 'flight_info', 'ticket_path',
+])]
 class Application extends Model
 {
     /**
@@ -56,8 +60,18 @@ class Application extends Model
     protected function casts(): array
     {
         return [
-            'reviewed_at' => 'datetime',
+            'reviewed_at'        => 'datetime',
+            'signed_contract_at' => 'datetime',
+            'coe_issued_at'      => 'date',
+            'visa_issued_at'     => 'date',
+            'departure_at'       => 'datetime',
         ];
+    }
+
+    /** Public URL of one of the application's files (contract, COE, visa, ticket). */
+    public function fileUrl(string $column): ?string
+    {
+        return $this->{$column} ? asset('storage/'.$this->{$column}) : null;
     }
 
     public function user(): BelongsTo
@@ -86,9 +100,30 @@ class Application extends Model
     protected static function booted(): void
     {
         static::updated(function (self $app) {
-            if ($app->wasChanged('status') && $app->user) {
+            if (! $app->user) {
+                return;
+            }
+            if ($app->wasChanged('status')) {
                 $old = $app->getOriginal('status');
                 $app->user->notify(new \App\Notifications\ApplicationStatusChanged($app, $old, $app->status));
+            }
+
+            $url = \App\Filament\Student\Pages\MyApplications::getUrl(panel: 'student');
+            $job = $app->jobVacancy?->t('title');
+            if ($app->wasChanged('contract_path') && $app->contract_path) {
+                $app->user->notify(new \App\Notifications\ApplicationNews(
+                    __('Your employment contract is ready'),
+                    __('The employment contract for ":title" is ready. Download it, sign it and upload the signed copy.', ['title' => $job]),
+                    $url,
+                ));
+            }
+            if ($app->wasChanged(['departure_at', 'ticket_path']) && $app->departure_at) {
+                $app->user->notify(new \App\Notifications\ApplicationNews(
+                    __('Your departure is scheduled'),
+                    __('Departure: :when. See the flight details and your ticket.', ['when' => $app->departure_at->translatedFormat('l, d M Y · H:i').' WIB']),
+                    $url,
+                    'heroicon-o-paper-airplane',
+                ));
             }
         });
     }

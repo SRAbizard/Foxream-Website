@@ -57,6 +57,16 @@ class StudentDocumentProgress
      */
     public static function requiredTypes(User $user): array
     {
+        return array_values(array_diff(static::allRequiredTypes($user), static::laterTypes($user)));
+    }
+
+    /**
+     * The visa's required documents plus those of the student's field
+     * (the job category picked on the profile), before any wait for the
+     * contract.
+     */
+    private static function allRequiredTypes(User $user): array
+    {
         $slugs = static::targetVisaSlugs($user);
 
         if (empty($slugs)) {
@@ -65,11 +75,30 @@ class StudentDocumentProgress
 
         $types = VisaCategory::whereIn('slug', $slugs)->get()
             ->flatMap(fn ($visa) => $visa->requiredDocumentTypes())
+            ->merge(\App\Models\JobCategory::where('slug', $user->studentProfile?->desired_job)->first()?->required_documents ?? [])
             ->unique()
             ->values()
             ->all();
 
         return ! empty($types) ? $types : static::DEFAULT_REQUIRED;
+    }
+
+    /**
+     * Required documents that can wait until the employment contract is
+     * issued (e.g. the passport): empty once an application reached it.
+     *
+     * @return array<int, string>
+     */
+    public static function laterTypes(User $user): array
+    {
+        $contract = $user->applications()->active()->get()->contains(fn ($a) => $a->reached('contract'));
+        if ($contract) {
+            return [];
+        }
+
+        $later = \App\Models\DocumentType::where('after_contract', true)->pluck('key')->all();
+
+        return array_values(array_intersect(static::allRequiredTypes($user), $later));
     }
 
     /**
@@ -85,8 +114,10 @@ class StudentDocumentProgress
 
         $required = static::requiredTypes($user);
 
+        // Documents that wait for the contract can be uploaded early.
         return VisaCategory::whereIn('slug', $slugs)->get()
             ->flatMap(fn ($visa) => $visa->optionalDocumentTypes())
+            ->merge(static::laterTypes($user))
             ->unique()
             ->reject(fn ($k) => in_array($k, $required, true))
             ->values()
@@ -170,6 +201,7 @@ class StudentDocumentProgress
             'optional_count'          => count($optional),
             'optional_uploaded_types' => $optionalUploaded,
             'optional_uploaded_count' => count($optionalUploaded),
+            'later'                   => static::laterTypes($user),
         ];
     }
 }

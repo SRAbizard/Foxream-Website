@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['slug', 'name', 'icon', 'color', 'sort_order'])]
+#[Fillable(['slug', 'name', 'icon', 'color', 'sort_order', 'required_documents'])]
 class JobCategory extends Model
 {
     use HasJsonTranslations;
@@ -16,7 +16,7 @@ class JobCategory extends Model
 
     protected function casts(): array
     {
-        return ['name' => 'array'];
+        return ['name' => 'array', 'required_documents' => 'array'];
     }
 
     public function vacancies(): HasMany

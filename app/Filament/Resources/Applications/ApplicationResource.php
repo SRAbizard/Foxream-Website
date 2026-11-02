@@ -5,6 +5,9 @@ namespace App\Filament\Resources\Applications;
 use App\Filament\Resources\Applications\Pages;
 use App\Models\Application;
 use BackedEnum;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\Resource;
@@ -67,7 +70,48 @@ class ApplicationResource extends Resource
                     ->native(false),
                 Textarea::make('admin_notes')->label(__('Admin notes'))->rows(4)->columnSpanFull(),
             ]),
+
+            // After passing, each section opens once the application reaches its step.
+            Section::make(__('Employment contract'))->columns(2)
+                ->description(__('Upload the contract for the student to sign; they upload the signed copy.'))
+                ->visible(fn (?Application $record) => $record?->reached('passed'))
+                ->components([
+                    self::file('contract_path', __('Contract to sign')),
+                    self::file('signed_contract_path', __('Signed contract (from the student)'))
+                        ->helperText(fn (?Application $record) => $record?->signed_contract_at
+                            ? __('Uploaded :date', ['date' => $record->signed_contract_at->format('d M Y H:i')]) : null),
+                ]),
+            Section::make('COE')->columns(2)
+                ->visible(fn (?Application $record) => $record?->reached('contract'))
+                ->components([
+                    DatePicker::make('coe_issued_at')->label(__('COE issued on'))->native(false)->displayFormat('d M Y'),
+                    self::file('coe_path', __('COE file')),
+                ]),
+            Section::make(__('Visa'))->columns(2)
+                ->visible(fn (?Application $record) => $record?->reached('coe'))
+                ->components([
+                    DatePicker::make('visa_issued_at')->label(__('Visa issued on'))->native(false)->displayFormat('d M Y'),
+                    self::file('visa_path', __('Visa file')),
+                ]),
+            Section::make(__('Departure'))->columns(2)
+                ->visible(fn (?Application $record) => $record?->reached('visa'))
+                ->components([
+                    DateTimePicker::make('departure_at')->label(__('Departure (WIB)'))
+                        ->seconds(false)->native(false)->displayFormat('d M Y H:i'),
+                    self::file('ticket_path', __('Flight ticket')),
+                    Textarea::make('flight_info')->label(__('Flight details'))->rows(3)->columnSpanFull()
+                        ->placeholder(__('Airline, flight number, from Soekarno-Hatta (CGK) to …, meeting point and time at the airport')),
+                ]),
         ]);
+    }
+
+    private static function file(string $column, string $label): FileUpload
+    {
+        return FileUpload::make($column)->label($label)
+            ->disk('public')->directory('students/applications')
+            ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
+            ->maxSize(10240)
+            ->openable()->downloadable();
     }
 
     public static function table(Table $table): Table

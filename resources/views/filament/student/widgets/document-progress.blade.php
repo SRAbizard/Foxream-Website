@@ -44,6 +44,14 @@
                     </div>
                 @endif
 
+                @if (! empty($progress['later']))
+                    <p class="mt-3 text-xs text-gray-600 dark:text-gray-300">
+                        {{ __('Can wait until your employment contract is issued: :docs.', [
+                            'docs' => collect($progress['later'])->map(fn ($t) => \App\Models\DocumentType::labelFor($t))->implode(', '),
+                        ]) }}
+                    </p>
+                @endif
+
                 {{-- Optional documents (not blocking, but encouraged) --}}
                 @if (! empty($progress['optional']))
                     <div class="mt-5 pt-4 border-t border-gray-200 dark:border-white/5">

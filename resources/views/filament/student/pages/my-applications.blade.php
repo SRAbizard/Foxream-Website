@@ -68,10 +68,81 @@
                         <a href="{{ $academy }}" target="_blank" rel="noopener" class="font-semibold underline">{{ __('Open PJI Learning') }} →</a>
                     @endif
                 </div>
-            @elseif($app->reached('passed') && ! $ended && $app->status !== 'departed')
+            @elseif($app->status === 'passed')
                 <div class="mt-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/30">
                     🎉 {{ __('Congratulations, you passed! Complete your documents in My Documents.') }}
                 </div>
+            @endif
+
+            {{-- After passing: contract, COE, visa, departure --}}
+            @if($app->reached('passed') && ! $ended)
+                @php
+                    $link = fn (string $column, string $label) => $app->{$column}
+                        ? '<a href="'.e($app->fileUrl($column)).'" target="_blank" rel="noopener" class="font-semibold text-primary-600 hover:underline">'.e($label).' →</a>'
+                        : '';
+                    $rows = [
+                        [
+                            'title' => __('Employment contract'),
+                            'done'  => (bool) $app->signed_contract_path,
+                            'text'  => match (true) {
+                                (bool) $app->signed_contract_path => __('Signed copy uploaded on :date.', ['date' => $app->signed_contract_at?->format('d M Y')]),
+                                (bool) $app->contract_path        => __('Your contract is ready. Download it, sign it, then upload the signed copy.'),
+                                default                           => __('Being prepared. We will notify you when it is ready to sign.'),
+                            },
+                            'links' => $link('contract_path', __('Download contract')).' '.$link('signed_contract_path', __('Signed copy')),
+                            'sign'  => (bool) $app->contract_path,
+                        ],
+                        [
+                            'title' => 'COE',
+                            'done'  => (bool) $app->coe_issued_at,
+                            'text'  => $app->coe_issued_at
+                                ? __('Issued on :date.', ['date' => $app->coe_issued_at->format('d M Y')])
+                                : ($app->reached('contract') ? __('Waiting for the COE to be issued. This usually takes 1 to 3 months.') : __('After the contract is signed.')),
+                            'links' => $link('coe_path', __('View COE')),
+                        ],
+                        [
+                            'title' => __('Visa'),
+                            'done'  => (bool) $app->visa_issued_at,
+                            'text'  => $app->visa_issued_at
+                                ? __('Issued on :date.', ['date' => $app->visa_issued_at->format('d M Y')])
+                                : ($app->reached('coe') ? __('Our team helps you apply. Keep your passport and documents in My Documents ready.') : __('After the COE is issued.')),
+                            'links' => $link('visa_path', __('View visa')),
+                        ],
+                        [
+                            'title' => __('Departure'),
+                            'done'  => $app->status === 'departed',
+                            'text'  => $app->departure_at
+                                ? $app->departure_at->locale(app()->getLocale())->translatedFormat('l, d M Y · H:i').' WIB'
+                                : ($app->reached('visa') ? __('Your departure date and flight ticket will appear here.') : __('After the visa is issued.')),
+                            'links' => $link('ticket_path', __('Flight ticket')),
+                            'info'  => $app->flight_info,
+                        ],
+                    ];
+                @endphp
+                <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+                    @foreach($rows as $row)
+                        <li class="rounded-xl p-4 ring-1 ring-gray-950/5 dark:ring-white/10">
+                            <p class="flex items-center gap-2 text-sm font-semibold text-gray-950 dark:text-white">
+                                @if($row['done'])
+                                    <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[11px] text-white">✓</span>
+                                @endif
+                                {{ $row['title'] }}
+                            </p>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ $row['text'] }}</p>
+                            @if(! empty($row['info']))
+                                <p class="mt-1 whitespace-pre-line text-sm text-gray-600 dark:text-gray-300">{{ $row['info'] }}</p>
+                            @endif
+                            @if(trim($row['links']) !== '' || ! empty($row['sign']))
+                                <div class="mt-2 flex flex-wrap items-center gap-3 text-sm">
+                                    {!! $row['links'] !!}
+                                    @if(! empty($row['sign']) && $app->status !== 'departed')
+                                        {{ ($this->uploadSignedAction)(['application' => $app->id, 'again' => (bool) $app->signed_contract_path]) }}
+                                    @endif
+                                </div>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
             @endif
 
             {{-- Schedules --}}

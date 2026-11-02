@@ -68,6 +68,8 @@ class DocumentTypeResource extends Resource
                 TextInput::make('sort_order')->numeric()->default(0),
                 Toggle::make('is_active')->label(__('Active'))->default(true)->inline(false)
                     ->helperText(__('Inactive types are hidden from upload dropdowns but kept for historical records.')),
+                Toggle::make('after_contract')->label(__('Required only after the contract'))->inline(false)
+                    ->helperText(__('E.g. the passport: students may upload it any time, but it only counts as required once their employment contract is issued.')),
             ]),
             TranslatableTabs::for('label', TextInput::class, label: __('Label'), required: true),
             TranslatableTabs::for('description', Textarea::class, label: __('Description (optional)')),

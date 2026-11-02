@@ -7,6 +7,7 @@ use App\Filament\Support\TranslatableTabs;
 use App\Models\JobCategory;
 use BackedEnum;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
@@ -38,6 +39,12 @@ class JobCategoryResource extends Resource
                 TextInput::make('sort_order')->numeric()->default(0),
             ]),
             TranslatableTabs::for('name', TextInput::class, label: __('Name'), required: true),
+            Section::make(__('Documents for this field'))->components([
+                Select::make('required_documents')->label(__('Required documents'))
+                    ->helperText(__('Asked of students in this field on top of their visa\'s documents, e.g. a driving licence for drivers.'))
+                    ->multiple()->searchable()
+                    ->options(fn () => \App\Models\DocumentType::options()),
+            ]),
         ]);
     }
 

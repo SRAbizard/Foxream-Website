@@ -102,11 +102,15 @@ class StudentJourney
             5, 6 => [$when, $applications],
             7 => [$when.' '.__('Meanwhile, practise kaiwa with our Indonesia team and in PJI Learning.'), $applications],
             8 => [__('Upload the documents for your visa. The passport can wait until the employment contract is issued.'), [__('My Documents'), DocumentResource::getUrl('index', panel: 'student')]],
-            9 => [$lead?->status === 'coe'
-                    ? __('Your contract is signed. Now we wait for the COE to be issued.')
-                    : __('Sign the employment contract when it is issued, then we apply for the COE.'), $applications],
+            9 => [match (true) {
+                    $lead?->signed_contract_path || $lead?->status === 'coe' => __('Your contract is signed. Now we wait for the COE to be issued.'),
+                    (bool) $lead?->contract_path => __('Your employment contract is ready: download it, sign it and upload the signed copy.'),
+                    default => __('Sign the employment contract when it is issued, then we apply for the COE.'),
+                }, $applications],
             10 => [__('Our team helps you apply for the visa. Keep your documents ready.'), $applications],
-            11 => [__('Your departure date and flight ticket will appear here.'), $applications],
+            11 => [$lead?->departure_at
+                    ? __('Departure: :when. See the flight details and your ticket.', ['when' => $lead->departure_at->translatedFormat('l, d M Y · H:i').' WIB'])
+                    : __('Your departure date and flight ticket will appear here.'), $applications],
             default => [null, null],
         };
     }
