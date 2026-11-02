@@ -140,14 +140,14 @@
                 {{-- Language switcher --}}
                 <div class="relative group hidden sm:block">
                     <button type="button" class="pj-iconbtn" aria-label="{{ __('Language') }}">
-                        <span>{{ config('passion.locales.'.app()->getLocale().'.flag') }}</span>
+                        <x-flag :code="app()->getLocale()" />
                         <span class="uppercase">{{ app()->getLocale() }}</span>
                     </button>
                     <div class="absolute right-0 top-full pt-2 hidden group-hover:block group-focus-within:block min-w-[190px] z-30">
                         <div class="pj-menu">
                             @foreach(config('passion.locales') as $code => $meta)
                                 <a href="{{ route('locale.switch', $code) }}" class="flex items-center gap-2 text-sm {{ app()->getLocale() === $code ? 'font-bold' : '' }}">
-                                    <span>{{ $meta['flag'] }}</span><span>{{ $meta['native'] }}</span>
+                                    <x-flag :code="$code" /><span>{{ $meta['native'] }}</span>
                                 </a>
                             @endforeach
                         </div>
@@ -195,7 +195,7 @@
                         <div class="sm:hidden mt-2 pt-2 border-t-2 border-dashed border-current/20 flex items-center gap-1.5 px-1">
                             @foreach(config('passion.locales') as $code => $meta)
                                 <a href="{{ route('locale.switch', $code) }}" class="pj-iconbtn {{ app()->getLocale() === $code ? 'bg-[var(--pj-sakura)]!' : '' }}" aria-label="{{ $meta['native'] }}">
-                                    {{ $meta['flag'] }} <span class="uppercase">{{ $code }}</span>
+                                    <x-flag :code="$code" /> <span class="uppercase">{{ $code }}</span>
                                 </a>
                             @endforeach
                             <button type="button" data-theme-toggle class="pj-iconbtn ml-auto" aria-label="{{ __('Toggle dark / light mode') }}">

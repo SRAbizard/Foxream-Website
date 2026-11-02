@@ -9,9 +9,9 @@ return [
     | language switcher, the SetLocale middleware whitelist, and any UI list.
     */
     'locales' => [
-        'id' => ['label' => 'Bahasa Indonesia', 'flag' => '🇮🇩', 'native' => 'Indonesia'],
-        'en' => ['label' => 'English',           'flag' => '🇬🇧', 'native' => 'English'],
-        'ja' => ['label' => '日本語',             'flag' => '🇯🇵', 'native' => '日本語'],
+        'id' => ['label' => 'Bahasa Indonesia', 'native' => 'Indonesia'],
+        'en' => ['label' => 'English',           'native' => 'English'],
+        'ja' => ['label' => '日本語',             'native' => '日本語'],
     ],
 
     'default_locale' => 'id',

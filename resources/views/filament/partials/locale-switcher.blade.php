@@ -2,13 +2,12 @@
 @php
     $locales = config('passion.locales', []);
     $current = app()->getLocale();
-    $meta = $locales[$current] ?? ['flag' => '🌐', 'native' => strtoupper($current)];
 @endphp
 
 <x-filament::dropdown placement="bottom-end" teleport>
     <x-slot name="trigger">
         <button type="button" class="pj-locale-trigger" aria-label="{{ __('Language') }}" title="{{ __('Language') }}">
-            <span aria-hidden="true">{{ $meta['flag'] }}</span>
+            <x-flag :code="$current" />
             <span class="code">{{ strtoupper($current) }}</span>
             <svg class="h-3 w-3 opacity-60" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
         </button>
@@ -21,7 +20,7 @@
             <x-filament::dropdown.list.item tag="a" :href="route('locale.switch', $code)"
                 :color="$code === $current ? 'primary' : 'gray'"
                 :icon="$code === $current ? 'heroicon-m-check' : null">
-                <span class="pj-locale-item"><span aria-hidden="true">{{ $l['flag'] }}</span> {{ $l['native'] }}</span>
+                <span class="pj-locale-item"><x-flag :code="$code" /> {{ $l['native'] }}</span>
             </x-filament::dropdown.list.item>
         @endforeach
     </x-filament::dropdown.list>
