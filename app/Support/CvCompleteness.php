@@ -22,6 +22,7 @@ class CvCompleteness
         $checks = [
             __('Photo')                              => filled($p?->photo_path),
             __('Full legal name')                    => filled($p?->full_name),
+            __('Name in katakana')                   => filled($p?->name_kana),
             __('Gender')                             => filled($p?->gender),
             __('Birth date')                         => filled($p?->birthdate),
             __('Religion')                           => filled($p?->religion),

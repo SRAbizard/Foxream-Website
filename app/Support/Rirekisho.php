@@ -74,7 +74,7 @@ class Rirekisho
         // Everything on the CV is in capitals except the e-mail address.
         return self::upper([
             'today'        => now(),
-            'name_kana'    => $p?->name_kana ?: Katakana::fromName($p?->full_name ?: $user->name),
+            'name_kana'    => $p?->name_kana,
             'name'         => $p?->full_name ?: $user->name,
             'gender'       => match ($p?->gender) { 'male' => '男', 'female' => '女', default => null },
             'nationality'  => self::NATIONALITIES[$p?->nationality ?: 'Indonesia'] ?? $p->nationality,
