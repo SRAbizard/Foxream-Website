@@ -19,9 +19,8 @@ class Rirekisho
     /** Rows per table in the template; extra entries add rows. */
     public const ROWS = ['education' => 4, 'work' => 10, 'licenses' => 4];
 
-    /** Education levels a student can enter: senior high school and up. */
     /** High school levels in Japanese on the CV; degrees (D1–S3) stay as they are. */
-    public const SCHOOL_LEVELS_JA = ['sma' => '高等学校', 'smk' => '職業高等学校'];
+    public const SCHOOL_LEVELS_JA = ['sma' => '高校', 'smk' => '専門高校'];
 
     /** Indonesian high-school streams DeepL does not know; written straight from this list. */
     public const SCHOOL_STREAMS_JA = ['IPA' => '理系', 'MIPA' => '理系', 'IPS' => '文系', 'BAHASA' => '語学系'];
