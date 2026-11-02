@@ -60,25 +60,38 @@ class JobMatching
         return null;
     }
 
-    /** Open jobs for the student's visa target, their field first, not yet applied for. */
+    /**
+     * Open jobs in the student's field (the position picked on the
+     * profile: Driver Truck → only Driver Truck jobs) for their visa
+     * target, not yet applied for. Empty until both are chosen.
+     */
     public static function recommended(User $user, int $limit = 6): Collection
     {
         $profile = $user->studentProfile;
-        if (! $profile?->primary_visa_category_id) {
+        $field   = \App\Models\JobCategory::where('slug', $profile?->desired_job)->value('id');
+        if (! $profile?->primary_visa_category_id || ! $field) {
             return collect();
         }
 
-        $field = \App\Models\JobCategory::where('slug', $profile->desired_job)->value('id');
-
         return JobVacancy::published()
             ->with('company', 'jobCategory')
+            ->where('job_category_id', $field)
             ->where(fn ($q) => $q->where('visa_category_id', $profile->primary_visa_category_id)->orWhereNull('visa_category_id'))
             ->whereNotIn('id', $user->applications()->pluck('job_vacancy_id'))
-            ->when($field, fn ($q) => $q->orderByRaw('CASE WHEN job_category_id = ? THEN 0 ELSE 1 END', [$field]))
             ->orderByDesc('is_featured')
             ->latest('published_at')
             ->limit($limit)
-            ->get()
-            ->each(fn ($v) => $v->setAttribute('in_my_field', $field && $v->job_category_id === $field));
+            ->get();
+    }
+
+    /** The job board filtered to the student's visa and field. */
+    public static function boardUrl(User $user): string
+    {
+        $profile = $user->studentProfile;
+
+        return route('job.index', array_filter([
+            'visa'     => $profile?->primaryVisa?->slug,
+            'category' => $profile?->desired_job,
+        ]));
     }
 }

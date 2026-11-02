@@ -1564,5 +1564,9 @@
     "Visa target requested": "目標ビザを申請",
     "Document uploaded": "書類をアップロード",
     "Applied for a job": "求人に応募",
-    "No activity recorded yet.": "記録された操作はまだありません。"
+    "No activity recorded yet.": "記録された操作はまだありません。",
+    "Open :field jobs for your visa target.": "目標ビザの:field求人。",
+    "Choose the position you are applying for in My Profile to see jobs in your field.": "マイプロフィールで応募職種を選ぶと、分野に合った求人が表示されます。",
+    "No open :field jobs for your visa target right now. We will add more soon.": "現在、目標ビザの:field求人はありません。近日追加予定です。",
+    "See all :field jobs": ":fieldの求人をすべて見る"
 }

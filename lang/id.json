@@ -1563,5 +1563,9 @@
     "Visa target requested": "Mengajukan target visa",
     "Document uploaded": "Mengunggah dokumen",
     "Applied for a job": "Melamar pekerjaan",
-    "No activity recorded yet.": "Belum ada aktivitas yang tercatat."
+    "No activity recorded yet.": "Belum ada aktivitas yang tercatat.",
+    "Open :field jobs for your visa target.": "Lowongan :field untuk target visamu.",
+    "Choose the position you are applying for in My Profile to see jobs in your field.": "Pilih posisi yang dilamar di Profil Saya untuk melihat lowongan sesuai bidangmu.",
+    "No open :field jobs for your visa target right now. We will add more soon.": "Belum ada lowongan :field untuk target visamu saat ini. Kami akan segera menambahkannya.",
+    "See all :field jobs": "Lihat semua lowongan :field"
 }

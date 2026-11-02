@@ -5,7 +5,7 @@ namespace App\Filament\Student\Widgets;
 use App\Support\JobMatching;
 use Filament\Widgets\Widget;
 
-/** Open jobs for the student's visa target, their field first. */
+/** Open jobs in the student's field for their visa target. */
 class RecommendedJobsWidget extends Widget
 {
     protected string $view = 'filament.student.widgets.recommended-jobs';
@@ -18,6 +18,12 @@ class RecommendedJobsWidget extends Widget
 
     protected function getViewData(): array
     {
-        return ['jobs' => JobMatching::recommended(auth()->user())];
+        $user = auth()->user();
+
+        return [
+            'jobs'     => JobMatching::recommended($user),
+            'field'    => \App\Models\JobCategory::where('slug', $user->studentProfile?->desired_job)->first(),
+            'boardUrl' => JobMatching::boardUrl($user),
+        ];
     }
 }

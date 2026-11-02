@@ -98,7 +98,7 @@ class StudentJourney
                 default              => [__('Choose Tokutei Ginou, Gijinkoku or Internship and send the certificates it needs.'), [__('Choose a visa target'), MyVisaTarget::getUrl(panel: 'student')]],
             },
             3 => [__('Still empty: :items.', ['items' => implode(', ', $cv['missing'])]), [__('Complete my CV'), MyProfile::getUrl(panel: 'student')]],
-            4 => [__('Pick a job that matches your visa and field.'), [__('Browse jobs'), route('job.index', ['visa' => $profile?->primaryVisa?->slug])]],
+            4 => [__('Pick a job that matches your visa and field.'), [__('Browse jobs'), JobMatching::boardUrl($user)]],
             5, 6 => [$when, $applications],
             7 => [$when.' '.__('Meanwhile, practise kaiwa with our Indonesia team and in PJI Learning.'), $applications],
             8 => [__('Upload the documents for your visa. The passport can wait until the employment contract is issued.'), [__('My Documents'), DocumentResource::getUrl('index', panel: 'student')]],
