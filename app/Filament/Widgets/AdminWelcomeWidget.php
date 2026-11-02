@@ -113,7 +113,24 @@ class AdminWelcomeWidget extends Widget
             ['label' => __('Unread contact messages'), 'count' => $pending['messages'], 'url' => $kpis[3]['url'], 'icon' => 'heroicon-o-envelope'],
         ];
 
+        $actions = [
+            ['label' => __('New job posting'), 'url' => JobVacancyResource::getUrl('create'), 'icon' => 'heroicon-o-plus', 'primary' => true],
+            ['label' => __('Review applications'), 'url' => ApplicationResource::getUrl('index'), 'icon' => 'heroicon-o-paper-airplane', 'students' => true],
+            ['label' => __('Verify documents'), 'url' => $kpis[2]['url'], 'icon' => 'heroicon-o-document-check', 'students' => true],
+            ['label' => __('Website Settings'), 'url' => SiteSettings::getUrl(), 'icon' => 'heroicon-o-cog-6-tooth'],
+            ['label' => __('View website'), 'url' => url('/'), 'icon' => 'heroicon-o-globe-alt', 'external' => true],
+        ];
+
+        // Admins without "manage students" only get the website side.
+        $students = auth()->user()?->canManageStudents() ?? false;
+        if (! $students) {
+            $kpis    = [$kpis[3], $kpis[4]];
+            $todos   = [$todos[3]];
+            $actions = array_values(array_filter($actions, fn ($a) => empty($a['students'])));
+        }
+
         return [
+            'students'  => $students,
             'user'      => auth()->user(),
             'greeting'  => $this->greeting($now),
             'today'     => $now->translatedFormat('l, d F Y'),
@@ -126,14 +143,8 @@ class AdminWelcomeWidget extends Widget
             'chartTotals' => ['apps' => array_sum($appSeries), 'regs' => array_sum($regSeries)],
             'map'       => $map,
             'todos'     => $todos,
-            'feed'      => $this->feed(),
-            'actions'   => [
-                ['label' => __('New job posting'), 'url' => JobVacancyResource::getUrl('create'), 'icon' => 'heroicon-o-plus', 'primary' => true],
-                ['label' => __('Review applications'), 'url' => ApplicationResource::getUrl('index'), 'icon' => 'heroicon-o-paper-airplane'],
-                ['label' => __('Verify documents'), 'url' => $kpis[2]['url'], 'icon' => 'heroicon-o-document-check'],
-                ['label' => __('Website Settings'), 'url' => SiteSettings::getUrl(), 'icon' => 'heroicon-o-cog-6-tooth'],
-                ['label' => __('View website'), 'url' => url('/'), 'icon' => 'heroicon-o-globe-alt', 'external' => true],
-            ],
+            'feed'      => $this->feed($students),
+            'actions'   => $actions,
         ];
     }
 
@@ -178,21 +189,21 @@ class AdminWelcomeWidget extends Widget
         };
     }
 
-    private function feed(): Collection
+    private function feed(bool $students): Collection
     {
         $items = collect();
 
-        foreach (Application::with('user', 'vacancy')->latest()->limit(6)->get() as $a) {
+        foreach ($students ? Application::with('user', 'vacancy')->latest()->limit(6)->get() : [] as $a) {
             $items->push(['at' => $a->created_at, 'icon' => 'heroicon-o-paper-airplane', 'tone' => 'red',
                 'text' => __(':name applied for :job', ['name' => $a->user?->name ?? '—', 'job' => $a->vacancy?->t('title') ?? '—']),
                 'url' => ApplicationResource::getUrl('edit', ['record' => $a])]);
         }
-        foreach (User::role('student')->latest()->limit(6)->get() as $u) {
+        foreach ($students ? User::role('student')->latest()->limit(6)->get() : [] as $u) {
             $items->push(['at' => $u->created_at, 'icon' => 'heroicon-o-user-plus', 'tone' => 'sakura',
                 'text' => __(':name created an account', ['name' => $u->name]),
                 'url' => StudentResource::getUrl('view', ['record' => $u])]);
         }
-        foreach (StudentDocument::with('user')->latest()->limit(6)->get() as $d) {
+        foreach ($students ? StudentDocument::with('user')->latest()->limit(6)->get() : [] as $d) {
             $items->push(['at' => $d->created_at, 'icon' => 'heroicon-o-document-arrow-up', 'tone' => 'kin',
                 'text' => __(':name uploaded :doc', ['name' => $d->user?->name ?? '—', 'doc' => DocumentType::labelFor((string) $d->type)]),
                 'url' => StudentDocumentResource::getUrl('edit', ['record' => $d])]);

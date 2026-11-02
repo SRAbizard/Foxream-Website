@@ -68,12 +68,17 @@ class ViewStudent extends Page
                     'name' => $this->record->name,
                     'visa' => $profile?->primaryVisa?->t('name') ?? '—',
                 ]))
+                ->modalDescription(__('The certificates and files sent with this request are marked as verified.'))
                 ->action(function () use ($profile) {
                     $profile->update([
                         'visa_target_status'      => 'confirmed',
                         'visa_target_reviewed_at' => now(),
                         'visa_target_reviewed_by' => auth()->id(),
                     ]);
+                    // A query update: no separate "document verified" notice next to the visa one.
+                    \App\Models\StudentDocument::whereIn('id', \App\Support\VisaRequirements::documentIds($profile))
+                        ->where('user_id', $this->record->id)->where('status', 'pending')
+                        ->update(['status' => 'verified', 'verified_by' => auth()->id(), 'verified_at' => now()]);
                     $this->record->notify(new VisaTargetReviewed($profile->fresh()));
                     Notification::make()->title(__('Visa target confirmed'))->success()->send();
                     $this->mount($this->record);
@@ -125,8 +130,8 @@ class ViewStudent extends Page
         return StudentDocumentProgress::for($this->record);
     }
 
-    public function getProfileCompletion(): int
+    public function getCvCompleteness(): array
     {
-        return $this->record->studentProfile?->completionPct() ?? 0;
+        return \App\Support\CvCompleteness::for($this->record);
     }
 }

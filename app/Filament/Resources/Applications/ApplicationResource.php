@@ -13,10 +13,13 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use App\Filament\Support\ForStudentManagers;
 use UnitEnum;
 
 class ApplicationResource extends Resource
 {
+    use ForStudentManagers;
+
     protected static ?string $model = Application::class;
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static string | UnitEnum | null $navigationGroup = 'Recruitment';

@@ -53,10 +53,14 @@ class JobController extends Controller
             ->firstOrFail();
 
         $hasApplied = false;
+        $blocker = null;
         if ($user = $request->user()) {
             $hasApplied = Application::where('user_id', $user->id)
                 ->where('job_vacancy_id', $vacancy->id)
                 ->exists();
+            if (! $hasApplied && $user->hasRole('student')) {
+                $blocker = \App\Support\JobMatching::blocker($user, $vacancy);
+            }
         }
 
         $related = JobVacancy::published()
@@ -66,7 +70,7 @@ class JobController extends Controller
             ->limit(3)
             ->get();
 
-        return view('pages.job.show', compact('vacancy', 'hasApplied', 'related'));
+        return view('pages.job.show', compact('vacancy', 'hasApplied', 'blocker', 'related'));
     }
 
     public function apply(string $slug, Request $request): RedirectResponse
@@ -88,6 +92,11 @@ class JobController extends Controller
         $request->validate([
             'cover_letter' => ['nullable', 'string', 'max:3000'],
         ]);
+
+        // Visa target approved, the job's visa, and a complete CV.
+        if ($blocker = \App\Support\JobMatching::blocker($request->user(), $vacancy)) {
+            return redirect()->route('job.show', $slug)->with('status', $blocker['message']);
+        }
 
         $application = Application::firstOrCreate(
             ['user_id' => $request->user()->id, 'job_vacancy_id' => $vacancy->id],

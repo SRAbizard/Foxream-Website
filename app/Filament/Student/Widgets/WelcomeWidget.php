@@ -3,6 +3,7 @@
 namespace App\Filament\Student\Widgets;
 
 use App\Models\User;
+use App\Support\CvCompleteness;
 use Filament\Widgets\Widget;
 
 class WelcomeWidget extends Widget
@@ -15,16 +16,10 @@ class WelcomeWidget extends Widget
     {
         /** @var User $user */
         $user = auth()->user();
-        $user?->load('studentProfile');
-
-        // Profile completion: prefer detailed StudentProfile fields if present
-        $percent = $user?->studentProfile
-            ? $user->studentProfile->completionPct()
-            : 0;
 
         return [
             'user'        => $user,
-            'percent'     => $percent,
+            'percent'     => CvCompleteness::for($user)['pct'],
             'verified'    => $user?->hasVerifiedEmail() ?? false,
             'profileUrl'  => \App\Filament\Student\Pages\MyProfile::getUrl(),
         ];

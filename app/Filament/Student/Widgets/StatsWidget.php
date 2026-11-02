@@ -25,7 +25,7 @@ class StatsWidget extends BaseWidget
         $docsPending  = StudentDocument::where('user_id', $userId)->where('status', 'pending')->count();
         $docsVerified = StudentDocument::where('user_id', $userId)->where('status', 'verified')->count();
 
-        $profilePct = auth()->user()->studentProfile?->completionPct() ?? 0;
+        $profilePct = \App\Support\CvCompleteness::for(auth()->user())['pct'];
 
         return [
             Stat::make(__('Applications'), $apps)
@@ -50,7 +50,7 @@ class StatsWidget extends BaseWidget
                 ->color($docsPending > 0 ? 'warning' : 'success')
                 ->url(\App\Filament\Student\Resources\Documents\DocumentResource::getUrl('index')),
 
-            Stat::make(__('Profile'), $profilePct.'%')
+            Stat::make(__('CV'), $profilePct.'%')
                 ->description($profilePct < 100 ? __('Complete it so companies can review you') : __('Complete'))
                 ->descriptionIcon('heroicon-m-user-circle')
                 ->color($profilePct < 100 ? 'warning' : 'success')

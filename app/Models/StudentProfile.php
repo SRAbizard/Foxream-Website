@@ -31,6 +31,8 @@ class StudentProfile extends Model
             'visa_target_requested_at' => 'datetime',
             'visa_target_reviewed_at'  => 'datetime',
             'licenses'                 => 'array',
+            'visa_request'             => 'array',
+            'eats_pork'                => 'boolean',
         ];
     }
 
@@ -42,6 +44,17 @@ class StudentProfile extends Model
     public function primaryVisa(): BelongsTo
     {
         return $this->belongsTo(VisaCategory::class, 'primary_visa_category_id');
+    }
+
+    public function internshipCampus(): BelongsTo
+    {
+        return $this->belongsTo(PartnerCampus::class, 'internship_campus_id');
+    }
+
+    /** The internship campus: a partner campus, or the name typed when it is not on the list. */
+    public function campusName(): ?string
+    {
+        return $this->internshipCampus?->label ?? $this->internship_campus_other;
     }
 
     public function visaTargetReviewer(): BelongsTo

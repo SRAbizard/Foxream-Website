@@ -44,14 +44,14 @@
 
                     <div class="mt-6 max-w-md">
                         <div class="flex items-center justify-between text-xs font-medium mb-2">
-                            <span class="text-gray-700 dark:text-gray-200 uppercase tracking-wider">{{ __('Profile completion') }}</span>
+                            <span class="text-gray-700 dark:text-gray-200 uppercase tracking-wider">{{ __('CV completion') }}</span>
                             <span class="text-primary-600 dark:text-primary-400 font-bold text-base">{{ $percent }}%</span>
                         </div>
                         <div class="h-2.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800 relative">
                             <div class="h-full rounded-full bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700 transition-all duration-500" style="width: {{ $percent }}%"></div>
                         </div>
                         <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
-                            {{ __('Profile is :percent% complete', ['percent' => $percent]) }}
+                            {{ __('Your CV is :pct% complete', ['pct' => $percent]) }}
                         </p>
                     </div>
 

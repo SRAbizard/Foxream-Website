@@ -17,10 +17,13 @@ use Filament\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use App\Filament\Support\ForStudentManagers;
 use UnitEnum;
 
 class StudentDocumentResource extends Resource
 {
+    use ForStudentManagers;
+
     protected static ?string $model = StudentDocument::class;
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-document-check';
     protected static string | UnitEnum | null $navigationGroup = 'Students';

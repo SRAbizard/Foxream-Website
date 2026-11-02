@@ -4,8 +4,8 @@
     $pipeMax = max(1, $pipeline->max('count'));
     $countUp = "if (! matchMedia('(prefers-reduced-motion: reduce)').matches && v > 0) { const to = v, t0 = performance.now(); v = 0; const step = (t) => { const p = Math.min(1, (t - t0) / 900); v = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }";
     $summary = collect([
-        $pending['newApps'] ? trans_choice('{1} :count new application|[2,*] :count new applications', $pending['newApps'], ['count' => $pending['newApps']]) : null,
-        $pending['docs'] ? trans_choice('{1} :count document to verify|[2,*] :count documents to verify', $pending['docs'], ['count' => $pending['docs']]) : null,
+        $students && $pending['newApps'] ? trans_choice('{1} :count new application|[2,*] :count new applications', $pending['newApps'], ['count' => $pending['newApps']]) : null,
+        $students && $pending['docs'] ?trans_choice('{1} :count document to verify|[2,*] :count documents to verify', $pending['docs'], ['count' => $pending['docs']]) : null,
         $pending['messages'] ? trans_choice('{1} :count unread message|[2,*] :count unread messages', $pending['messages'], ['count' => $pending['messages']]) : null,
     ])->filter();
 @endphp
@@ -72,6 +72,7 @@
 
     {{-- ===== Pipeline + to-do ===== --}}
     <div class="pjm-row">
+        @if($students)
         <section class="pjm-card pjm-pipe">
             <header class="pjm-head">
                 <h3>{{ __('Application pipeline') }} <small>応募の流れ</small></h3>
@@ -95,6 +96,7 @@
                 @endforeach
             </div>
         </section>
+        @endif
 
         <section class="pjm-card pjm-todo">
             <header class="pjm-head"><h3>{{ __('Needs your action') }} <small>やること</small></h3></header>

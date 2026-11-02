@@ -87,6 +87,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $panel->getId() === 'student' && $this->hasRole('student');
     }
 
+    /**
+     * Superadmins, and admins given "manage students" (Admin → Admin
+     * accounts), see the students and run their steps.
+     */
+    public function canManageStudents(): bool
+    {
+        return $this->hasRole('superadmin') || $this->can('manage students');
+    }
+
+    /** Everyone who handles students, for notifications about them. */
+    public static function studentManagers(): \Illuminate\Support\Collection
+    {
+        return static::role(['superadmin', 'admin'])->get()->filter->canManageStudents()->values();
+    }
+
     public function preferredLocale(): string
     {
         return $this->locale ?: config('app.locale');

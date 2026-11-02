@@ -26,6 +26,8 @@ class StudentDashboard extends BaseDashboard
     {
         return [
             \App\Filament\Student\Widgets\WelcomeWidget::class,
+            \App\Filament\Student\Widgets\JourneyWidget::class,
+            \App\Filament\Student\Widgets\RecommendedJobsWidget::class,
             \App\Filament\Student\Widgets\StatsWidget::class,
         ];
     }

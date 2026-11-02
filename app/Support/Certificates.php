@@ -59,6 +59,26 @@ class Certificates
             ->all();
     }
 
+    /** The group a certificate type belongs to ("language", "ssw", "other"). */
+    public static function groupOf(string $type): ?string
+    {
+        foreach (self::GROUPS as $group => $types) {
+            if (isset($types[$type])) {
+                return $group;
+            }
+        }
+
+        return null;
+    }
+
+    /** Short label of a certificate type in the current site language. */
+    public static function label(string $type): string
+    {
+        $group = self::groupOf($type);
+
+        return $group ? self::options($group)[$type] : $type;
+    }
+
     /** Stored entries split by group, for the profile form. Old free-text licences land under "Other". */
     public static function byGroup(?array $licenses): array
     {

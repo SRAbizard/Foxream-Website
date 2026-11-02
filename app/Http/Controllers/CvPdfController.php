@@ -32,7 +32,7 @@ class CvPdfController extends Controller
         if (! $request->user()) {
             return redirect()->guest(route('filament.admin.auth.login'));
         }
-        abort_unless($request->user()->hasAnyRole(['superadmin', 'admin']), 403);
+        abort_unless($request->user()->canManageStudents(), 403);
 
         return $this->send($request, $user, $format);
     }

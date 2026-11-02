@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     @php
         $progress       = $this->getProgress();
-        $profilePct     = $this->getProfileCompletion();
+        $cv             = $this->getCvCompleteness();
         $student        = $this->record;
         $vp             = $student->studentProfile;
         $vStatus        = $vp?->visa_target_status;
@@ -51,6 +51,28 @@
                             <p class="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-line">{{ $vp->visa_target_notes }}</p>
                         </div>
                     @endif
+
+                    {{-- What the student handed in for this visa --}}
+                    @php $handedIn = \App\Support\VisaRequirements::summary($vp); @endphp
+                    @if($handedIn)
+                        <dl class="mt-4 grid gap-2 sm:grid-cols-2 max-w-3xl">
+                            @foreach($handedIn as $line)
+                                <div class="rounded-lg ring-1 ring-gray-950/5 dark:ring-white/10 px-3 py-2">
+                                    <dt class="text-xs uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">{{ $line['label'] }}</dt>
+                                    <dd class="mt-0.5 text-sm text-gray-900 dark:text-gray-100">
+                                        {{ $line['value'] ?? '' }}
+                                        @if($line['document'])
+                                            <a href="{{ $line['document']->file_url }}" target="_blank" class="text-primary-600 hover:underline text-xs whitespace-nowrap">{{ __('View file') }} →</a>
+                                            <span class="text-xs text-gray-500">· {{ __('document.status.'.$line['document']->status) }}</span>
+                                        @endif
+                                        @if($line['warning'])
+                                            <span class="block text-xs font-semibold text-amber-600 dark:text-amber-400">⚠ {{ $line['warning'] }}</span>
+                                        @endif
+                                    </dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    @endif
                 @else
                     <h3 class="mt-1 text-xl font-bold text-gray-400 dark:text-gray-500">{{ __('Not selected yet') }}</h3>
                     <p class="mt-1 text-sm text-gray-500">{{ __('Student has not chosen a visa target. Until they do, document requirements use the default set.') }}</p>
@@ -83,12 +105,14 @@
         </div>
 
         <div class="fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 p-5">
-            <p class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ __('Profile completion') }}</p>
-            <p class="mt-1 text-2xl font-bold text-gray-950 dark:text-white">{{ $profilePct }}%</p>
+            <p class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ __('CV completion') }}</p>
+            <p class="mt-1 text-2xl font-bold text-gray-950 dark:text-white">{{ $cv['pct'] }}%</p>
             <div class="mt-3 h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                <div class="h-full bg-emerald-500" style="width: {{ $profilePct }}%"></div>
+                <div class="h-full bg-emerald-500" style="width: {{ $cv['pct'] }}%"></div>
             </div>
-            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Biodata fields filled') }}</p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                {{ $cv['complete'] ? __('Every CV box is filled') : __('Missing: :items', ['items' => implode(', ', $cv['missing'])]) }}
+            </p>
         </div>
 
         <div class="fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 p-5">

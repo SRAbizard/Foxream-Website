@@ -135,6 +135,12 @@
                                 <p class="mt-1 text-xs text-surface-400">{{ __('Track status in your student dashboard.') }}</p>
                                 <a href="/dashboard/applications" class="mt-3 inline-block text-xs text-brand-400 hover:text-brand-300">{{ __('Go to dashboard') }} →</a>
                             </div>
+                        @elseif($blocker)
+                            <h3 class="font-display text-lg font-bold text-white">{{ __('Apply for this position') }}</h3>
+                            <div class="mt-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
+                                <p class="text-sm text-amber-200">{{ $blocker['message'] }}</p>
+                                <a href="{{ $blocker['url'] }}" class="mt-3 btn-brand w-full">{{ $blocker['action'] }}</a>
+                            </div>
                         @else
                             <form method="POST" action="{{ route('job.apply', $vacancy->slug) }}">
                                 @csrf

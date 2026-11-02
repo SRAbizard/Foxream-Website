@@ -13,10 +13,13 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Support\ForStudentManagers;
 use UnitEnum;
 
 class StudentResource extends Resource
 {
+    use ForStudentManagers;
+
     protected static ?string $model = User::class;
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-users';
     protected static string | UnitEnum | null $navigationGroup = 'Students';
@@ -53,7 +56,7 @@ class StudentResource extends Resource
     {
         return parent::getEloquentQuery()
             ->whereHas('roles', fn ($q) => $q->where('name', 'student'))
-            ->with('studentProfile.primaryVisa')
+            ->with('studentProfile.primaryVisa', 'educations')
             ->withCount(['applications', 'studentDocuments']);
     }
 
@@ -80,6 +83,12 @@ class StudentResource extends Resource
                 TextColumn::make('name')->label(__('Name'))->searchable()->weight('bold'),
                 TextColumn::make('email')->label(__('Email'))->searchable()->copyable(),
                 TextColumn::make('phone')->label(__('Phone'))->placeholder('—')->toggleable(),
+
+                TextColumn::make('cv_completeness')
+                    ->label(__('CV'))
+                    ->state(fn (User $r): string => \App\Support\CvCompleteness::for($r)['pct'].'%')
+                    ->badge()
+                    ->color(fn (User $r) => \App\Support\CvCompleteness::for($r)['complete'] ? 'success' : 'warning'),
 
                 TextColumn::make('document_progress')
                     ->label(__('Documents'))
