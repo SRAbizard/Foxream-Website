@@ -53,7 +53,7 @@ class TskResource extends Resource
             ]),
             Section::make(__('Contact'))->columns(3)->components([
                 TextInput::make('contact_person')->label(__('Contact person'))->maxLength(120),
-                TextInput::make('phone')->label(__('Phone'))->tel()->maxLength(40),
+                TextInput::make('phone')->label(__('Phone'))->phone()->maxLength(40),
                 TextInput::make('email')->label(__('Email'))->email()->maxLength(160),
             ]),
             Section::make()->columns(2)->components([

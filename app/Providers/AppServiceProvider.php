@@ -41,5 +41,16 @@ class AppServiceProvider extends ServiceProvider
         // next to an empty one; every section takes the full width, so
         // the sections of a form line up.
         \Filament\Schemas\Components\Section::configureUsing(fn ($section) => $section->columnSpanFull());
+
+        // Phone numbers as people paste them: spaces around, full-width
+        // Japanese digits (０８０－１２３４), invisible marks from a
+        // copied text. Accepted, and saved as plain "+81 80-1234-5678".
+        \Filament\Forms\Components\TextInput::macro('phone', function () {
+            /** @var \Filament\Forms\Components\TextInput $this */
+            return $this->tel()
+                ->telRegex('/^[\s\p{Cf}]*[+＋]?[\s\p{Cf}0-9０-９()（）.\/\-－‐―ー]{6,}$/u')
+                ->validationMessages(['regex' => __('Use a phone number: digits, and +, - or spaces if needed.')])
+                ->dehydrateStateUsing(fn (?string $state) => \App\Support\Phone::clean($state));
+        });
     }
 }

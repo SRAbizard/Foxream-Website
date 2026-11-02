@@ -86,7 +86,7 @@ class MyProfile extends Page implements HasForms
                             TextInput::make('name')->label(__('Display name'))->required()->maxLength(120),
                             TextInput::make('email')->label(__('Email'))->email()->disabled()
                                 ->helperText(__('Contact admin to change email')),
-                            TextInput::make('phone')->label(__('Phone'))->tel()->maxLength(32),
+                            TextInput::make('phone')->label(__('Phone'))->phone()->maxLength(32),
                             TextInput::make('studentProfile.line_id')->label('LINE ID')->maxLength(80),
                         ]),
                         Section::make(__('Photo'))->columns(3)->components([
@@ -186,7 +186,7 @@ class MyProfile extends Page implements HasForms
                         Section::make(__('Emergency contact'))->columns(2)->components([
                             TextInput::make('studentProfile.emergency_contact_name')->label(__('Contact name'))->maxLength(120),
                             TextInput::make('studentProfile.emergency_contact_relation')->label(__('Relation'))->maxLength(40),
-                            TextInput::make('studentProfile.emergency_contact_phone')->label(__('Contact phone'))->tel()->maxLength(32),
+                            TextInput::make('studentProfile.emergency_contact_phone')->label(__('Contact phone'))->phone()->maxLength(32),
                         ]),
                     ]),
 
