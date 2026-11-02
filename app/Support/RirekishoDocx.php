@@ -92,6 +92,7 @@ class RirekishoDocx
     {
         $this->setText($this->cell(2, 0, 1), $cv['name_kana']);
         $this->setText($this->cell(2, 1, 1), $cv['name']);
+        $this->center($this->cell(2, 1, 1));
         $this->setDropdown($this->cell(2, 1, 2), $cv['gender']);
         // Already reads インドネシア in the template; keep that run's formatting.
         $this->replaceParagraphText($this->firstParagraph($this->cell(2, 1, 3)), $cv['nationality']);
@@ -179,6 +180,20 @@ class RirekishoDocx
             return;
         }
         $p->appendChild($this->run((string) $text, $this->xp->query('w:pPr/w:rPr', $p)->item(0)));
+    }
+
+    /** Centre the cell's first paragraph (w:jc sits before these in w:pPr's schema order). */
+    private function center(DOMElement $tc): void
+    {
+        $p   = $this->firstParagraph($tc);
+        $pPr = $this->xp->query('w:pPr', $p)->item(0)
+            ?? $p->insertBefore($this->dom->createElementNS(self::W, 'w:pPr'), $p->firstChild);
+        $jc  = $this->xp->query('w:jc', $pPr)->item(0);
+        if (! $jc) {
+            $next = $this->xp->query('w:textDirection | w:textAlignment | w:textboxTightWrap | w:outlineLvl | w:divId | w:cnfStyle | w:rPr | w:sectPr | w:pPrChange', $pPr)->item(0);
+            $jc = $pPr->insertBefore($this->dom->createElementNS(self::W, 'w:jc'), $next);
+        }
+        $jc->setAttributeNS(self::W, 'w:val', 'center');
     }
 
     /** Add a value after a label in the same paragraph ("TEL：" + number), in the label's formatting. */

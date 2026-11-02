@@ -6,7 +6,7 @@ use App\Models\JobCategory;
 use App\Models\User;
 use App\Support\Certificates;
 use App\Support\Rirekisho;
-use App\Support\SelfPrTranslator;
+use App\Support\JapaneseTranslator;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
@@ -60,7 +60,7 @@ class MyProfile extends Page implements HasForms
                 'address', 'city', 'province', 'postal_code',
                 'emergency_contact_name', 'emergency_contact_relation', 'emergency_contact_phone',
                 'height_cm', 'weight_kg', 'blood_type',
-                'smoker', 'drinker', 'photo_path',
+                'eats_pork', 'smoker', 'drinker', 'photo_path',
                 'name_kana', 'nationality', 'desired_job', 'address_kana', 'line_id',
                 'japan_visits_study', 'japan_visits_work', 'japan_visits_other', 'self_pr', 'self_pr_ja', 'cv_other',
             ]) ?? [],
@@ -92,7 +92,7 @@ class MyProfile extends Page implements HasForms
                         ]),
                         Section::make(__('Photo'))->columns(3)->components([
                             FileUpload::make('studentProfile.photo_path')->label(__('Profile photo'))
-                                ->helperText(__('A formal photo, 3 × 4. After choosing a file you can crop it.'))
+                                ->helperText(__('A formal photo, 3 × 4, on a white background. A transparent background becomes white on the CV. After choosing a file you can crop it.'))
                                 ->image()->disk('public')->directory('students/photos')
                                 ->imageEditor()
                                 ->imageAspectRatio('3:4')
@@ -159,7 +159,7 @@ class MyProfile extends Page implements HasForms
                                             }
                                             RateLimiter::hit('self-pr:'.auth()->id(), 3600);
                                             try {
-                                                $japanese = SelfPrTranslator::translate($text);
+                                                $japanese = JapaneseTranslator::translate($text);
                                             } catch (\RuntimeException $e) {
                                                 Notification::make()->title($e->getMessage())->danger()->send();
 
@@ -264,9 +264,10 @@ class MyProfile extends Page implements HasForms
                         ]),
                         Section::make()->components([
                             Textarea::make('studentProfile.cv_other')->label(__('Other notes (allergies, medical conditions, etc.)'))->rows(3)->maxLength(1000)
-                                ->helperText(__('Allergies, medical conditions, and anything the employer should accommodate, e.g. halal food, prayer times. If you do not tick smoker or alcohol, your CV adds that you do not smoke or drink.')),
-                            Toggle::make('studentProfile.smoker')->label(__('Smoker'))->inline(false),
+                                ->helperText(__('Allergies, medical conditions, and anything the employer should accommodate, e.g. halal food, prayer times. Whatever you do not tick below, your CV says you do not do it.')),
+                            Toggle::make('studentProfile.eats_pork')->label(__('Eats pork'))->inline(false),
                             Toggle::make('studentProfile.drinker')->label(__('Drinks alcohol'))->inline(false),
+                            Toggle::make('studentProfile.smoker')->label(__('Smoker'))->inline(false),
                         ]),
                     ]),
 
@@ -357,8 +358,10 @@ class MyProfile extends Page implements HasForms
         $this->syncRelation($user->educations(), $state['educations'] ?? []);
         // Work history is entered as month + year; stored as the first of the month.
         $monthDate = fn ($y, $m) => $y ? sprintf('%04d-%02d-01', $y, $m ?: 1) : null;
+        $positionsJa = $this->japanesePositions($user, collect($state['workExperiences'] ?? [])->pluck('position')->all());
         $this->syncRelation($user->workExperiences(), collect($state['workExperiences'] ?? [])->map(fn ($w) => [
             'company' => $w['company'] ?? null, 'position' => $w['position'] ?? null, 'is_current' => (bool) ($w['is_current'] ?? false),
+            'position_ja' => $positionsJa[trim((string) ($w['position'] ?? ''))] ?? null,
             'start_date' => $monthDate($w['start_year'] ?? null, $w['start_month'] ?? null),
             'end_date' => $monthDate($w['end_year'] ?? null, $w['end_month'] ?? null),
         ])->all());
@@ -368,6 +371,30 @@ class MyProfile extends Page implements HasForms
             ->title(__('Profile updated'))
             ->success()
             ->send();
+    }
+
+    /**
+     * Japanese job titles for the CV, keyed by the title as typed. Titles
+     * already translated are reused; new ones go to DeepL in one request.
+     * When translation is unavailable the CV keeps the typed title.
+     *
+     * @return array<string, string>
+     */
+    private function japanesePositions(User $user, array $positions): array
+    {
+        $known = $user->workExperiences()->whereNotNull('position_ja')->pluck('position_ja', 'position')->all();
+        $new = collect($positions)->map(fn ($p) => trim((string) $p))->filter()->unique()
+            ->reject(fn ($p) => isset($known[$p]))->values()->all();
+
+        if ($new && JapaneseTranslator::enabled()) {
+            try {
+                $known += array_combine($new, JapaneseTranslator::many($new));
+            } catch (\RuntimeException $e) {
+                report($e);
+            }
+        }
+
+        return $known;
     }
 
     /**

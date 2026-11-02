@@ -1348,5 +1348,8 @@
     "The text is too long to translate. Please shorten it.": "文章が長すぎて翻訳できません。短くしてください。",
     "This month's translation quota is used up. Please try again next month or tell the admin.": "今月の翻訳の上限に達しました。来月もう一度お試しいただくか、管理者にお知らせください。",
     "Translated and saved to your CV. You can still edit the Japanese.": "翻訳して履歴書に保存しました。日本語は引き続き編集できます。",
-    "Filled and saved by the Translate button. If you edit it, click Save changes.": "「日本語に翻訳」ボタンで入力・保存されます。編集した場合は「変更を保存」を押してください。"
+    "Filled and saved by the Translate button. If you edit it, click Save changes.": "「日本語に翻訳」ボタンで入力・保存されます。編集した場合は「変更を保存」を押してください。",
+    "Eats pork": "豚肉を食べる",
+    "Allergies, medical conditions, and anything the employer should accommodate, e.g. halal food, prayer times. Whatever you do not tick below, your CV says you do not do it.": "アレルギー、持病、食事（ハラール）やお祈りの時間など、会社に配慮してほしいこと。下の項目でチェックしなかったものは、履歴書に「しません」と記載されます。",
+    "A formal photo, 3 × 4, on a white background. A transparent background becomes white on the CV. After choosing a file you can crop it.": "白背景の3×4の証明写真。背景が透明な写真は、履歴書では白背景になります。ファイルを選んだ後にトリミングできます。"
 }

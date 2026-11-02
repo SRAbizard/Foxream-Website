@@ -66,10 +66,11 @@ class Rirekisho
         $birth = $p?->birthdate;
         $photo = $p?->photo_path ? storage_path('app/public/'.$p->photo_path) : null;
 
-        return [
+        // Everything on the CV is in capitals except the e-mail address.
+        return self::upper([
             'today'        => now(),
             'name_kana'    => $p?->name_kana,
-            'name'         => Str::upper($p?->full_name ?: $user->name),
+            'name'         => $p?->full_name ?: $user->name,
             'gender'       => match ($p?->gender) { 'male' => '男', 'female' => '女', default => null },
             'nationality'  => self::NATIONALITIES[$p?->nationality ?: 'Indonesia'] ?? $p->nationality,
             'birth'        => $birth,
@@ -77,7 +78,7 @@ class Rirekisho
             'desired_job'  => self::desiredJob($desiredJob ?: $p?->desired_job),
             'address_kana' => $p?->address_kana,
             // Only "CITY, PROVINCE", as in the filled-in example.
-            'address'      => Str::upper(collect([$p?->city, $p?->province])->filter()->implode(', ')),
+            'address'      => collect([$p?->city, $p?->province])->filter()->implode(', '),
             'phone'        => $user->phone ?: '-',
             'email'        => $user->email ?: '-',
             'line'         => $p?->line_id ?: '-',
@@ -97,7 +98,24 @@ class Rirekisho
             'licenses'     => self::licenses($p?->licenses),
             'self_pr'      => $p?->self_pr_ja ?: $p?->self_pr,
             'other'        => self::other($p),
-        ];
+        ], except: ['email', 'photo']);
+    }
+
+    /** Capitalise every string in the CV data, leaving the keys in $except as they are. */
+    private static function upper(array $data, array $except = []): array
+    {
+        foreach ($data as $key => $value) {
+            if (in_array($key, $except, true)) {
+                continue;
+            }
+            $data[$key] = match (true) {
+                is_string($value) => mb_strtoupper($value),
+                is_array($value)  => self::upper($value),
+                default           => $value,
+            };
+        }
+
+        return $data;
     }
 
     /** Oldest first, as a 履歴書 lists them: "School　(Major – S1)". */
@@ -112,20 +130,24 @@ class Rirekisho
 
                 return [
                     'from_y' => $e->start_year, 'from_m' => $e->start_month,
-                    'to_y'   => $e->is_current ? '在学中' : $e->end_year, 'to_m' => $e->is_current ? null : $e->end_month,
+                    'to_y'   => $e->is_current ? '現在' : $e->end_year, 'to_m' => $e->is_current ? null : $e->end_month,
                     'text'   => $e->institution.($detail !== '' ? '　('.$detail.')' : ''),
                 ];
             })->values()->all();
     }
 
-    /** "Company　(Position)", oldest first. */
+    /** "Company　(Position)", oldest first; the position in Japanese when translated. */
     private static function work(User $user): array
     {
-        return $user->workExperiences->sortBy(fn ($w) => $w->start_date?->timestamp ?? 0)->map(fn ($w) => [
-            'from_y' => $w->start_date?->year, 'from_m' => $w->start_date?->month,
-            'to_y'   => $w->is_current ? '在職中' : $w->end_date?->year, 'to_m' => $w->is_current ? null : $w->end_date?->month,
-            'text'   => $w->company.($w->position ? '　('.$w->position.')' : ''),
-        ])->values()->all();
+        return $user->workExperiences->sortBy(fn ($w) => $w->start_date?->timestamp ?? 0)->map(function ($w) {
+            $position = $w->position_ja ?: $w->position;
+
+            return [
+                'from_y' => $w->start_date?->year, 'from_m' => $w->start_date?->month,
+                'to_y'   => $w->is_current ? '現在' : $w->end_date?->year, 'to_m' => $w->is_current ? null : $w->end_date?->month,
+                'text'   => $w->company.($position ? '　('.$position.')' : ''),
+            ];
+        })->values()->all();
     }
 
     /** The certificates picked on the profile, oldest first; undated ones last. */
@@ -157,8 +179,9 @@ class Rirekisho
     {
         $notes  = trim((string) $p?->cv_other);
         $habits = collect([
-            ! $p?->smoker && ! Str::contains($notes, ['タバコ', 'たばこ', '煙草', '喫煙']) ? 'タバコは吸いません。' : null,
+            ! $p?->eats_pork && ! Str::contains($notes, ['豚']) ? '豚肉は食べません。' : null,
             ! $p?->drinker && ! Str::contains($notes, ['お酒', '酒', '飲酒']) ? 'お酒は飲みません。' : null,
+            ! $p?->smoker && ! Str::contains($notes, ['タバコ', 'たばこ', '煙草', '喫煙']) ? 'タバコは吸いません。' : null,
         ])->filter()->implode('');
 
         return collect([$notes, $habits])->filter()->implode("

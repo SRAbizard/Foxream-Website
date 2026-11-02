@@ -31,7 +31,7 @@
     table.grid td.unit { font-size: 8pt; color: #888; text-align: center; }
     table.grid tr.hd td { background: #9E1B32; color: #fff; font-weight: bold; text-align: center; border-color: #b8475a; font-size: 8.5pt; }
     table.grid tr.band td { background: #F6E8EA; color: #9E1B32; font-weight: bold; text-align: center; letter-spacing: 8pt; }
-    .name { font-size: 14pt; }
+    .name { font-size: 14pt; text-align: center; }
     .note { font-size: 7pt; color: #777; margin-top: 3pt; }
 </style>
 </head>
@@ -58,7 +58,7 @@
         <td class="l" width="15.6%">国籍</td>
         <td rowspan="4" width="16.7%" class="c" style="padding: 2pt;">
             @if($cv['photo'])
-                <img src="{{ $cv['photo'] }}" style="width: 30mm; height: 40mm;">
+                <img src="data:image/jpeg;base64,{{ base64_encode(\App\Support\Photo::passportJpeg($cv['photo']) ?? '') }}" style="width: 30mm; height: 40mm;">
             @else
                 <span style="font-size: 7pt; color: #888;">写真貼付<br>縦4cm × 横3cm</span>
             @endif
@@ -160,7 +160,7 @@
         </tr>
     @endforeach
 </table>
-<div class="note">※ 在学中・在職中の場合は「卒業・退社」欄に「在学中」「在職中」と記入してください。</div>
+<div class="note">※ 在学中・在職中の場合は「卒業・退社」欄に「現在」と記入してください。</div>
 
 <pagebreak />
 
