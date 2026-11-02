@@ -36,5 +36,10 @@ class AppServiceProvider extends ServiceProvider
         \Filament\Forms\Components\Field::configureUsing(fn ($field) => $field->translateLabel());
         \Filament\Tables\Columns\Column::configureUsing(fn ($column) => $column->translateLabel());
         \Filament\Infolists\Components\Entry::configureUsing(fn ($entry) => $entry->translateLabel());
+
+        // Forms lay out in two columns, which put a section in one half
+        // next to an empty one; every section takes the full width, so
+        // the sections of a form line up.
+        \Filament\Schemas\Components\Section::configureUsing(fn ($section) => $section->columnSpanFull());
     }
 }
