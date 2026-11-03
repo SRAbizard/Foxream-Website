@@ -237,7 +237,7 @@ class JobVacancyResource extends Resource
         };
 
         return Section::make(__('Job Order'))
-            ->description(__('Fill this in to generate the "Terjemahan Job Order" PDF (buttons at the top of this page after saving). Empty fields are left out. In long fields, start a line with "- " to make a bullet point.'))
+            ->description(__('Only what candidates need to know. Fill this in to generate the Job Order PDF (button at the top of this page after saving); empty fields are left out. In long fields, start a line with "- " to make a bullet point.'))
             ->collapsed()
             ->columns(2)
             ->components([

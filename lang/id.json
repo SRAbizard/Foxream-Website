@@ -1615,5 +1615,6 @@
     "Link (slug)": "Link (slug)",
     "Made from the title when left empty.": "Dibuat otomatis dari judul jika dikosongkan.",
     "Saved without automatic translation": "Tersimpan tanpa terjemahan otomatis",
-    "The Indonesian text is shown until a translation is added.": "Teks Bahasa Indonesia ditampilkan sampai terjemahan diisi."
+    "The Indonesian text is shown until a translation is added.": "Teks Bahasa Indonesia ditampilkan sampai terjemahan diisi.",
+    "Only what candidates need to know. Fill this in to generate the Job Order PDF (button at the top of this page after saving); empty fields are left out. In long fields, start a line with \"- \" to make a bullet point.": "Hanya informasi yang dibutuhkan kandidat. Isi bagian ini untuk membuat PDF Job Order (tombolnya ada di atas halaman setelah disimpan); kolom kosong tidak ditampilkan. Di kolom panjang, awali baris dengan \"- \" untuk membuat poin."
 }
