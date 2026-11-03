@@ -1424,7 +1424,6 @@
     "Open jobs for your visa target, your field first.": "Lowongan untuk target visamu, bidangmu ditampilkan lebih dulu.",
     "No open jobs for your visa target right now. We will add more soon.": "Belum ada lowongan untuk target visamu saat ini. Kami akan segera menambahkannya.",
     "Your field": "Bidangmu",
-    "Usually moved with the button at the top. The student is notified of every change.": "Biasanya dipindah lewat tombol di atas. Siswa mendapat notifikasi setiap ada perubahan.",
     "Next schedule": "Jadwal berikutnya",
     "To follow": "Menyusul",
     "Student profile": "Profil siswa",
@@ -1657,5 +1656,12 @@
     "Your profile has been sent to the team and the company in Japan. We will tell you as soon as they reply.": "Profilmu sudah dikirim ke tim dan perusahaan di Jepang. Kami kabari begitu ada jawaban.",
     "Follow the steps below: contract, COE, visa and departure.": "Ikuti langkah di bawah: kontrak, COE, visa, lalu keberangkatan.",
     "Get ready to fly! Your departure details are below.": "Siap-siap terbang! Detail keberangkatanmu ada di bawah.",
-    "Have a safe trip and good luck in Japan! 頑張って!": "Selamat jalan dan sukses di Jepang! 頑張って!"
+    "Have a safe trip and good luck in Japan! 頑張って!": "Selamat jalan dan sukses di Jepang! 頑張って!",
+    "This application has ended. To open it again, use \"Change step\" at the top.": "Lamaran ini sudah selesai. Untuk membukanya lagi, pakai \"Ubah langkah\" di atas.",
+    "Last moved :when by :name": "Terakhir dipindah :when oleh :name",
+    "Change step": "Ubah langkah",
+    "For corrections, such as going back a step or reopening an application. The student is notified of the new step.": "Untuk koreksi, misalnya mundur satu langkah atau membuka lagi lamaran. Siswa mendapat notifikasi langkah barunya.",
+    "Move to": "Pindah ke",
+    "More": "Lainnya",
+    "Move": "Pindahkan"
 }

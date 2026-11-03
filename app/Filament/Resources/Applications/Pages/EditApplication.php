@@ -3,8 +3,11 @@ namespace App\Filament\Resources\Applications\Pages;
 
 use App\Filament\Resources\Applications\ApplicationResource;
 use App\Filament\Resources\Students\Pages\ViewStudent;
+use App\Models\Application;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
@@ -45,7 +48,23 @@ class EditApplication extends EditRecord
                     $this->moveTo('rejected');
                 }),
 
-            DeleteAction::make()->visible(fn () => auth()->user()?->hasRole('superadmin')),
+            ActionGroup::make([
+                // For corrections: a step back, a skipped step, withdrawn, or reopening an ended application.
+                Action::make('changeStage')->label(__('Change step'))->icon('heroicon-o-arrows-right-left')
+                    ->modalDescription(__('For corrections, such as going back a step or reopening an application. The student is notified of the new step.'))
+                    ->modalSubmitActionLabel(__('Move'))
+                    ->schema([
+                        Select::make('status')->label(__('Move to'))
+                            ->options(fn () => collect(Application::STATUSES)
+                                ->reject(fn ($s) => $s === $this->record->status)
+                                ->mapWithKeys(fn ($s) => [$s => __('application.status.'.$s)]))
+                            ->required()
+                            ->native(false),
+                    ])
+                    ->action(fn (array $data) => $this->moveTo($data['status'])),
+
+                DeleteAction::make()->visible(fn () => auth()->user()?->hasRole('superadmin')),
+            ])->tooltip(__('More')),
         ];
     }
 
@@ -54,15 +73,5 @@ class EditApplication extends EditRecord
         $this->record->update(['status' => $stage, 'reviewed_at' => now(), 'reviewed_by' => auth()->id()]);
         $this->fillForm();
         Notification::make()->title(__('Moved to: :stage', ['stage' => __('application.status.'.$stage)]))->success()->send();
-    }
-
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        // Stamp the reviewer when status changes from submitted
-        if (($data['status'] ?? null) !== 'submitted') {
-            $data['reviewed_at'] = now();
-            $data['reviewed_by'] = auth()->id();
-        }
-        return $data;
     }
 }

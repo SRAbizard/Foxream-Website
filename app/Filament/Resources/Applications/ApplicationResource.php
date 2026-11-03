@@ -8,10 +8,10 @@ use BackedEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -62,13 +62,10 @@ class ApplicationResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make(__('Application'))->columns(2)->components([
-                Select::make('status')->label(__('Step'))
-                    ->options(collect(Application::STATUSES)->mapWithKeys(fn ($s) => [$s => __('application.status.'.$s)]))
-                    ->helperText(__('Usually moved with the button at the top. The student is notified of every change.'))
-                    ->required()
-                    ->native(false),
-                Textarea::make('admin_notes')->label(__('Admin notes'))->rows(4)->columnSpanFull(),
+            // The step is only shown here: the buttons at the top move it and notify the student.
+            Section::make(__('Application'))->components([
+                View::make('filament.admin.application-progress'),
+                Textarea::make('admin_notes')->label(__('Admin notes'))->rows(4),
             ]),
 
             // After passing, each section opens once the application reaches its step.

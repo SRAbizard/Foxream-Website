@@ -1425,7 +1425,6 @@
     "Open jobs for your visa target, your field first.": "目標ビザの求人（あなたの分野を優先）。",
     "No open jobs for your visa target right now. We will add more soon.": "現在、目標ビザの求人はありません。近日追加予定です。",
     "Your field": "あなたの分野",
-    "Usually moved with the button at the top. The student is notified of every change.": "通常は上のボタンで進めます。変更のたびに学生へ通知されます。",
     "Next schedule": "次の予定",
     "To follow": "未定",
     "Student profile": "学生プロフィール",
@@ -1658,5 +1657,12 @@
     "Your profile has been sent to the team and the company in Japan. We will tell you as soon as they reply.": "プロフィールを日本のチームと企業に送りました。返事があり次第お知らせします。",
     "Follow the steps below: contract, COE, visa and departure.": "以下の手順に沿って進めてください：契約、COE、ビザ、出発。",
     "Get ready to fly! Your departure details are below.": "出発の準備をしましょう！出発の詳細は下にあります。",
-    "Have a safe trip and good luck in Japan! 頑張って!": "気をつけて、日本でも頑張ってください！"
+    "Have a safe trip and good luck in Japan! 頑張って!": "気をつけて、日本でも頑張ってください！",
+    "This application has ended. To open it again, use \"Change step\" at the top.": "この応募は終了しています。再開するには上の「ステップを変更」を使ってください。",
+    "Last moved :when by :name": ":when に :name が変更",
+    "Change step": "ステップを変更",
+    "For corrections, such as going back a step or reopening an application. The student is notified of the new step.": "1つ前に戻す、応募を再開するなどの修正用です。新しいステップは学生へ通知されます。",
+    "Move to": "移動先",
+    "More": "その他",
+    "Move": "移動"
 }
