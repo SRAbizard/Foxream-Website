@@ -31,6 +31,9 @@ class SchedulesRelationManager extends RelationManager
         return __('Schedules');
     }
 
+    protected static function getModelLabel(): ?string       { return __('Schedule'); }
+    protected static function getPluralModelLabel(): ?string { return __('Schedules'); }
+
     public function form(Schema $schema): Schema
     {
         return $schema->columns(2)->components([

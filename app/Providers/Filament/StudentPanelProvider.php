@@ -99,7 +99,8 @@ class StudentPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::BODY_END,
                 fn (): string => view('filament.partials.sidebar-exclusive-groups')->render()
-                    . view('filament.partials.audio-player')->render(),
+                    . view('filament.partials.audio-player')->render()
+                    . view('filament.partials.demo-switcher')->render(),
             )
             ->discoverResources(in: app_path('Filament/Student/Resources'), for: 'App\\Filament\\Student\\Resources')
             ->discoverPages(in: app_path('Filament/Student/Pages'), for: 'App\\Filament\\Student\\Pages')

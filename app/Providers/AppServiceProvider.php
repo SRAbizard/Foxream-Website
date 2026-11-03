@@ -31,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(Registered::class, AssignDefaultRoleOnRegistration::class);
 
+        // ".test" addresses (the demo accounts) cannot receive mail: don't send it.
+        Event::listen(\Illuminate\Mail\Events\MessageSending::class, function ($event) {
+            $to = collect($event->message->getTo())->map(fn ($address) => strtolower($address->getAddress()));
+
+            return $to->isNotEmpty() && $to->every(fn ($email) => str_ends_with($email, '.test')) ? false : null;
+        });
+
         // Labels Filament derives from column names ("Sort order", "Is
         // published") go through lang/*.json like every other label.
         \Filament\Forms\Components\Field::configureUsing(fn ($field) => $field->translateLabel());

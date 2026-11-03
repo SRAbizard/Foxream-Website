@@ -710,3 +710,26 @@ a.pja-title:hover { color: var(--pj-red); }
     .pja-papers, .pja-schedules { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .pja-track .is-now .pja-dot { animation: none; } }
+
+/* ===================================================================
+   LOCAL ONLY · demo account switcher (bottom right; the music button is bottom left)
+   =================================================================== */
+.pj-demo { position: fixed; right: 1rem; bottom: 1rem; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; }
+.pj-demo-btn {
+    display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .8rem; border-radius: 999px;
+    border: 2.5px solid var(--pj-line); background: var(--pj-kin); color: #1D1730; font-size: .75rem; font-weight: 800;
+    box-shadow: 3px 3px 0 var(--pj-shadow-c);
+}
+.pj-demo-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--pj-shadow-c); }
+.pj-demo-menu {
+    width: min(20rem, calc(100vw - 2rem)); max-height: 70vh; overflow-y: auto; padding: .5rem; border-radius: 1rem;
+    border: 2.5px solid var(--pj-line); background: var(--pj-kami); color: var(--pj-ink); box-shadow: 4px 4px 0 var(--pj-shadow-c);
+}
+.pj-demo-head { padding: .35rem .5rem .5rem; font-size: .8rem; font-weight: 800; }
+.pj-demo-head small { display: block; font-weight: 500; opacity: .6; }
+.pj-demo-menu a { display: flex; align-items: center; gap: .6rem; padding: .5rem; border-radius: .6rem; font-size: .8rem; }
+.pj-demo-menu a:hover { background: color-mix(in srgb, var(--pj-sakura) 45%, transparent); }
+.pj-demo-menu a.is-me { background: color-mix(in srgb, var(--pj-kin) 35%, transparent); }
+.pj-demo-menu a b { display: block; }
+.pj-demo-menu a small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .65; }
+.pj-demo-menu a em { margin-left: auto; font-size: .65rem; font-style: normal; font-weight: 800; color: var(--pj-red); }

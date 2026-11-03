@@ -109,10 +109,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasRole('superadmin') || $this->can('manage students');
     }
 
-    /** Everyone who handles students, for notifications about them. */
+    /**
+     * Everyone who handles students, for notifications about them. What a
+     * demo account does on a laptop only reaches the demo admins.
+     */
     public static function studentManagers(): \Illuminate\Support\Collection
     {
-        return static::role(['superadmin', 'admin'])->get()->filter->canManageStudents()->values();
+        $demo = \App\Support\DemoAccounts::enabled() && \App\Support\DemoAccounts::isDemo(auth()->user());
+
+        return static::role(['superadmin', 'admin'])->get()->filter->canManageStudents()
+            ->filter(fn (self $admin) => ! $demo || \App\Support\DemoAccounts::isDemo($admin))->values();
     }
 
     public function preferredLocale(): string

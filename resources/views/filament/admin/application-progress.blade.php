@@ -14,7 +14,7 @@
         </p>
     @else
         <ol class="pja-track" style="--n: {{ count($steps) }}"
-            x-data x-init="const now = $el.querySelector('.is-now'); if (now) $el.scrollLeft = now.offsetLeft - ($el.clientWidth - now.offsetWidth) / 2">
+            x-data x-init="const now = $el.querySelector('.is-now'), go = () => now && ($el.scrollLeft = now.offsetLeft - ($el.clientWidth - now.offsetWidth) / 2); requestAnimationFrame(go); document.fonts?.ready.then(go)">
             @foreach($steps as $i => $step)
                 <li @class(['is-done' => $i < $at, 'is-now' => $i === $at])>
                     <span class="pja-dot">@if($i < $at) ✓ @else {{ $i + 1 }} @endif</span>

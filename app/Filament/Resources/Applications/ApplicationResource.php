@@ -30,6 +30,8 @@ class ApplicationResource extends Resource
 
     public static function getNavigationLabel(): string { return __('Applications'); }
     public static function getNavigationGroup(): ?string { return __('Recruitment'); }
+    public static function getModelLabel(): string       { return __('Application'); }
+    public static function getPluralModelLabel(): string { return __('Applications'); }
 
     public static function getNavigationBadge(): ?string
     {

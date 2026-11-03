@@ -58,3 +58,8 @@ Route::get('locale/{locale}', [LocaleController::class, 'switch'])
     ->whereIn('locale', ['id', 'en', 'ja']);
 
 Route::get('sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Trying the whole journey on a laptop: sign in as a demo account in one click.
+if (app()->isLocal()) {
+    Route::get('dev/login-as/{user}', \App\Http\Controllers\DemoLoginController::class)->name('dev.login-as');
+}

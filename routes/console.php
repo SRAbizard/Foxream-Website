@@ -49,3 +49,28 @@ Artisan::command('cv:translate-history', function () {
 
     $this->info($total ? "Translated {$total} item(s)." : 'Nothing to translate.');
 })->purpose('Translate existing job titles, majors and addresses into Japanese for the CV');
+
+// Demo accounts (…@demo.test) for trying the journey on a laptop; see App\Support\DemoAccounts.
+Artisan::command('demo:setup', function () {
+    if (! \App\Support\DemoAccounts::enabled()) {
+        return $this->error('Only on a local install (APP_ENV=local).');
+    }
+    [$admin, $student] = \App\Support\DemoAccounts::setUp();
+    $this->info("Ready: {$admin->name} ({$admin->email}) and {$student->name} ({$student->email}, CV filled in).");
+    $this->line('Switch between them with the "Demo" button at the bottom right of the panels.');
+    $this->line('Register more students with an @demo.test email: they show up in the switcher, no email needed.');
+    $this->line('Skip typing their CV with: php artisan demo:cv <email>');
+})->purpose('Create the demo admin and student for trying the journey locally');
+
+Artisan::command('demo:cv {email}', function (string $email) {
+    $user = \App\Models\User::where('email', $email)->first();
+    if (! \App\Support\DemoAccounts::enabled() || ! \App\Support\DemoAccounts::isDemo($user)) {
+        return $this->error('Only for an @demo.test account on a local install.');
+    }
+    \App\Support\DemoAccounts::fillCv($user);
+    $this->info("The CV of {$user->name} is filled in with sample data.");
+})->purpose("Fill in a demo student's CV with sample data, to skip typing it");
+
+Artisan::command('demo:clear', function () {
+    $this->info('Removed '.\App\Support\DemoAccounts::clear().' demo account(s) with their applications and files.');
+})->purpose('Remove every @demo.test account with its applications and files');

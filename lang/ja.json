@@ -1664,5 +1664,9 @@
     "For corrections, such as going back a step or reopening an application. The student is notified of the new step.": "1つ前に戻す、応募を再開するなどの修正用です。新しいステップは学生へ通知されます。",
     "Move to": "移動先",
     "More": "その他",
-    "Move": "移動"
+    "Move": "移動",
+    "Sign in as": "ログイン切替",
+    "demo accounts, this laptop only": "デモアカウント（このPCのみ）",
+    "now": "使用中",
+    "Schedule": "日程"
 }
