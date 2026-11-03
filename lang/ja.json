@@ -1648,5 +1648,15 @@
     "Show the instructions": "指示文を表示",
     "The browser blocked copying": "ブラウザがコピーをブロックしました",
     "Open \"Show the instructions\", select all the text and copy it (Ctrl+C).": "「指示文を表示」を開き、全文を選択してコピーしてください（Ctrl+C）。",
-    "Pick the company in the form: the job order does not name a registered one.": "フォームで企業を選択してください。この求人票には登録済みの企業名がありません。"
+    "Pick the company in the form: the job order does not name a registered one.": "フォームで企業を選択してください。この求人票には登録済みの企業名がありません。",
+    "Boarding pass": "搭乗券",
+    "Notice": "お知らせ",
+    "Next step": "次のステップ",
+    "Departed": "出発済み",
+    "We received your application. Our Indonesia team will check your profile and documents soon.": "応募を受け付けました。インドネシアチームがまもなくプロフィールと書類を確認します。",
+    "Our Indonesia team is checking your profile and documents. Make sure your documents are complete.": "インドネシアチームがプロフィールと書類を確認しています。書類がそろっているか確認してください。",
+    "Your profile has been sent to the team and the company in Japan. We will tell you as soon as they reply.": "プロフィールを日本のチームと企業に送りました。返事があり次第お知らせします。",
+    "Follow the steps below: contract, COE, visa and departure.": "以下の手順に沿って進めてください：契約、COE、ビザ、出発。",
+    "Get ready to fly! Your departure details are below.": "出発の準備をしましょう！出発の詳細は下にあります。",
+    "Have a safe trip and good luck in Japan! 頑張って!": "気をつけて、日本でも頑張ってください！"
 }

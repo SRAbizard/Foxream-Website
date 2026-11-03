@@ -3,6 +3,7 @@
 namespace App\Filament\Student\Pages;
 
 use App\Filament\Resources\Applications\ApplicationResource;
+use App\Filament\Student\Resources\Documents\DocumentResource;
 use App\Models\Application;
 use App\Models\User;
 use App\Notifications\ApplicationNews;
@@ -41,6 +42,34 @@ class MyApplications extends Page
     public function getAcademyUrl(): ?string
     {
         return SiteSettings::academyUrl();
+    }
+
+    /**
+     * What happens next on this application, in a sentence, with a link
+     * when the student can do something about it.
+     *
+     * @return array{text: string, link: ?array{0: string, 1: string, 2?: bool}}|null
+     */
+    public function nextStep(Application $app): ?array
+    {
+        $documents = [__('My Documents'), DocumentResource::getUrl('index')];
+        $academy = $this->getAcademyUrl() ? [__('Open PJI Learning'), $this->getAcademyUrl(), true] : null;
+
+        [$text, $link] = match ($app->status) {
+            'submitted'    => [__('We received your application. Our Indonesia team will check your profile and documents soon.'), $documents],
+            'screening_id' => [__('Our Indonesia team is checking your profile and documents. Make sure your documents are complete.'), $documents],
+            'screening_jp' => [__('Your profile has been sent to the team and the company in Japan. We will tell you as soon as they reply.'), $academy],
+            'interview'    => [__('While you wait for the interview, practise kaiwa with our Indonesia team and in PJI Learning.'), $academy],
+            'passed'       => [__('Congratulations, you passed! Complete your documents in My Documents.'), $documents],
+            'contract', 'coe', 'visa' => [__('Follow the steps below: contract, COE, visa and departure.'), null],
+            'departure'    => [__('Get ready to fly! Your departure details are below.'), null],
+            'departed'     => [__('Have a safe trip and good luck in Japan! 頑張って!'), null],
+            'rejected'     => [__('You were not selected for this job. Do not give up: other jobs in your field are waiting.'), [__('Browse jobs'), route('job.index')]],
+            'withdrawn'    => [__('This application was withdrawn.'), null],
+            default        => [null, null],
+        };
+
+        return $text ? ['text' => $text, 'link' => $link] : null;
     }
 
     /** The student uploads the employment contract they signed; the team is told. */

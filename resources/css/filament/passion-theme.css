@@ -548,3 +548,159 @@ body:has(.pj-auth) .fi-simple-main .fi-link { color: var(--pj-red) !important; f
     .pjm-map-body, .pjm-feed ul { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .pjm-bar i, .pjm-col i { animation: none; } }
+
+/* ─────────────────────────────────────────────────────────────────────
+   STUDENT · My Applications — each application is a boarding pass
+   from Indonesia to the job's city (filament/student/pages/my-applications)
+   ─────────────────────────────────────────────────────────────────── */
+.pja { display: grid; gap: 1.1rem; color: var(--pj-ink); }
+.pja-pass {
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 10.5rem; overflow: hidden;
+    background: var(--pj-kami); border: 3px solid var(--pj-line); border-radius: 22px; box-shadow: 6px 6px 0 var(--pj-shadow-c);
+}
+.pja-main { display: grid; gap: 1.1rem; padding: 1.3rem 1.6rem 1.5rem; min-width: 0; }
+.pja-top { display: flex; justify-content: space-between; gap: 1rem; font-size: .62rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; opacity: .6; }
+.pja-title {
+    font-family: 'Dela Gothic One', 'Arial Black', 'Noto Sans JP', sans-serif; font-weight: 400; font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    line-height: 1.1; color: var(--pj-ink); text-shadow: 2px 2px 0 var(--pj-sakura); transition: color .15s;
+}
+a.pja-title:hover { color: var(--pj-red); }
+.pja-meta { margin-top: .35rem; font-size: .9rem; font-weight: 600; opacity: .85; display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; }
+.pja-tag {
+    font-size: .66rem; font-weight: 800; letter-spacing: .06em; padding: .2rem .55rem; border-radius: 999px;
+    border: 2px solid var(--pj-line); background: var(--pj-kin); color: #1D1730;
+}
+
+/* IDN ✈ JPN */
+.pja-route { display: grid; grid-template-columns: auto minmax(2rem, 1fr) auto; align-items: center; gap: 1rem; }
+.pja-route b { display: block; font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; font-size: 2rem; line-height: 1; }
+.pja-route span { display: block; margin-top: .2rem; font-size: .74rem; font-weight: 700; opacity: .7; }
+.pja-route .is-to { text-align: right; }
+.pja-route .is-to b { color: var(--pj-red); }
+.pja-route i { position: relative; height: 2px; background: repeating-linear-gradient(90deg, var(--pj-ink) 0 7px, transparent 7px 13px); }
+.pja-route-plane {
+    position: absolute; left: 50%; top: 50%; width: 1.7rem; height: 1.7rem; transform: translate(-50%, -50%);
+    padding: .2rem; border-radius: 50%; background: var(--pj-kami); color: var(--pj-red);
+}
+
+/* journey */
+.pja-track {
+    position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(3.9rem, 1fr)); list-style: none; margin: 0; padding: .3rem 0 .2rem;
+    overflow-x: auto; scrollbar-width: thin;
+}
+.pja-track li { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.pja-track li:not(:first-child)::before {
+    content: ""; position: absolute; top: 1.15rem; right: 50%; width: 100%; height: 3px; transform: translateY(-50%);
+    background: color-mix(in srgb, var(--pj-line) 30%, transparent);
+}
+.pja-track li.is-done::before, .pja-track li.is-now::before { background: var(--pj-red); }
+.pja-dot {
+    position: relative; z-index: 1; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; margin-top: .3rem; border-radius: 50%;
+    border: 2.5px solid var(--pj-line); background: var(--pj-kami); font-size: .68rem; font-weight: 800;
+}
+.pja-track .is-done .pja-dot { background: var(--pj-red); color: #FFFAF2; }
+.pja-track .is-now .pja-dot { background: var(--pj-kin); color: #1D1730; transform: scale(1.22); animation: pja-ping 2.2s ease-out infinite; }
+@keyframes pja-ping {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pj-kin) 75%, transparent); }
+    70%, 100% { box-shadow: 0 0 0 10px transparent; }
+}
+.pja-step { margin-top: .5rem; padding-inline: .15rem; font-size: .66rem; font-weight: 600; line-height: 1.2; opacity: .6; }
+.pja-track .is-done .pja-step { opacity: .85; }
+.pja-track .is-now .pja-step { opacity: 1; font-weight: 800; color: var(--pj-red); }
+
+/* what happens next */
+.pja-next {
+    display: grid; gap: .35rem; justify-items: start; padding: .85rem 1rem; border-radius: 14px;
+    border: 2.5px dashed color-mix(in srgb, var(--pj-line) 60%, transparent); background: var(--pj-washi); font-size: .9rem; line-height: 1.45;
+}
+.pja-next.is-good { background: color-mix(in srgb, #4E8A3E 16%, var(--pj-kami)); }
+.pja-next.is-ended { background: color-mix(in srgb, var(--pj-sakura) 45%, var(--pj-kami)); }
+.pja-next-label { font-size: .62rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--pj-red); }
+.pja-btn {
+    display: inline-flex; align-items: center; gap: .45rem; margin-top: .35rem; padding: .5rem .95rem; border-radius: 999px;
+    border: 2.5px solid var(--pj-line); background: var(--pj-kami); color: var(--pj-ink); font-weight: 700; font-size: .82rem;
+    box-shadow: 3px 3px 0 var(--pj-shadow-c); transition: transform .12s, box-shadow .12s, background-color .15s;
+}
+.pja-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--pj-shadow-c); background: var(--pj-sakura); }
+.pja-btn:active { transform: translate(3px, 3px); box-shadow: none; }
+.pja-btn.is-primary { background: var(--pj-red); color: #FFFAF2; }
+
+/* the tear-off stub, with punched notches on the perforation */
+.pja-stub {
+    position: relative; display: grid; align-content: center; justify-items: center; gap: 1rem; padding: 1.4rem 1rem; text-align: center;
+    border-left: 3px dashed var(--pj-line); background: var(--pj-sakura);
+}
+.pja-stub::before, .pja-stub::after {
+    content: ""; position: absolute; left: -16px; width: 29px; height: 29px; border-radius: 50%;
+    background: var(--pj-washi); border: 3px solid var(--pj-line);
+}
+.pja-stub::before { top: -17px; }
+.pja-stub::after { bottom: -17px; }
+.pja-status {
+    font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: .45rem .7rem; max-width: 100%;
+    border: 2.5px solid var(--pj-line); border-radius: 9px; background: var(--pj-kin); color: #1D1730;
+    box-shadow: 3px 3px 0 var(--pj-shadow-c); transform: rotate(-3deg);
+}
+.pja-status.tone-gray { background: var(--pj-washi); color: var(--pj-ink); }
+.pja-status.tone-info { background: #c9d5f5; }
+.pja-status.tone-success { background: #cfe6c6; }
+.pja-status.tone-primary, .pja-status.tone-danger { background: var(--pj-red); color: #FFFAF2; }
+.pja-field small { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; opacity: .65; }
+.pja-field b { font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; font-size: 2.3rem; line-height: 1.05; }
+.pja-field b em { font-style: normal; font-size: 1rem; opacity: .55; }
+.pja-field strong { font-size: .88rem; font-weight: 700; }
+.pja-stamp {
+    font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; font-size: .8rem; text-transform: uppercase; letter-spacing: .02em;
+    max-width: 100%; padding: .3rem .55rem; border: 3px double var(--pj-red); border-radius: 8px; color: var(--pj-red); transform: rotate(-10deg); opacity: .9;
+}
+.pja-pass.is-departed .pja-stamp { border-color: #4E8A3E; color: #4E8A3E; }
+.dark .pja-pass.is-departed .pja-stamp { border-color: #8cc977; color: #8cc977; }
+.pja-pass.is-ended .pja-route, .pja-pass.is-ended .pja-job { opacity: .6; }
+.pja-pass.is-ended .pja-stub { background: color-mix(in srgb, var(--pj-sakura) 45%, var(--pj-kami)); }
+
+/* after passing: contract, COE, visa, departure */
+.pja-papers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; list-style: none; margin: 0; padding: 0; }
+.pja-papers li {
+    display: flex; gap: .85rem; align-items: start; padding: .95rem 1rem; border-radius: 16px;
+    border: 2.5px dashed color-mix(in srgb, var(--pj-line) 55%, transparent); background: var(--pj-kami);
+}
+.pja-papers li.is-done { border-style: solid; border-color: var(--pj-line); box-shadow: 4px 4px 0 var(--pj-shadow-c); }
+.pja-chip {
+    display: grid; place-items: center; flex: none; width: 2.4rem; height: 2.4rem; border-radius: 12px;
+    border: 2px solid var(--pj-line); background: var(--pj-washi); font-weight: 900;
+}
+.pja-papers li.is-done .pja-chip { background: #4E8A3E; color: #FFFAF2; }
+.pja-paper-title { font-size: .92rem; font-weight: 800; }
+.pja-paper-text { margin-top: .2rem; font-size: .86rem; line-height: 1.45; opacity: .82; }
+.pja-link { color: var(--pj-red); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+/* schedules */
+.pja-schedules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; list-style: none; margin: 0; padding: 0; }
+.pja-schedules li {
+    display: grid; gap: .3rem; justify-items: start; padding: 1rem 1.1rem; border-radius: 16px;
+    border: 3px solid var(--pj-line); background: var(--pj-kami); box-shadow: 5px 5px 0 var(--pj-red);
+}
+.pja-when { font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; font-size: 1.1rem; line-height: 1.25; }
+.pja-past summary { cursor: pointer; font-size: .85rem; font-weight: 700; opacity: .75; }
+.pja-past ul { margin-top: .5rem; }
+.pja-past li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; padding: .5rem 0; font-size: .86rem; border-bottom: 1.5px dashed color-mix(in srgb, var(--pj-line) 30%, transparent); }
+.pja-sep { border: 0; border-top: 3px dotted color-mix(in srgb, var(--pj-line) 35%, transparent); margin: .6rem 0; }
+
+.pja-empty {
+    display: grid; justify-items: center; gap: .5rem; padding: 2.5rem 1.5rem; text-align: center;
+    background: var(--pj-kami); border: 3px solid var(--pj-line); border-radius: 22px; box-shadow: 6px 6px 0 var(--pj-shadow-c);
+}
+.pja-empty-plane { width: 3.2rem; height: 3.2rem; color: var(--pj-red); transform: rotate(-20deg); margin-bottom: .3rem; }
+
+@media (max-width: 768px) {
+    .pja-pass { grid-template-columns: 1fr; }
+    .pja-main { padding: 1.1rem 1.1rem 1.3rem; }
+    .pja-stub { display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; border-left: 0; border-top: 3px dashed var(--pj-line); padding: 1rem; }
+    .pja-stub::before, .pja-stub::after { top: -16px; bottom: auto; }
+    .pja-stub::before { left: -16px; }
+    .pja-stub::after { left: auto; right: -16px; }
+    .pja-field b { font-size: 1.8rem; }
+    .pja-route b { font-size: 1.6rem; }
+    .pja-papers, .pja-schedules { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .pja-track .is-now .pja-dot { animation: none; } }
