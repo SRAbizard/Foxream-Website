@@ -1,6 +1,7 @@
 <?php
 namespace App\Filament\Resources\JobVacancies\Pages;
 
+use App\Filament\Resources\JobVacancies\ImportJobOrder;
 use App\Filament\Resources\JobVacancies\JobVacancyResource;
 use App\Support\JobOrder;
 use Filament\Actions\Action;
@@ -20,6 +21,7 @@ class EditJobVacancy extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            ImportJobOrder::make(),
             // The PDF is built from the saved record, so save changes first.
             ActionGroup::make([
                 Action::make('viewJobOrder')

@@ -33,6 +33,12 @@ return [
         'key' => env('DEEPL_API_KEY'),
     ],
 
+    // Reads job order PDFs into the Job Order form (App\Support\JobOrderImport).
+    'gemini' => [
+        'key'   => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-3.6-flash'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
