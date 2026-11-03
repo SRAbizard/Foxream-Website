@@ -14,7 +14,6 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -62,17 +61,8 @@ class JobVacancyResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        // The admin writes in Indonesian only; English and Japanese are
-        // translated on save (completeData) and can be corrected, folded away.
-        $editor = fn (string $path, string $label) => RichEditor::make($path)->label($label)
-            ->toolbarButtons(['bold', 'italic', 'link', 'bulletList', 'orderedList', 'h3', 'undo', 'redo']);
-        $translations = fn (string $locale) => [
-            TextInput::make("title.{$locale}")->label(__('Job title'))->maxLength(191),
-            $editor("description.{$locale}", __('Job description')),
-            $editor("requirements.{$locale}", __('Requirements')),
-            $editor("benefits.{$locale}", __('Benefits')),
-        ];
-
+        // Everything about the job itself lives in the Job Order; salary and
+        // the public page are taken from it (completeData, JobOrder).
         return $schema->components([
             Section::make(__('The job'))->columns(2)->components([
                 // Companies grouped by their TSK: TSK → company → job posting.
@@ -107,35 +97,16 @@ class JobVacancyResource extends Resource
                         'internship' => __('Internship'),
                     ])->default('fulltime')->required(),
             ]),
-            Section::make(__('Salary'))->columns(4)->components([
-                TextInput::make('salary_min')->numeric()->label(__('Min')),
-                TextInput::make('salary_max')->numeric()->label(__('Max')),
-                Select::make('salary_currency')->label(__('Currency'))->options(['JPY' => 'JPY', 'IDR' => 'IDR', 'USD' => 'USD'])->default('JPY'),
-                Select::make('salary_period')->label(__('Per'))->options([
-                    'monthly' => __('Monthly'),
-                    'yearly'  => __('Yearly'),
-                    'hourly'  => __('Hourly'),
-                ])->default('monthly'),
-            ]),
-            Section::make(__('Description'))
-                ->description(JapaneseTranslator::enabled()
-                    ? __('Write in Indonesian. English and Japanese are translated automatically when you save.')
-                    : __('Write in Indonesian. Visitors on the English and Japanese site see this text until a translation is added below.'))
-                ->components([
-                    $editor('description.id', __('Job description'))->required(),
-                    $editor('requirements.id', __('Requirements')),
-                    $editor('benefits.id', __('Benefits')),
-                ]),
-            Section::make(__('English & Japanese'))
-                ->description(__('Optional. Correct the automatic translation here. Empty a field to translate it again from Indonesian on the next save.'))
-                ->collapsed()
-                ->components([
-                    Tabs::make('translations')->tabs([
-                        Tab::make('EN · English')->schema($translations('en')),
-                        Tab::make('JA · 日本語')->schema($translations('ja')),
-                    ]),
-                ]),
             static::jobOrderSection(),
+            Section::make(__('Job title in English & Japanese'))
+                ->description(JapaneseTranslator::enabled()
+                    ? __('Translated automatically when you save. Correct it here; empty a field to translate it again.')
+                    : __('Optional. Visitors on the English and Japanese site see the Indonesian title until one is added.'))
+                ->collapsed()->columns(2)
+                ->components([
+                    TextInput::make('title.en')->label('English')->maxLength(191),
+                    TextInput::make('title.ja')->label('日本語')->maxLength(191),
+                ]),
             Section::make(__('More settings'))->collapsed()->columns(3)->components([
                 DateTimePicker::make('published_at')->label(__('Published at'))->seconds(false)->default(now()),
                 DatePicker::make('expires_at')->label(__('Closes on')),
@@ -156,17 +127,25 @@ class JobVacancyResource extends Resource
         ]);
     }
 
-    /** Translatable columns: written in Indonesian, translated to the other locales. */
-    public const TRANSLATED = ['title', 'description', 'requirements', 'benefits'];
+    /** Columns written in the form in Indonesian and translated to the other locales. */
+    public const TRANSLATED = ['title'];
 
     /**
-     * Before saving: a slug from the title when there is none, and English
-     * and Japanese for every text the admin left empty in those languages.
+     * Before saving: a slug from the title when there is none, the salary
+     * figures read from the Job Order's basic salary (for the job board's
+     * cards and filters), and the title in English and Japanese when empty.
      */
     public static function completeData(array $data, ?JobVacancy $record = null): array
     {
         if (blank($data['slug'] ?? null)) {
             $data['slug'] = static::uniqueSlug((string) ($data['title']['id'] ?? ''), $record?->getKey());
+        }
+
+        // The description column is required; jobs now describe themselves through the Job Order.
+        $data['description'] ??= $record?->description ?? [];
+
+        if ($salary = JobOrder::parseSalary((string) data_get($data, 'job_order.pay.basic_salary'))) {
+            $data = array_merge($data, $salary);
         }
 
         if (! JapaneseTranslator::enabled()) {
@@ -183,7 +162,7 @@ class JobVacancyResource extends Resource
             }
 
             try {
-                // One call per language; HTML mode keeps the editor's formatting.
+                // One call per language.
                 $done = JapaneseTranslator::many($missing->map(fn ($f) => (string) $data[$f]['id'])->all(), $target, html: true);
             } catch (\RuntimeException $e) {
                 \Filament\Notifications\Notification::make()->warning()
@@ -214,9 +193,9 @@ class JobVacancyResource extends Resource
     }
 
     /**
-     * The structured Job Order (App\Support\JobOrder) behind the generated
-     * "Terjemahan Job Order" PDF. Labels stay in Indonesian with the
-     * Japanese term, because that is the language of the document.
+     * The structured Job Order (App\Support\JobOrder): the job's details,
+     * shown on the public job page and in the generated PDF. Labels stay in
+     * Indonesian with the Japanese term, the language of the document.
      */
     protected static function jobOrderSection(): Section
     {
@@ -225,7 +204,7 @@ class JobVacancyResource extends Resource
             $path  = "job_order.{$section}.{$name}";
             $label = "{$label} ({$jp})";
 
-            return match ($type) {
+            $input = match ($type) {
                 'textarea'  => [Textarea::make($path)->label($label)->placeholder($def[3] ?? null)->rows(3)->maxLength(2000)->columnSpanFull()],
                 'select'    => [Select::make($path)->label($label)->options(JobOrder::EMPLOYMENT)->native(false)],
                 'checklist' => [
@@ -234,11 +213,21 @@ class JobVacancyResource extends Resource
                 ],
                 default     => [TextInput::make($path)->label($label)->placeholder($def[3] ?? null)->maxLength(500)],
             };
+
+            // The public job page needs at least the work itself.
+            if ("{$section}.{$name}" === 'job.job_type') {
+                $input[0]->required();
+            }
+            if ("{$section}.{$name}" === 'pay.basic_salary') {
+                $input[0]->helperText(__('The job board reads the salary from here, e.g. "¥180.000 / bulan" or "¥178.000 – ¥193.000 / bulan".'));
+            }
+
+            return $input;
         };
 
         return Section::make(__('Job Order'))
-            ->description(__('Only what candidates need to know. Fill this in to generate the Job Order PDF (button at the top of this page after saving); empty fields are left out. In long fields, start a line with "- " to make a bullet point.'))
-            ->collapsed()
+            ->description(__('The job details for candidates, shown on the job page and in the Job Order PDF (button at the top of this page after saving). Empty fields are left out. In long fields, start a line with "- " to make a bullet point.'))
+            ->collapsible()
             ->columns(2)
             ->components([
                 TextInput::make('job_order_code')->label(__('Job Order code'))->placeholder('TG - PM')->maxLength(40)

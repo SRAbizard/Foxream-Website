@@ -2,7 +2,8 @@
 @section('title', $vacancy->t('title') . ' — ' . $vacancy->company->name)
 @section('og_type', 'website')
 @section('og_title', $vacancy->t('title').' · '.$vacancy->company->name)
-@section('og_description', \Illuminate\Support\Str::limit(strip_tags($vacancy->t('description')), 180))
+@php($summary = data_get($vacancy->job_order, 'job.job_type') ?: strip_tags($vacancy->t('description')))
+@section('og_description', \Illuminate\Support\Str::limit($summary, 180))
 
 @push('head')
 <script type="application/ld+json">
@@ -10,7 +11,7 @@
     '@context' => 'https://schema.org',
     '@type' => 'JobPosting',
     'title' => $vacancy->t('title'),
-    'description' => strip_tags($vacancy->t('description')),
+    'description' => $summary,
     'datePosted' => optional($vacancy->published_at)->toAtomString(),
     'validThrough' => optional($vacancy->expires_at)->toAtomString(),
     'employmentType' => strtoupper($vacancy->employment_type),
@@ -70,21 +71,50 @@
 
     <div class="mt-10 grid gap-10 lg:grid-cols-3">
         <div class="lg:col-span-2 space-y-8">
-            <section>
-                <h2 class="font-display text-xl font-bold text-white">{{ __('Description') }}</h2>
-                <div class="prose prose-invert mt-4 max-w-none">{{ \App\Support\SafeHtml::clean($vacancy->t('description')) }}</div>
-            </section>
-            @if(! empty($vacancy->getTranslations('requirements')))
+            @if(\App\Support\JobOrder::filled($vacancy))
+                {{-- The Job Order, as in the PDF. On the Japanese site the labels are the Japanese terms. --}}
+                @foreach(\App\Support\JobOrder::forDocument($vacancy) as $section)
+                    <section>
+                        <h2 class="font-display text-xl font-bold text-white">{{ app()->getLocale() === 'ja' ? $section['jp'] : $section['title'] }}</h2>
+                        <dl class="mt-4 glass-card divide-y divide-white/5">
+                            @foreach($section['rows'] as $row)
+                                @php($lines = is_array($row['value'])
+                                    ? array_map(fn ($item) => ['bullet' => true, 'text' => $item], $row['value'])
+                                    : \App\Support\JobOrder::lines($row['value']))
+                                <div class="grid gap-1 p-4 sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-semibold text-surface-300">{{ app()->getLocale() === 'ja' ? $row['jp'] : $row['label'] }}</dt>
+                                    <dd class="text-sm text-white sm:col-span-2 space-y-1">
+                                        @foreach($lines as $line)
+                                            @if($line['bullet'])
+                                                <p class="flex gap-2"><span class="text-brand-400">•</span><span>{{ $line['text'] }}</span></p>
+                                            @else
+                                                <p>{{ $line['text'] }}</p>
+                                            @endif
+                                        @endforeach
+                                    </dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    </section>
+                @endforeach
+            @else
+                {{-- Jobs posted before the Job Order held everything. --}}
                 <section>
-                    <h2 class="font-display text-xl font-bold text-white">{{ __('Requirements') }}</h2>
-                    <div class="prose prose-invert mt-4 max-w-none">{{ \App\Support\SafeHtml::clean($vacancy->t('requirements')) }}</div>
+                    <h2 class="font-display text-xl font-bold text-white">{{ __('Description') }}</h2>
+                    <div class="prose prose-invert mt-4 max-w-none">{{ \App\Support\SafeHtml::clean($vacancy->t('description')) }}</div>
                 </section>
-            @endif
-            @if(! empty($vacancy->getTranslations('benefits')))
-                <section>
-                    <h2 class="font-display text-xl font-bold text-white">{{ __('Benefits') }}</h2>
-                    <div class="prose prose-invert mt-4 max-w-none">{{ \App\Support\SafeHtml::clean($vacancy->t('benefits')) }}</div>
-                </section>
+                @if(! empty($vacancy->getTranslations('requirements')))
+                    <section>
+                        <h2 class="font-display text-xl font-bold text-white">{{ __('Requirements') }}</h2>
+                        <div class="prose prose-invert mt-4 max-w-none">{{ \App\Support\SafeHtml::clean($vacancy->t('requirements')) }}</div>
+                    </section>
+                @endif
+                @if(! empty($vacancy->getTranslations('benefits')))
+                    <section>
+                        <h2 class="font-display text-xl font-bold text-white">{{ __('Benefits') }}</h2>
+                        <div class="prose prose-invert mt-4 max-w-none">{{ \App\Support\SafeHtml::clean($vacancy->t('benefits')) }}</div>
+                    </section>
+                @endif
             @endif
 
             {{-- Job detail PDF download (if uploaded) --}}

@@ -1617,5 +1617,10 @@
     "Made from the title when left empty.": "空欄の場合はタイトルから自動作成されます。",
     "Saved without automatic translation": "自動翻訳なしで保存しました",
     "The Indonesian text is shown until a translation is added.": "翻訳が入力されるまでインドネシア語の文章が表示されます。",
-    "Only what candidates need to know. Fill this in to generate the Job Order PDF (button at the top of this page after saving); empty fields are left out. In long fields, start a line with \"- \" to make a bullet point.": "候補者に必要な情報のみ。入力すると求人票PDFを作成できます（保存後、ページ上部のボタンから）。空欄は表示されません。長い欄では、行頭に「- 」を付けると箇条書きになります。"
+    "Only what candidates need to know. Fill this in to generate the Job Order PDF (button at the top of this page after saving); empty fields are left out. In long fields, start a line with \"- \" to make a bullet point.": "候補者に必要な情報のみ。入力すると求人票PDFを作成できます（保存後、ページ上部のボタンから）。空欄は表示されません。長い欄では、行頭に「- 」を付けると箇条書きになります。",
+    "Job title in English & Japanese": "求人タイトル（英語・日本語）",
+    "Translated automatically when you save. Correct it here; empty a field to translate it again.": "保存時に自動翻訳されます。ここで修正できます。空欄にすると再翻訳されます。",
+    "Optional. Visitors on the English and Japanese site see the Indonesian title until one is added.": "任意。入力するまで、英語・日本語サイトにもインドネシア語のタイトルが表示されます。",
+    "The job board reads the salary from here, e.g. \"¥180.000 / bulan\" or \"¥178.000 – ¥193.000 / bulan\".": "求人一覧の給与はここから読み取られます。例：「¥180.000 / bulan」「¥178.000 – ¥193.000 / bulan」",
+    "The job details for candidates, shown on the job page and in the Job Order PDF (button at the top of this page after saving). Empty fields are left out. In long fields, start a line with \"- \" to make a bullet point.": "候補者向けの求人詳細。求人ページと求人票PDF（保存後、ページ上部のボタン）に表示されます。空欄は表示されません。長い欄では、行頭に「- 」を付けると箇条書きになります。"
 }

@@ -169,6 +169,48 @@ class JobOrder
         return $range.($per ? " / {$per}" : '');
     }
 
+    /**
+     * The salary columns read from a basic salary as admins write it:
+     * "¥178.000 – ¥193.000 / bulan", "220,000 yen per bulan", "18万円",
+     * "¥1.378 / jam". Explanations in brackets are ignored. Null when there
+     * is no amount.
+     *
+     * @return array{salary_min: int, salary_max: ?int, salary_currency: string, salary_period: string}|null
+     */
+    public static function parseSalary(string $text): ?array
+    {
+        $text = preg_replace('/\([^)]*\)|（[^）]*）/u', '', $text);
+
+        preg_match_all('/(\d+(?:[.,]\d+)?)\s*万|\d{1,3}(?:[.,\s]\d{3})+|\d+/u', $text, $m, PREG_SET_ORDER);
+        $amounts = collect($m)
+            ->map(fn ($hit) => isset($hit[1]) && $hit[1] !== ''
+                ? (int) round((float) str_replace(',', '.', $hit[1]) * 10000)
+                : (int) preg_replace('/\D/', '', $hit[0]))
+            ->filter(fn ($n) => $n >= 100)
+            ->values();
+        if ($amounts->isEmpty()) {
+            return null;
+        }
+
+        $min = $amounts[0];
+        $max = ($amounts[1] ?? 0) > $min ? $amounts[1] : null;
+
+        return [
+            'salary_min'      => $min,
+            'salary_max'      => $max,
+            'salary_currency' => match (true) {
+                (bool) preg_match('/Rp|IDR|rupiah/iu', $text) => 'IDR',
+                (bool) preg_match('/\$|USD/u', $text)          => 'USD',
+                default                                        => 'JPY',
+            },
+            'salary_period'   => match (true) {
+                (bool) preg_match('/\b(jam|hour)|時給/iu', $text)        => 'hourly',
+                (bool) preg_match('/\b(tahun|year)|年収/iu', $text)      => 'yearly',
+                default                                                => 'monthly',
+            },
+        ];
+    }
+
     /** The company name a candidate sees: the Job Order's (may be "Dirahasiakan"), else the company's. */
     public static function companyName(JobVacancy $vacancy): ?string
     {
