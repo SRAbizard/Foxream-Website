@@ -88,7 +88,6 @@ class JobVacancyResource extends Resource
                     ->options(fn () => VisaCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')]))->searchable(),
                 TextInput::make('location_city')->label(__('City'))->maxLength(80),
                 TextInput::make('location_prefecture')->label(__('Prefecture'))->maxLength(80),
-                TextInput::make('positions')->label(__('Positions'))->numeric()->default(1)->minValue(1),
                 Select::make('employment_type')->label(__('Employment type'))
                     ->options([
                         'fulltime'   => __('Full-time'),
@@ -143,6 +142,11 @@ class JobVacancyResource extends Resource
 
         // The description column is required; jobs now describe themselves through the Job Order.
         $data['description'] ??= $record?->description ?? [];
+
+        // The number of positions comes from the Job Order's "Jumlah yang Diterima" ("20 orang").
+        if (preg_match('/\d+/', (string) data_get($data, 'job_order.other.accepted'), $m) && (int) $m[0] > 0) {
+            $data['positions'] = (int) $m[0];
+        }
 
         if ($salary = JobOrder::parseSalary((string) data_get($data, 'job_order.pay.basic_salary'))) {
             $data = array_merge($data, $salary);
@@ -220,6 +224,9 @@ class JobVacancyResource extends Resource
             }
             if ("{$section}.{$name}" === 'pay.basic_salary') {
                 $input[0]->helperText(__('The job board reads the salary from here, e.g. "¥180.000 / bulan" or "¥178.000 – ¥193.000 / bulan".'));
+            }
+            if ("{$section}.{$name}" === 'other.accepted') {
+                $input[0]->helperText(__('The job board shows the number of positions from here.'));
             }
 
             return $input;

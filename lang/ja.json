@@ -1643,5 +1643,6 @@
     "Gemini's free quota is used up for now. Try again in a few minutes, or use \"Paste AI result\".": "Geminiの無料枠を使い切りました。数分後に再試行するか、「AIの回答を貼り付け」を使ってください。",
     "Gemini refused the request. Check GEMINI_API_KEY and GEMINI_MODEL in .env, or use \"Paste AI result\".": "Geminiがリクエストを拒否しました。.envのGEMINI_API_KEYとGEMINI_MODELを確認するか、「AIの回答を貼り付け」を使ってください。",
     "Gemini could not read the file. Please try again, or use \"Paste AI result\".": "Geminiがファイルを読み取れませんでした。もう一度試すか、「AIの回答を貼り付け」を使ってください。",
-    "The AI reply could not be read. Copy the whole reply (it starts with { and ends with }) and try again.": "AIの回答を読み取れません。回答全体（{ で始まり } で終わる）をコピーして再試行してください。"
+    "The AI reply could not be read. Copy the whole reply (it starts with { and ends with }) and try again.": "AIの回答を読み取れません。回答全体（{ で始まり } で終わる）をコピーして再試行してください。",
+    "The job board shows the number of positions from here.": "求人ページの募集人数はここから表示されます。"
 }

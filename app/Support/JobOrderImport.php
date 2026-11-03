@@ -48,7 +48,6 @@ class JobOrderImport
             'job_category' => 'Salah satu dari: '.implode(', ', array_map(fn ($c) => "\"{$c}\"", $categories)).', atau null',
             'city'         => 'Kota penempatan, contoh: Hamamatsu',
             'prefecture'   => 'Prefektur penempatan, contoh: Shizuoka',
-            'positions'    => 'Jumlah orang yang dicari (angka), atau null',
             'job_order'    => $jobOrder,
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
@@ -88,9 +87,6 @@ class JobOrderImport
         $put('title.id', self::text($data['title'] ?? null));
         $put('location_city', self::text($data['city'] ?? null));
         $put('location_prefecture', self::text($data['prefecture'] ?? null));
-        if (is_numeric($data['positions'] ?? null) && (int) $data['positions'] > 0) {
-            $fields['positions'] = (int) $data['positions'];
-        }
         $put('visa_category_id', self::matchName(VisaCategory::all(), $data['visa'] ?? null));
         $put('job_category_id', self::matchName(JobCategory::all(), $data['job_category'] ?? null));
 

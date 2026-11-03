@@ -106,7 +106,7 @@ class JobOrder
     public static function forDocument(JobVacancy $vacancy): array
     {
         $data = $vacancy->job_order ?? [];
-        data_fill($data, 'company.name', $vacancy->company?->name);
+        data_set($data, 'company.name', self::companyName($vacancy));
 
         $out = [];
         foreach (self::sections() as $key => $section) {
@@ -211,10 +211,22 @@ class JobOrder
         ];
     }
 
-    /** The company name a candidate sees: the Job Order's (may be "Dirahasiakan"), else the company's. */
+    /**
+     * The company name a candidate sees: the Job Order's (may be
+     * "Dirahasiakan"), else the company's. A Japanese name gets the
+     * company's Latin name after it: "浪速運送株式会社 (Naniwa Unso Co., Ltd.)".
+     */
     public static function companyName(JobVacancy $vacancy): ?string
     {
-        return data_get($vacancy->job_order, 'company.name') ?: $vacancy->company?->name;
+        $name  = trim((string) data_get($vacancy->job_order, 'company.name')) ?: $vacancy->company?->name;
+        $latin = $vacancy->company?->name;
+
+        if ($name && $latin && preg_match('/[\p{Han}\p{Hiragana}\p{Katakana}]/u', $name)
+            && ! preg_match('/[\p{Han}\p{Hiragana}\p{Katakana}]/u', $latin) && ! str_contains($name, $latin)) {
+            return "{$name} ({$latin})";
+        }
+
+        return $name;
     }
 
     /** "Job Order – Truck Driver – Fujisouko Co., Ltd. [TG - Driver]" */
