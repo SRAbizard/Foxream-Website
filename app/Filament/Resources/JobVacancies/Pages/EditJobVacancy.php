@@ -12,6 +12,11 @@ class EditJobVacancy extends EditRecord
 {
     protected static string $resource = JobVacancyResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return JobVacancyResource::completeData($data, $this->record);
+    }
+
     protected function getHeaderActions(): array
     {
         return [

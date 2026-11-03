@@ -1599,5 +1599,21 @@
     "Its companies and their job postings stay, without a TSK.": "Perusahaan dan lowongannya tetap ada, tapi tanpa TSK.",
     "Their companies and job postings stay, without a TSK.": "Perusahaan dan lowongannya tetap ada, tapi tanpa TSK.",
     "Use a phone number: digits, and +, - or spaces if needed.": "Isi dengan nomor telepon: angka, boleh dengan +, - atau spasi.",
-    "Shown instead of the name on the Japanese site.": "Ditampilkan menggantikan nama di situs bahasa Jepang."
+    "Shown instead of the name on the Japanese site.": "Ditampilkan menggantikan nama di situs bahasa Jepang.",
+    "The job": "Lowongan",
+    "Job title": "Judul lowongan",
+    "e.g. Food factory operator": "mis. Operator pabrik makanan",
+    "Students see this job as a recommendation in this field.": "Lowongan ini muncul sebagai rekomendasi untuk siswa di bidang ini.",
+    "Per": "Per",
+    "Job description": "Deskripsi pekerjaan",
+    "Write in Indonesian. English and Japanese are translated automatically when you save.": "Tulis dalam Bahasa Indonesia saja. Versi English dan Jepang diterjemahkan otomatis saat disimpan.",
+    "Write in Indonesian. Visitors on the English and Japanese site see this text until a translation is added below.": "Tulis dalam Bahasa Indonesia saja. Pengunjung situs English dan Jepang melihat teks ini sampai terjemahan diisi di bawah.",
+    "English & Japanese": "English & Jepang",
+    "Optional. Correct the automatic translation here. Empty a field to translate it again from Indonesian on the next save.": "Opsional. Perbaiki hasil terjemahan otomatis di sini. Kosongkan isian agar diterjemahkan ulang dari Bahasa Indonesia saat disimpan berikutnya.",
+    "More settings": "Pengaturan lainnya",
+    "Closes on": "Ditutup pada",
+    "Link (slug)": "Link (slug)",
+    "Made from the title when left empty.": "Dibuat otomatis dari judul jika dikosongkan.",
+    "Saved without automatic translation": "Tersimpan tanpa terjemahan otomatis",
+    "The Indonesian text is shown until a translation is added.": "Teks Bahasa Indonesia ditampilkan sampai terjemahan diisi."
 }

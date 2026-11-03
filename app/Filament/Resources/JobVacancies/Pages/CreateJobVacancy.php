@@ -7,4 +7,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateJobVacancy extends CreateRecord
 {
     protected static string $resource = JobVacancyResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        return JobVacancyResource::completeData($data);
+    }
 }

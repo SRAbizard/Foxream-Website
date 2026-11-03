@@ -3,11 +3,11 @@
 namespace App\Filament\Resources\JobVacancies;
 
 use App\Filament\Resources\JobVacancies\Pages;
-use App\Filament\Support\TranslatableTabs;
 use App\Models\Company;
 use App\Models\JobCategory;
 use App\Models\JobVacancy;
 use App\Models\VisaCategory;
+use App\Support\JapaneseTranslator;
 use App\Support\JobOrder;
 use BackedEnum;
 use Filament\Forms\Components\CheckboxList;
@@ -62,10 +62,19 @@ class JobVacancyResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
+        // The admin writes in Indonesian only; English and Japanese are
+        // translated on save (completeData) and can be corrected, folded away.
+        $editor = fn (string $path, string $label) => RichEditor::make($path)->label($label)
+            ->toolbarButtons(['bold', 'italic', 'link', 'bulletList', 'orderedList', 'h3', 'undo', 'redo']);
+        $translations = fn (string $locale) => [
+            TextInput::make("title.{$locale}")->label(__('Job title'))->maxLength(191),
+            $editor("description.{$locale}", __('Job description')),
+            $editor("requirements.{$locale}", __('Requirements')),
+            $editor("benefits.{$locale}", __('Benefits')),
+        ];
+
         return $schema->components([
-            Section::make(__('Basics'))->columns(2)->components([
-                TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(120)
-                    ->live(onBlur: true)->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? ''))),
+            Section::make(__('The job'))->columns(2)->components([
                 // Companies grouped by their TSK: TSK → company → job posting.
                 Select::make('company_id')->label(__('Company'))->required()
                     ->options(fn () => Company::with('tsk')->orderBy('name')->get()
@@ -73,56 +82,135 @@ class JobVacancyResource extends Resource
                         ->sortKeys()
                         ->map(fn ($companies) => $companies->pluck('name', 'id')->all())
                         ->all())
-                    ->searchable(),
-                Select::make('job_category_id')->label(__('Job Category'))
-                    ->options(fn () => JobCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')]))->searchable(),
-                Select::make('visa_category_id')->label(__('Visa Category'))
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(function ($state, $get, $set) {
+                        if (blank($get('location_city')) && ($city = Company::find($state)?->city)) {
+                            $set('location_city', $city);
+                        }
+                    }),
+                TextInput::make('title.id')->label(__('Job title'))->required()->maxLength(191)
+                    ->placeholder(__('e.g. Food factory operator')),
+                Select::make('job_category_id')->label(__('Job Category'))->required()
+                    ->options(fn () => JobCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')]))->searchable()
+                    ->helperText(__('Students see this job as a recommendation in this field.')),
+                Select::make('visa_category_id')->label(__('Visa Category'))->required()
                     ->options(fn () => VisaCategory::orderBy('sort_order')->get()->mapWithKeys(fn ($c) => [$c->id => $c->t('name')]))->searchable(),
-                Select::make('employment_type')
+                TextInput::make('location_city')->label(__('City'))->maxLength(80),
+                TextInput::make('location_prefecture')->label(__('Prefecture'))->maxLength(80),
+                TextInput::make('positions')->label(__('Positions'))->numeric()->default(1)->minValue(1),
+                Select::make('employment_type')->label(__('Employment type'))
                     ->options([
                         'fulltime'   => __('Full-time'),
                         'parttime'   => __('Part-time'),
                         'contract'   => __('Contract'),
                         'internship' => __('Internship'),
                     ])->default('fulltime')->required(),
-                TextInput::make('positions')->numeric()->default(1)->minValue(1),
-            ]),
-            TranslatableTabs::for('title', TextInput::class, label: __('Title'), required: true),
-            TranslatableTabs::for('description', RichEditor::class, label: __('Description'), required: true),
-            TranslatableTabs::for('requirements', RichEditor::class, label: __('Requirements')),
-            TranslatableTabs::for('benefits', RichEditor::class, label: __('Benefits')),
-            Section::make(__('Job detail document'))
-                ->description(__('Upload the full job-spec PDF (or DOC/image). Candidates can download it from the public job-detail page.'))
-                ->components([
-                    FileUpload::make('detail_pdf_path')
-                        ->label(__('Job detail file'))
-                        ->disk('public')
-                        ->directory('jobs/details')
-                        ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png'])
-                        ->maxSize(10240) // 10MB
-                        ->columnSpanFull(),
-                ]),
-            static::jobOrderSection(),
-            Section::make(__('Location'))->columns(2)->components([
-                TextInput::make('location_city')->label(__('City'))->maxLength(80),
-                TextInput::make('location_prefecture')->label(__('Prefecture'))->maxLength(80),
             ]),
             Section::make(__('Salary'))->columns(4)->components([
                 TextInput::make('salary_min')->numeric()->label(__('Min')),
                 TextInput::make('salary_max')->numeric()->label(__('Max')),
-                Select::make('salary_currency')->options(['JPY' => 'JPY', 'IDR' => 'IDR', 'USD' => 'USD'])->default('JPY'),
-                Select::make('salary_period')->options([
+                Select::make('salary_currency')->label(__('Currency'))->options(['JPY' => 'JPY', 'IDR' => 'IDR', 'USD' => 'USD'])->default('JPY'),
+                Select::make('salary_period')->label(__('Per'))->options([
                     'monthly' => __('Monthly'),
                     'yearly'  => __('Yearly'),
                     'hourly'  => __('Hourly'),
                 ])->default('monthly'),
             ]),
-            Section::make(__('Publishing'))->columns(3)->components([
-                DateTimePicker::make('published_at')->seconds(false)->default(now()),
-                DatePicker::make('expires_at'),
-                Toggle::make('is_featured')->inline(false),
+            Section::make(__('Description'))
+                ->description(JapaneseTranslator::enabled()
+                    ? __('Write in Indonesian. English and Japanese are translated automatically when you save.')
+                    : __('Write in Indonesian. Visitors on the English and Japanese site see this text until a translation is added below.'))
+                ->components([
+                    $editor('description.id', __('Job description'))->required(),
+                    $editor('requirements.id', __('Requirements')),
+                    $editor('benefits.id', __('Benefits')),
+                ]),
+            Section::make(__('English & Japanese'))
+                ->description(__('Optional. Correct the automatic translation here. Empty a field to translate it again from Indonesian on the next save.'))
+                ->collapsed()
+                ->components([
+                    Tabs::make('translations')->tabs([
+                        Tab::make('EN · English')->schema($translations('en')),
+                        Tab::make('JA · 日本語')->schema($translations('ja')),
+                    ]),
+                ]),
+            static::jobOrderSection(),
+            Section::make(__('More settings'))->collapsed()->columns(3)->components([
+                DateTimePicker::make('published_at')->label(__('Published at'))->seconds(false)->default(now()),
+                DatePicker::make('expires_at')->label(__('Closes on')),
+                Toggle::make('is_featured')->label(__('Featured'))->inline(false),
+                FileUpload::make('detail_pdf_path')
+                    ->label(__('Job detail file'))
+                    ->helperText(__('Upload the full job-spec PDF (or DOC/image). Candidates can download it from the public job-detail page.'))
+                    ->disk('public')
+                    ->directory('jobs/details')
+                    ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png'])
+                    ->maxSize(10240) // 10MB
+                    ->columnSpanFull(),
+                TextInput::make('slug')->label(__('Link (slug)'))->unique(ignoreRecord: true)->maxLength(120)
+                    ->helperText(__('Made from the title when left empty.'))
+                    ->dehydrateStateUsing(fn ($state) => Str::slug($state ?? ''))
+                    ->columnSpanFull(),
             ]),
         ]);
+    }
+
+    /** Translatable columns: written in Indonesian, translated to the other locales. */
+    public const TRANSLATED = ['title', 'description', 'requirements', 'benefits'];
+
+    /**
+     * Before saving: a slug from the title when there is none, and English
+     * and Japanese for every text the admin left empty in those languages.
+     */
+    public static function completeData(array $data, ?JobVacancy $record = null): array
+    {
+        if (blank($data['slug'] ?? null)) {
+            $data['slug'] = static::uniqueSlug((string) ($data['title']['id'] ?? ''), $record?->getKey());
+        }
+
+        if (! JapaneseTranslator::enabled()) {
+            return $data;
+        }
+
+        $text = fn ($value) => trim(strip_tags((string) $value));
+        foreach (['en' => 'EN-US', 'ja' => 'JA'] as $locale => $target) {
+            $missing = collect(self::TRANSLATED)
+                ->filter(fn ($f) => $text($data[$f]['id'] ?? '') !== '' && $text($data[$f][$locale] ?? '') === '')
+                ->values();
+            if ($missing->isEmpty()) {
+                continue;
+            }
+
+            try {
+                // One call per language; HTML mode keeps the editor's formatting.
+                $done = JapaneseTranslator::many($missing->map(fn ($f) => (string) $data[$f]['id'])->all(), $target, html: true);
+            } catch (\RuntimeException $e) {
+                \Filament\Notifications\Notification::make()->warning()
+                    ->title(__('Saved without automatic translation'))
+                    ->body($e->getMessage().' '.__('The Indonesian text is shown until a translation is added.'))
+                    ->send();
+
+                return $data;
+            }
+
+            foreach ($missing as $i => $field) {
+                $data[$field][$locale] = $field === 'title' ? html_entity_decode($done[$i], ENT_QUOTES | ENT_HTML5) : $done[$i];
+            }
+        }
+
+        return $data;
+    }
+
+    protected static function uniqueSlug(string $title, ?int $ignore = null): string
+    {
+        $base = Str::limit(Str::slug($title), 100, '') ?: 'lowongan';
+        $slug = $base;
+        for ($i = 2; JobVacancy::where('slug', $slug)->when($ignore, fn ($q) => $q->whereKeyNot($ignore))->exists(); $i++) {
+            $slug = "{$base}-{$i}";
+        }
+
+        return $slug;
     }
 
     /**
@@ -150,7 +238,7 @@ class JobVacancyResource extends Resource
 
         return Section::make(__('Job Order'))
             ->description(__('Fill this in to generate the "Terjemahan Job Order" PDF (buttons at the top of this page after saving). Empty fields are left out. In long fields, start a line with "- " to make a bullet point.'))
-            ->collapsible()
+            ->collapsed()
             ->columns(2)
             ->components([
                 TextInput::make('job_order_code')->label(__('Job Order code'))->placeholder('TG - PM')->maxLength(40)

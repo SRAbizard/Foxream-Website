@@ -1600,5 +1600,21 @@
     "Its companies and their job postings stay, without a TSK.": "会社と求人は残りますが、登録支援機関なしになります。",
     "Their companies and job postings stay, without a TSK.": "会社と求人は残りますが、登録支援機関なしになります。",
     "Use a phone number: digits, and +, - or spaces if needed.": "電話番号を入力してください（数字、必要なら＋・－・スペース）。",
-    "Shown instead of the name on the Japanese site.": "日本語サイトでは、名前の代わりにこちらを表示します。"
+    "Shown instead of the name on the Japanese site.": "日本語サイトでは、名前の代わりにこちらを表示します。",
+    "The job": "求人",
+    "Job title": "求人タイトル",
+    "e.g. Food factory operator": "例：食品工場オペレーター",
+    "Students see this job as a recommendation in this field.": "この職種の学生におすすめとして表示されます。",
+    "Per": "単位",
+    "Job description": "仕事内容",
+    "Write in Indonesian. English and Japanese are translated automatically when you save.": "インドネシア語で入力してください。保存時に英語と日本語へ自動翻訳されます。",
+    "Write in Indonesian. Visitors on the English and Japanese site see this text until a translation is added below.": "インドネシア語で入力してください。下に翻訳を入力するまで、英語・日本語サイトにもこの文章が表示されます。",
+    "English & Japanese": "英語・日本語",
+    "Optional. Correct the automatic translation here. Empty a field to translate it again from Indonesian on the next save.": "任意。自動翻訳はここで修正できます。空欄にすると、次回保存時にインドネシア語から再翻訳されます。",
+    "More settings": "その他の設定",
+    "Closes on": "募集締切",
+    "Link (slug)": "URL（スラッグ）",
+    "Made from the title when left empty.": "空欄の場合はタイトルから自動作成されます。",
+    "Saved without automatic translation": "自動翻訳なしで保存しました",
+    "The Indonesian text is shown until a translation is added.": "翻訳が入力されるまでインドネシア語の文章が表示されます。"
 }

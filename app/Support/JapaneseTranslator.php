@@ -26,9 +26,11 @@ final class JapaneseTranslator
 
     /**
      * @param  list<string>  $texts
+     * @param  string  $target  DeepL target language, e.g. JA or EN-US
+     * @param  bool  $html  the texts are HTML (rich editor content), so tags are kept
      * @return list<string> in the same order
      */
-    public static function many(array $texts): array
+    public static function many(array $texts, string $target = 'JA', bool $html = false): array
     {
         if (! self::enabled()) {
             throw new RuntimeException(__('Translation is not set up yet. Please tell the admin.'));
@@ -41,12 +43,13 @@ final class JapaneseTranslator
         try {
             $response = Http::withHeaders(['Authorization' => 'DeepL-Auth-Key '.$key])
                 ->timeout(30)
-                ->post($host.'/v2/translate', [
+                ->post($host.'/v2/translate', array_filter([
                     'text'                => array_map('trim', array_values($texts)),
-                    'target_lang'         => 'JA',
+                    'target_lang'         => $target,
                     'formality'           => 'prefer_more',   // です・ます, as on a 履歴書
                     'preserve_formatting' => true,
-                ]);
+                    'tag_handling'        => $html ? 'html' : null,
+                ]));
         } catch (ConnectionException $e) {
             report($e);
             throw new RuntimeException(__('Translation failed. Please try again.'));
