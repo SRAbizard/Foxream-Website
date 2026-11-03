@@ -9,7 +9,9 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
+use Filament\Support\Enums\Width;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Js;
 use RuntimeException;
@@ -64,8 +66,12 @@ class ImportJobOrder
                             ->label(__('Copy the instructions'))
                             ->icon('heroicon-o-document-duplicate')
                             ->color('gray')
-                            ->alpineClickHandler(fn () => 'window.navigator.clipboard.writeText('.Js::from(JobOrderImport::prompt()).').then(() => '
-                                .'new FilamentNotification().title('.Js::from(__('Instructions copied')).').success().send())'),
+                            ->alpineClickHandler(fn () => self::copyScript(JobOrderImport::prompt())),
+                    ]),
+                    // For when the browser blocks copying: the admin selects and copies it by hand.
+                    Section::make(__('Show the instructions'))->collapsible()->collapsed()->compact()->schema([
+                        Textarea::make('prompt')->hiddenLabel()->rows(8)->readOnly()->dehydrated(false)
+                            ->default(fn () => JobOrderImport::prompt()),
                     ]),
                     Textarea::make('answer')->label(__('Reply from the AI'))
                         ->placeholder('{ "title": "…", "job_order": { … } }')
@@ -84,7 +90,30 @@ class ImportJobOrder
             ->label(__('Import from PDF'))
             ->icon('heroicon-o-document-arrow-up')
             ->button()
-            ->color('gray');
+            ->color('gray')
+            ->dropdownWidth(Width::ExtraSmall);
+    }
+
+    /**
+     * Copy the text to the clipboard. The Clipboard API needs https (or
+     * localhost) and the browser's permission, so fall back to a hidden
+     * textarea, and if that fails too, point to "Show the instructions".
+     */
+    private static function copyScript(string $text): string
+    {
+        $done = 'new FilamentNotification().title('.Js::from(__('Instructions copied')).').success().send()';
+        $fail = 'new FilamentNotification().title('.Js::from(__('The browser blocked copying')).')'
+            .'.body('.Js::from(__('Open "Show the instructions", select all the text and copy it (Ctrl+C).')).').warning().send()';
+
+        return 'const text = '.Js::from($text).';'
+            .'(navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())'
+            .'.then(() => '.$done.')'
+            .'.catch(() => {'
+            .' const t = document.createElement(\'textarea\'); t.value = text; t.style.position = \'fixed\'; t.style.opacity = \'0\';'
+            .' $el.parentNode.appendChild(t); t.select();'
+            .' let ok = false; try { ok = document.execCommand(\'copy\'); } catch (e) {}'
+            .' t.remove(); ok ? '.$done.' : '.$fail.';'
+            .'})';
     }
 
     /** Put the AI's answer into the form (create or edit page) without saving. */
@@ -100,6 +129,7 @@ class ImportJobOrder
             ->title(__(':count fields filled in from the job order', ['count' => count($fields)]))
             ->body(collect([
                 $company ? __('The company ":name" is not registered yet: add it under Companies, or pick it in the form.', ['name' => $company]) : null,
+                ! $company && blank(data_get($livewire->data, 'company_id')) ? __('Pick the company in the form: the job order does not name a registered one.') : null,
                 __('Check every field, then press Save.'),
             ])->filter()->join(' '))
             ->persistent()

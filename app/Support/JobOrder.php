@@ -150,8 +150,14 @@ class JobOrder
             ['label' => 'Bahasa Jepang', 'value' => data_get($jo, 'qualification.language')],
             ['label' => 'Libur per Tahun', 'value' => data_get($jo, 'hours.annual_holidays')],
         ])
-            // Boxes are small: keep the figure, drop the explanation in brackets.
-            ->map(fn ($h) => ['label' => $h['label'], 'value' => trim(preg_replace('/\s*\(.*$/us', '', (string) $h['value']))])
+            // Boxes are small: keep the figure of the first line, without its bullet,
+            // a lead-in like "Tanpa shift malam:" or the explanation in brackets.
+            ->map(function ($h) {
+                $value = preg_replace('/^[-•*]\s*/u', '', trim(strtok(trim((string) $h['value']), "\n") ?: ''));
+                $value = preg_replace('/^[^:¥\d\n]{1,40}:\s*(?=\S)/u', '', $value);
+
+                return ['label' => $h['label'], 'value' => trim(preg_replace('/\s*\(.*$/us', '', $value))];
+            })
             ->filter(fn ($h) => $h['value'] !== '')->values()->all();
     }
 
