@@ -2,137 +2,238 @@
 
 @section('title', __('Contact') . ' — '.\App\Support\Brand::name())
 @section('og_title', __('Contact :brand'))
-@section('og_description', __('Get in touch with our team for consultation or job opportunities in Japan.'))
+@section('og_description', __('For candidates and for companies in Japan: free consultation with our team.'))
+
+@php
+    // The company side, as on the old For Employers page.
+    $why = [
+        ['選考', __('Screened candidates'), __('We check documents, skills and motivation before a candidate ever reaches your interview.')],
+        ['日本語', __('Japanese & work culture'), __('Candidates train at :learning: JLPT/JFT preparation plus Japanese workplace manners.')],
+        ['ビザ', __('Documents & visa handled'), __('We prepare the paperwork through to the Certificate of Eligibility and departure.')],
+        ['支援', __('Support after arrival'), __('A contact person for your new staff, so they settle in and stay.')],
+    ];
+    $process = [
+        [__('Consultation'), __('Tell us the role, number of workers, visa route and timing.')],
+        [__('Candidate selection'), __('We shortlist candidates who match your requirements.')],
+        ['Mensetsu', __('Online or on-site interviews with your team.')],
+        [__('Visa & COE'), __('Contracts, medical check-up, documents and the COE.')],
+        [__('Arrival & follow-up'), __('Departure, onboarding and support once they start.')],
+    ];
+    $whatsapp = \App\Support\SiteSettings::contact('whatsapp');
+    $phone    = \App\Support\SiteSettings::contact('phone');
+    $email    = \App\Support\SiteSettings::contact('email');
+    $offices  = \App\Support\SiteSettings::offices();
+@endphp
 
 @section('content')
 <x-jp.page-hero
-    :eyebrow="__('Contact')"
-    :title="__('Let\'s talk about your Japan journey.')"
-    :subtitle="__('Free consultation. Our team replies within 24 hours.')"
+    :eyebrow="__('Contact') . ' · お問い合わせ'"
+    :title="__('Let\'s talk.')"
+    :subtitle="__('Looking for a job in Japan, or for workers from Indonesia? Free consultation, in Indonesian, Japanese or English.')"
     :petals="10" />
 
-<section class="pb-24">
-    <div class="mx-auto max-w-7xl px-6 grid gap-10 lg:grid-cols-3">
+<div x-data="{ who: @js($for) }">
+    <section class="pb-16">
+        <div class="pj-wrap grid gap-8 lg:grid-cols-3">
 
-        {{-- LEFT: Form --}}
-        <div class="lg:col-span-2">
-            <form id="contact-form" action="{{ route('contact.store') }}" method="POST" class="glass-card p-6 lg:p-10 space-y-5">
-                @csrf
-                <x-honeypot />
-
-                @if (session('status'))
-                    <div class="rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-emerald-300 text-sm">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                @if ($errors->any())
-                    <div class="rounded-xl border border-brand-500/40 bg-brand-500/10 px-4 py-3 text-brand-200 text-sm">
-                        <p class="font-semibold">{{ __('Please correct the errors below:') }}</p>
-                        <ul class="mt-1 list-disc list-inside space-y-0.5">
-                            @foreach ($errors->all() as $err)
-                                <li>{{ $err }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <div class="grid gap-5 sm:grid-cols-2">
-                    <label class="block">
-                        <span class="text-sm font-medium text-surface-200">{{ __('Name') }} <span class="text-brand-500">*</span></span>
-                        <input type="text" name="name" required maxlength="120" value="{{ old('name') }}"
-                            class="mt-1.5 block w-full rounded-xl border border-surface-700 bg-surface-900/60 px-3.5 py-2.5 text-sm text-white placeholder-surface-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                            placeholder="{{ __('Your full name') }}">
-                        @error('name')<span class="mt-1 block text-xs text-brand-400">{{ $message }}</span>@enderror
-                    </label>
-                    <label class="block">
-                        <span class="text-sm font-medium text-surface-200">{{ __('Email') }} <span class="text-brand-500">*</span></span>
-                        <input type="email" name="email" required maxlength="191" value="{{ old('email') }}"
-                            class="mt-1.5 block w-full rounded-xl border border-surface-700 bg-surface-900/60 px-3.5 py-2.5 text-sm text-white placeholder-surface-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                            placeholder="you@example.com">
-                        @error('email')<span class="mt-1 block text-xs text-brand-400">{{ $message }}</span>@enderror
-                    </label>
-                </div>
-
-                <label class="block">
-                    <span class="text-sm font-medium text-surface-200">{{ __('Phone') }} <span class="text-surface-500 text-xs">({{ __('optional') }})</span></span>
-                    <input type="tel" name="phone" maxlength="32" value="{{ old('phone') }}"
-                        class="mt-1.5 block w-full rounded-xl border border-surface-700 bg-surface-900/60 px-3.5 py-2.5 text-sm text-white placeholder-surface-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                        placeholder="+62 8xx-xxxx-xxxx">
-                </label>
-
-                <label class="block">
-                    <span class="text-sm font-medium text-surface-200">{{ __('Subject') }} <span class="text-brand-500">*</span></span>
-                    <input type="text" name="subject" required maxlength="191" value="{{ old('subject') }}"
-                        class="mt-1.5 block w-full rounded-xl border border-surface-700 bg-surface-900/60 px-3.5 py-2.5 text-sm text-white placeholder-surface-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                        placeholder="{{ __('What is your question about?') }}">
-                    @error('subject')<span class="mt-1 block text-xs text-brand-400">{{ $message }}</span>@enderror
-                </label>
-
-                <label class="block">
-                    <span class="text-sm font-medium text-surface-200">{{ __('Message') }} <span class="text-brand-500">*</span></span>
-                    <textarea name="message" required rows="6" minlength="10" maxlength="5000"
-                        class="mt-1.5 block w-full rounded-xl border border-surface-700 bg-surface-900/60 px-3.5 py-2.5 text-sm text-white placeholder-surface-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                        placeholder="{{ __('Tell us a bit about what you need…') }}">{{ old('message') }}</textarea>
-                    @error('message')<span class="mt-1 block text-xs text-brand-400">{{ $message }}</span>@enderror
-                </label>
-
-                <div class="flex items-center justify-between flex-wrap gap-3">
-                    <p class="text-xs text-surface-500">{!! __('By submitting, you agree to our :link.', ['link' => '<a href="'.e(route('legal.privacy')).'" class="underline">'.e(__('Privacy Policy')).'</a>']) !!}</p>
-                    <button type="submit" class="btn-brand">
-                        {{ __('Send message') }}
-                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
+            <div class="lg:col-span-2" id="contact-form">
+                {{-- Who is writing: the form follows. --}}
+                <div class="pj-contact-who" role="tablist" aria-label="{{ __('I am') }}">
+                    <button type="button" role="tab" :aria-selected="who === 'candidate'" :class="who === 'candidate' && 'is-on'" @click="who = 'candidate'">
+                        {{ __('A candidate') }} <small>{{ __('looking for a job in Japan') }}</small>
+                    </button>
+                    <button type="button" role="tab" :aria-selected="who === 'employer'" :class="who === 'employer' && 'is-on'" @click="who = 'employer'">
+                        {{ __('A company') }} · 企業の方 <small>{{ __('looking for workers') }}</small>
                     </button>
                 </div>
-            </form>
-        </div>
 
-        {{-- RIGHT: Contact info --}}
-        <aside class="space-y-4">
-            <div class="glass-card p-6">
-                <p class="text-xs uppercase tracking-wider text-brand-400 font-semibold">{{ __('Reach us directly') }}</p>
-                <div class="mt-5 space-y-4 text-sm">
-                    <a href="https://wa.me/{{ \App\Support\SiteSettings::contact('whatsapp') }}" target="_blank" rel="noopener" class="flex items-start gap-3 text-surface-200 hover:text-brand-400 transition">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400 shrink-0">
-                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4l-2.4-1.1c-.3-.1-.6-.1-.8.1l-1 1.1c-1.7-.9-3.1-2.2-4-3.9l1-1.1c.2-.2.2-.5.1-.7L9.4 6.4c-.1-.3-.4-.4-.7-.4H7.3c-.3 0-.6.2-.7.5-.2 3.2 1.1 6.3 3.4 8.6 2.3 2.3 5.3 3.6 8.6 3.4.3 0 .5-.4.5-.7v-1.5c0-.3-.2-.6-.4-.7l-1.2-.2zM12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
-                        </span>
-                        <span>
-                            <span class="block text-xs text-surface-400">WhatsApp</span>
-                            <span class="block">{{ \App\Support\SiteSettings::contact('phone') }}</span>
-                        </span>
-                    </a>
-                    <a href="mailto:{{ \App\Support\SiteSettings::contact('email') }}" class="flex items-start gap-3 text-surface-200 hover:text-brand-400 transition">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500/15 text-brand-400 shrink-0">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M3 8l2-2h14l2 2"/></svg>
-                        </span>
-                        <span>
-                            <span class="block text-xs text-surface-400">Email</span>
-                            <span class="block">{{ \App\Support\SiteSettings::contact('email') }}</span>
-                        </span>
-                    </a>
+                {{-- Candidates --}}
+                <form x-show="who === 'candidate'" @if($for !== 'candidate') x-cloak @endif action="{{ route('contact.store') }}" method="POST" class="pj-form pj-card">
+                    @csrf
+                    <x-honeypot />
+                    <input type="hidden" name="for" value="candidate">
+
+                    @if (session('status') && $for === 'candidate')
+                        <div class="pj-alert is-ok" role="status">{{ session('status') }}</div>
+                    @endif
+                    @if ($errors->any() && $for === 'candidate')
+                        <div class="pj-alert is-err" role="alert">{{ __('Please correct the errors below:') }}</div>
+                    @endif
+
+                    <div class="pj-form-grid">
+                        <label><span>{{ __('Name') }} <span class="req">*</span></span>
+                            <input class="pj-input" type="text" name="name" required maxlength="120" value="{{ $for === 'candidate' ? old('name') : '' }}" placeholder="{{ __('Your full name') }}">
+                            @if($for === 'candidate') @error('name')<span class="pj-err">{{ $message }}</span>@enderror @endif
+                        </label>
+                        <label><span>{{ __('Email') }} <span class="req">*</span></span>
+                            <input class="pj-input" type="email" name="email" required maxlength="191" value="{{ $for === 'candidate' ? old('email') : '' }}" placeholder="you@example.com">
+                            @if($for === 'candidate') @error('email')<span class="pj-err">{{ $message }}</span>@enderror @endif
+                        </label>
+                        <label><span>{{ __('Phone') }} <span class="opt">({{ __('optional') }})</span></span>
+                            <input class="pj-input" type="tel" name="phone" maxlength="32" value="{{ $for === 'candidate' ? old('phone') : '' }}" placeholder="+62 8xx-xxxx-xxxx">
+                        </label>
+                        <label><span>{{ __('Subject') }} <span class="req">*</span></span>
+                            <input class="pj-input" type="text" name="subject" required maxlength="191" value="{{ $for === 'candidate' ? old('subject') : '' }}" placeholder="{{ __('What is your question about?') }}">
+                            @if($for === 'candidate') @error('subject')<span class="pj-err">{{ $message }}</span>@enderror @endif
+                        </label>
+                    </div>
+                    <label><span>{{ __('Message') }} <span class="req">*</span></span>
+                        <textarea class="pj-input" name="message" required rows="6" minlength="10" maxlength="5000" placeholder="{{ __('Tell us a bit about what you need…') }}">{{ $for === 'candidate' ? old('message') : '' }}</textarea>
+                        @if($for === 'candidate') @error('message')<span class="pj-err">{{ $message }}</span>@enderror @endif
+                    </label>
+                    <div class="pj-form-foot">
+                        <p>{!! __('By submitting, you agree to our :link.', ['link' => '<a href="'.e(route('legal.privacy')).'" class="underline">'.e(__('Privacy Policy')).'</a>']) !!}</p>
+                        <button type="submit" class="pj-btn is-red">{{ __('Send message') }} →</button>
+                    </div>
+                </form>
+
+                {{-- Companies in Japan --}}
+                <form x-show="who === 'employer'" @if($for !== 'employer') x-cloak @endif action="{{ route('contact.employer') }}" method="POST" class="pj-form pj-card">
+                    @csrf
+                    <x-honeypot />
+                    <input type="hidden" name="for" value="employer">
+
+                    @if (session('status') && $for === 'employer')
+                        <div class="pj-alert is-ok" role="status">{{ session('status') }}</div>
+                    @endif
+                    @if ($errors->any() && $for === 'employer')
+                        <div class="pj-alert is-err" role="alert">{{ __('Please correct the errors below:') }}</div>
+                    @endif
+
+                    <p class="pj-lede">{{ __('Tell us what you need. Our team replies within 1–2 business days, in Japanese, English or Indonesian.') }}</p>
+
+                    <div class="pj-form-grid">
+                        <label><span>{{ __('Company name') }} <span class="req">*</span></span>
+                            <input class="pj-input" type="text" name="company" required maxlength="160" value="{{ old('company') }}">
+                            @error('company')<span class="pj-err">{{ $message }}</span>@enderror
+                        </label>
+                        <label><span>{{ __('Contact person') }} <span class="req">*</span></span>
+                            <input class="pj-input" type="text" name="name" required maxlength="120" value="{{ $for === 'employer' ? old('name') : '' }}">
+                            @if($for === 'employer') @error('name')<span class="pj-err">{{ $message }}</span>@enderror @endif
+                        </label>
+                        <label><span>{{ __('Email') }} <span class="req">*</span></span>
+                            <input class="pj-input" type="email" name="email" required maxlength="191" value="{{ $for === 'employer' ? old('email') : '' }}">
+                            @if($for === 'employer') @error('email')<span class="pj-err">{{ $message }}</span>@enderror @endif
+                        </label>
+                        <label>{{ __('Phone') }}
+                            <input class="pj-input" type="tel" name="phone" maxlength="40" value="{{ $for === 'employer' ? old('phone') : '' }}">
+                        </label>
+                        <label>{{ __('Location (prefecture / city)') }}
+                            <input class="pj-input" type="text" name="location" maxlength="120" value="{{ old('location') }}" placeholder="Aichi, Nagoya">
+                        </label>
+                        <label>{{ __('Field') }}
+                            <select class="pj-input" name="field">
+                                <option value="">—</option>
+                                @foreach($categories as $c)
+                                    <option value="{{ $c->t('name') }}" @selected(old('field') === $c->t('name'))>{{ $c->t('name') }}</option>
+                                @endforeach
+                                <option value="{{ __('Other') }}" @selected(old('field') === __('Other'))>{{ __('Other') }}</option>
+                            </select>
+                        </label>
+                        <label>{{ __('Visa route') }}
+                            <select class="pj-input" name="visa">
+                                <option value="">{{ __('Not sure yet') }}</option>
+                                @foreach($visas as $v)
+                                    <option value="{{ $v->t('name') }}" @selected(old('visa') === $v->t('name'))>{{ $v->t('name') }}</option>
+                                @endforeach
+                            </select>
+                        </label>
+                        <label>{{ __('Workers needed') }}
+                            <input class="pj-input" type="number" name="workers" min="1" max="999" value="{{ old('workers') }}">
+                            @error('workers')<span class="pj-err">{{ $message }}</span>@enderror
+                        </label>
+                    </div>
+                    <label>{{ __('Preferred start') }}
+                        <input class="pj-input" type="text" name="start" maxlength="120" value="{{ old('start') }}" placeholder="{{ __('e.g. April 2027') }}">
+                    </label>
+                    <label>{{ __('Message') }}
+                        <textarea class="pj-input" name="message" rows="5" maxlength="5000" placeholder="{{ __('Job details, working conditions, anything we should know…') }}">{{ $for === 'employer' ? old('message') : '' }}</textarea>
+                    </label>
+                    <div class="pj-form-foot">
+                        <p>{!! __('By submitting, you agree to our :link.', ['link' => '<a href="'.e(route('legal.privacy')).'" class="underline">'.e(__('Privacy Policy')).'</a>']) !!}</p>
+                        <button type="submit" class="pj-btn is-red">{{ __('Send request') }} →</button>
+                    </div>
+                </form>
+            </div>
+
+            {{-- Reach us directly --}}
+            <aside class="space-y-4">
+                @if($whatsapp || $email)
+                    <div class="pj-card pj-contact-card">
+                        <p class="pj-contact-label">{{ __('Reach us directly') }}</p>
+                        @if($whatsapp)
+                            <a href="https://wa.me/{{ $whatsapp }}" target="_blank" rel="noopener">
+                                <span class="ico is-green"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4l-2.4-1.1c-.3-.1-.6-.1-.8.1l-1 1.1c-1.7-.9-3.1-2.2-4-3.9l1-1.1c.2-.2.2-.5.1-.7L9.4 6.4c-.1-.3-.4-.4-.7-.4H7.3c-.3 0-.6.2-.7.5-.2 3.2 1.1 6.3 3.4 8.6 2.3 2.3 5.3 3.6 8.6 3.4.3 0 .5-.4.5-.7v-1.5c0-.3-.2-.6-.4-.7l-1.2-.2zM12 2a10 10 0 100 20 10 10 0 000-20z"/></svg></span>
+                                <span><small>WhatsApp</small>{{ $phone ?: '+'.$whatsapp }}</span>
+                            </a>
+                        @endif
+                        @if($email)
+                            <a href="mailto:{{ $email }}">
+                                <span class="ico"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M3 8l2-2h14l2 2"/></svg></span>
+                                <span><small>Email</small>{{ $email }}</span>
+                            </a>
+                        @endif
+                    </div>
+                @endif
+
+                @if(count($offices))
+                    <div class="pj-card pj-contact-card">
+                        <p class="pj-contact-label">{{ __('Offices') }}</p>
+                        @foreach($offices as $office)
+                            <a href="{{ $office['maps_url'] }}" target="_blank" rel="noopener noreferrer" title="{{ __('Open in Google Maps') }}">
+                                <span class="ico"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg></span>
+                                <span><b>{{ $office['city'] }}</b> · {{ $office['country'] }}<small>{{ $office['address'] }}</small></span>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </aside>
+        </div>
+    </section>
+
+    {{-- The company side: why us and how hiring works. --}}
+    <div x-show="who === 'employer'" @if($for !== 'employer') x-cloak @endif>
+        <section class="pj-section pt-0!">
+            <div class="pj-wrap">
+                <div class="pj-head">
+                    <h2><span class="jp">選ばれる理由</span>{{ __('Why companies work with us') }}</h2>
+                </div>
+                <div class="pj-cards-4">
+                    @foreach($why as [$jp, $title, $desc])
+                        <div class="pj-mini-step pj-card">
+                            <span class="n">{{ $jp }}</span>
+                            <h3>{{ $title }}</h3>
+                            <p>{{ $desc }}</p>
+                        </div>
+                    @endforeach
                 </div>
             </div>
+        </section>
 
-            <div class="glass-card p-6">
-                <p class="text-xs uppercase tracking-wider text-brand-400 font-semibold">{{ __('Offices') }}</p>
-                <ul class="mt-4 space-y-3 text-sm">
-                    @foreach(\App\Support\SiteSettings::offices() as $office)
-                        <li>
-                            <a href="{{ $office['maps_url'] }}" target="_blank" rel="noopener noreferrer"
-                               title="{{ __('Open in Google Maps') }}"
-                               class="block -mx-2 px-2 py-1.5 rounded-lg hover:bg-surface-800/60 transition group">
-                                <p class="font-semibold text-white group-hover:text-brand-400 inline-flex items-center gap-1.5">
-                                    {{ $office['city'] }}
-                                    <span class="text-surface-500 font-normal">· {{ $office['country'] }}</span>
-                                    <svg class="h-3 w-3 opacity-0 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                </p>
-                                <p class="text-xs text-surface-400 mt-0.5">{{ $office['address'] }}</p>
-                            </a>
+        <section class="pj-section pt-0!">
+            <div class="pj-wrap">
+                <div class="pj-head">
+                    <h2><span class="jp">流れ</span>{{ __('How hiring works') }}</h2>
+                </div>
+                <ol class="pj-tickets" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); list-style: none; padding: 0;">
+                    @foreach($process as $i => [$title, $desc])
+                        <li class="pj-ticket">
+                            <span class="n">0{{ $i + 1 }}</span>
+                            <h4>{{ $title }}</h4>
+                            <p class="text-sm opacity-80">{{ $desc }}</p>
                         </li>
                     @endforeach
-                </ul>
+                </ol>
+                @if($categories->isNotEmpty())
+                    <div class="mt-8">
+                        <p class="text-xs font-extrabold tracking-[.14em] uppercase opacity-70 mb-3">{{ __('Fields we recruit for') }}</p>
+                        <div class="pj-chips">
+                            @foreach($categories as $c)<span class="pj-chip">{{ $c->t('name') }}</span>@endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
-        </aside>
+        </section>
     </div>
-</section>
+</div>
 @endsection

@@ -157,7 +157,7 @@
         </div>
         <div class="mt-8 flex flex-wrap gap-3">
             <a href="{{ route('about') }}" wire:navigate class="pj-btn">{{ __('About :brand') }} →</a>
-            <a href="{{ route('employers') }}" wire:navigate class="pj-btn is-gold">{{ __('For Japanese companies') }} →</a>
+            <a href="{{ route('contact', ['for' => 'employer']) }}" wire:navigate class="pj-btn is-gold">{{ __('For Japanese companies') }} →</a>
         </div>
     </div>
 </section>

@@ -37,10 +37,11 @@ Route::post('jobs/{slug}/apply',  [\App\Http\Controllers\JobController::class, '
     ->name('job.apply');
 
 Route::get('services', \App\Http\Controllers\ServicesController::class)->name('services');
-Route::get('for-employers',  [\App\Http\Controllers\EmployerController::class, 'show'])->name('employers');
-Route::post('for-employers', [\App\Http\Controllers\EmployerController::class, 'store'])
+// For Employers is now the company side of the contact page.
+Route::redirect('for-employers', '/contact?for=employer', 301)->name('employers');
+Route::post('contact/employer', [ContactController::class, 'employer'])
     ->middleware('throttle:5,1')
-    ->name('employers.store');
+    ->name('contact.employer');
 
 Route::get('privacy-policy', [\App\Http\Controllers\LegalController::class, 'privacy'])->name('legal.privacy');
 Route::get('terms',          [\App\Http\Controllers\LegalController::class, 'terms'])->name('legal.terms');

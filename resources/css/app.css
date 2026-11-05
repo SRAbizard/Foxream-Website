@@ -623,7 +623,7 @@ html.light .pj-footer .text-white { color: #F5EDE0 !important; }
 .pj-match-row .pj-head h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); }
 @media (max-width: 1100px) { .pj-match-row { grid-template-columns: 1fr; } }
 
-/* forms (employer inquiry, …) */
+/* forms (contact page, …) */
 .pj-form { display: grid; gap: 1rem; padding: clamp(18px, 3vw, 30px); }
 .pj-form label { display: grid; gap: .35rem; font-size: .85rem; font-weight: 700; }
 .pj-form .req { color: var(--pj-red); }
@@ -639,8 +639,30 @@ html.light .pj-footer .text-white { color: #F5EDE0 !important; }
 .pj-alert.is-ok { background: color-mix(in srgb, var(--pj-matcha) 22%, var(--pj-kami)); }
 .pj-alert.is-err { background: color-mix(in srgb, var(--pj-sakura) 70%, var(--pj-kami)); }
 .pj-err { font-size: .78rem; color: var(--pj-red); font-weight: 600; }
+.pj-form .opt { font-weight: 500; opacity: .6; font-size: .78rem; }
+.pj-form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; font-size: .78rem; opacity: .9; }
+[x-cloak] { display: none !important; }
 
-/* services + employers pages */
+/* contact page: candidate or company, then the form */
+.pj-contact-who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-bottom: 1rem; }
+.pj-contact-who button {
+    display: grid; gap: .15rem; text-align: left; padding: .8rem 1rem; border: 2.5px solid var(--pj-line); border-radius: 14px;
+    background: var(--pj-kami); color: var(--pj-ink); font-weight: 800; box-shadow: 3px 3px 0 var(--pj-shadow-c); transition: transform .12s, background .12s;
+}
+.pj-contact-who button small { font-weight: 500; font-size: .78rem; opacity: .7; }
+.pj-contact-who button:hover { transform: translate(-1px, -1px); }
+.pj-contact-who button.is-on { background: var(--pj-red); color: #FFFAF2; }
+.pj-contact-who button.is-on small { opacity: .85; }
+@media (max-width: 560px) { .pj-contact-who { grid-template-columns: 1fr; } }
+.pj-contact-card { display: grid; gap: .9rem; padding: 1.25rem; }
+.pj-contact-label { font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--pj-red); }
+.pj-contact-card a { display: grid; grid-template-columns: auto 1fr; gap: .75rem; align-items: start; font-size: .9rem; }
+.pj-contact-card a:hover { color: var(--pj-red); }
+.pj-contact-card small { display: block; font-size: .75rem; opacity: .65; }
+.pj-contact-card .ico { display: inline-grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 10px; border: 2px solid var(--pj-line); background: var(--pj-washi); }
+.pj-contact-card .ico.is-green { background: color-mix(in srgb, var(--pj-matcha) 35%, var(--pj-kami)); }
+
+/* services page and the contact page's company side */
 .pj-route-card { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(18px, 3vw, 36px); padding: clamp(20px, 3vw, 34px); }
 .pj-route-card + .pj-route-card { margin-top: 1.75rem; }
 .pj-route-card h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3.5vw, 2.6rem); line-height: 1.05; }
@@ -657,8 +679,6 @@ html.light .pj-footer .text-white { color: #F5EDE0 !important; }
 .pj-mini-step .n { font-family: var(--font-display); font-size: 1.6rem; color: var(--pj-red); line-height: 1; }
 .pj-mini-step h3 { font-weight: 800; }
 .pj-mini-step p { font-size: .88rem; opacity: .8; }
-.pj-employer { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(20px, 3vw, 40px); align-items: start; }
-@media (max-width: 960px) { .pj-employer { grid-template-columns: 1fr; } }
 
 /* gallery polaroids */
 /* Seigaiha waves, a big 思い出 ("memories") watermark and washi tape keep
