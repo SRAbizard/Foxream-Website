@@ -184,7 +184,7 @@ class SiteSettings
         if (self::uploaded($path)) {
             return asset('storage/'.$path);
         }
-        // Default: Mt Fuji framed by sakura (Unsplash, free to use)
+        // Default: an illustration of Mt Fuji at sunset, with a pagoda and sakura
         return asset('images/login/japan.jpg');
     }
 
