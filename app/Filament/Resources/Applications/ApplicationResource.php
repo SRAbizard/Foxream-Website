@@ -13,6 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\View;
@@ -76,19 +77,20 @@ class ApplicationResource extends Resource
 
             // Our assessment, for the candidate list sent to the company (Companies → Candidate list).
             Section::make(__('Candidate assessment'))->collapsible()
-                ->description(__('For the candidate list sent to the company. Scores from 1 to 5; they can also be picked in the Excel file, like the religious devotion.'))
+                ->description(__('For the candidate list sent to the company. Tattoo, debts and colour blindness come from the student\'s profile.'))
                 ->components([
-                    Grid::make(['default' => 2, 'lg' => 5])->schema(
-                        collect(CandidateList::SCORES)->map(fn ($ja, $key) => Select::make('assessment.'.$key)
-                            ->label(__(CandidateList::SCORE_LABELS[$key]))
-                            ->options(CandidateList::scoreOptions())->native(false))->values()->all(),
-                    ),
-                    Grid::make(['default' => 2, 'lg' => 4])->schema([
-                        Toggle::make('assessment.recommended')->label(__('Recommended (⭐)'))->inline(false),
-                        Toggle::make('assessment.tattoo')->label(__('Has a tattoo'))->inline(false),
-                        Toggle::make('assessment.debt')->label(__('Has debts'))->inline(false),
-                        Toggle::make('assessment.color_blind')->label(__('Colour blind'))->inline(false),
+                    // As on the list: the overall score, then the four it is made of.
+                    Grid::make(['default' => 1, 'md' => 3])->schema([
+                        self::score('overall'),
+                        Select::make('assessment.devotion')->label(__('Religious devotion (信仰心の強さ)'))
+                            ->options(CandidateList::devotionOptions())->placeholder('—')->native(false),
+                        Toggle::make('assessment.recommended')->label(__('Recommended (⭐)'))
+                            ->helperText(__('Put first on the list, with a star.'))->inline(false),
                     ]),
+                    Fieldset::make(__('Scores (1 to 5)'))
+                        ->columns(['default' => 1, 'sm' => 2, 'lg' => 4])
+                        ->schema(collect(CandidateList::SCORES)->keys()->reject(fn ($key) => $key === 'overall')
+                            ->map(fn ($key) => self::score($key))->values()->all()),
                 ]),
 
             // After passing, each section opens once the application reaches its step.
@@ -123,6 +125,13 @@ class ApplicationResource extends Resource
                         ->placeholder(__('Airline, flight number, from Soekarno-Hatta (CGK) to …, meeting point and time at the airport')),
                 ]),
         ]);
+    }
+
+    /** One of the assessment's scores, 1 to 5 by halves. */
+    private static function score(string $key): Select
+    {
+        return Select::make('assessment.'.$key)->label(__(CandidateList::SCORE_LABELS[$key]))
+            ->options(CandidateList::scoreOptions())->placeholder('—')->native(false);
     }
 
     private static function file(string $column, string $label): FileUpload

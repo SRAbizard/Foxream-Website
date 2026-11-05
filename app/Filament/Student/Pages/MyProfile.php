@@ -16,6 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Group;
@@ -60,7 +61,7 @@ class MyProfile extends Page implements HasForms
                 'address', 'city', 'province', 'postal_code',
                 'emergency_contact_name', 'emergency_contact_relation', 'emergency_contact_phone',
                 'height_cm', 'weight_kg', 'blood_type',
-                'eats_pork', 'smoker', 'drinker', 'photo_path',
+                'eats_pork', 'smoker', 'drinker', 'has_tattoo', 'has_debt', 'colour_blind', 'photo_path',
                 'name_kana', 'nationality', 'desired_job', 'line_id',
                 'japan_visits_study', 'japan_visits_work', 'japan_visits_other', 'self_pr', 'self_pr_ja', 'cv_other',
             ]) ?? [],
@@ -247,6 +248,12 @@ class MyProfile extends Page implements HasForms
                             Toggle::make('studentProfile.eats_pork')->label(__('Eats pork'))->inline(false),
                             Toggle::make('studentProfile.drinker')->label(__('Drinks alcohol'))->inline(false),
                             Toggle::make('studentProfile.smoker')->label(__('Smoker'))->inline(false),
+                        ]),
+                        // Companies ask these; they go on the candidate list we send them.
+                        Section::make(__('Questions from the companies'))->columns(3)->components([
+                            ToggleButtons::make('studentProfile.has_tattoo')->label(__('Do you have a tattoo?'))->boolean()->inline()->grouped(),
+                            ToggleButtons::make('studentProfile.has_debt')->label(__('Do you have any debts?'))->boolean()->inline()->grouped(),
+                            ToggleButtons::make('studentProfile.colour_blind')->label(__('Are you colour blind?'))->boolean()->inline()->grouped(),
                         ]),
                     ]),
 

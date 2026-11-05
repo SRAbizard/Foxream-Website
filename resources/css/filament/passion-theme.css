@@ -712,9 +712,9 @@ a.pja-title:hover { color: var(--pj-red); }
 @media (prefers-reduced-motion: reduce) { .pja-track .is-now .pja-dot { animation: none; } }
 
 /* ===================================================================
-   LOCAL ONLY · demo account switcher (bottom right; the music button is bottom left)
+   LOCAL ONLY · demo account switcher (bottom left, next to the music button; forms keep their buttons bottom right)
    =================================================================== */
-.pj-demo { position: fixed; right: 1rem; bottom: 1rem; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; }
+.pj-demo { position: fixed; left: 4.75rem; bottom: 1.15rem; z-index: 60; display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; }
 .pj-demo-btn {
     display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .8rem; border-radius: 999px;
     border: 2.5px solid var(--pj-line); background: var(--pj-kin); color: #1D1730; font-size: .75rem; font-weight: 800;

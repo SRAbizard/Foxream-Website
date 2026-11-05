@@ -33,6 +33,9 @@ class StudentProfile extends Model
             'licenses'                 => 'array',
             'visa_request'             => 'array',
             'eats_pork'                => 'boolean',
+            'has_tattoo'               => 'boolean',
+            'has_debt'                 => 'boolean',
+            'colour_blind'             => 'boolean',
         ];
     }
 

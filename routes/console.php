@@ -57,7 +57,7 @@ Artisan::command('demo:setup', function () {
     }
     [$admin, $student] = \App\Support\DemoAccounts::setUp();
     $this->info("Ready: {$admin->name} ({$admin->email}) and {$student->name} ({$student->email}, CV filled in).");
-    $this->line('Switch between them with the "Demo" button at the bottom right of the panels.');
+    $this->line('Switch between them with the "Demo" button at the bottom left of the panels.');
     $this->line('Register more students with an @demo.test email: they show up in the switcher, no email needed.');
     $this->line('Skip typing their CV with: php artisan demo:cv <email>');
 })->purpose('Create the demo admin and student for trying the journey locally');

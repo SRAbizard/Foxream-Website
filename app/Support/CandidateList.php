@@ -51,9 +51,9 @@ class CandidateList
     private const HEADER_BLUE = '4A86E8';
     private const SCORE_YELLOW = 'FFF2CC';
 
-    /** 信仰心の強さ is chosen in the file itself, from these. */
+    /** 信仰心の強さ: assessment value => the list's word (also a dropdown in the file). */
     private const DEVOTION_ROW = '信仰心の強さ';
-    private const DEVOTION = ['強い', '普通', '弱い'];
+    private const DEVOTION = ['strong' => '強い', 'normal' => '普通', 'light' => '弱い'];
     private const MARITAL = ['single' => '未婚', 'married' => '既婚', 'divorced' => '離婚', 'widowed' => '死別'];
     private const LICENSES = ['sim_b1' => '中型車免許（B1免許）', 'sim_a' => '普通車免許（A免許）'];
 
@@ -61,6 +61,14 @@ class CandidateList
     public static function scoreOptions(): array
     {
         return collect(self::scores())->mapWithKeys(fn ($n) => [(string) $n => (string) $n])->all();
+    }
+
+    /** Religious devotion for the admin's dropdown, with the list's word. */
+    public static function devotionOptions(): array
+    {
+        $labels = ['strong' => __('Strong'), 'normal' => __('Normal'), 'light' => __('Light')];
+
+        return collect(self::DEVOTION)->mapWithKeys(fn ($ja, $key) => [$key => $labels[$key].' ('.$ja.')'])->all();
     }
 
     /** @return array<int, float|int> */
@@ -146,7 +154,7 @@ class CandidateList
     private static function dropdowns(Worksheet $sheet, array $labels, int $candidates): void
     {
         $last = Coordinate::stringFromColumnIndex($candidates + 1);
-        $lists = [self::DEVOTION_ROW => self::DEVOTION] + array_fill_keys(array_values(self::SCORES), self::scores());
+        $lists = [self::DEVOTION_ROW => array_values(self::DEVOTION)] + array_fill_keys(array_values(self::SCORES), self::scores());
 
         foreach ($labels as $r => $label) {
             if (! isset($lists[$label])) {
@@ -171,7 +179,7 @@ class CandidateList
     private static function rows(bool $driver): array
     {
         $p = fn (Application $a) => $a->user?->studentProfile;
-        $yesNo = fn (bool $yes) => $yes ? '有' : '無';
+        $yesNo = fn (?bool $yes) => $yes === null ? '' : ($yes ? '有' : '無');
 
         $rows = [
             '写真'     => fn () => '',
@@ -186,12 +194,13 @@ class CandidateList
         }
         $rows += [
             '来日歴'     => fn (Application $a) => $yesNo(((int) $p($a)?->japan_visits_study + (int) $p($a)?->japan_visits_work + (int) $p($a)?->japan_visits_other) > 0),
-            'タトゥー'   => fn (Application $a) => $yesNo(! empty($a->assessment['tattoo'])),
-            '借金'       => fn (Application $a) => $yesNo(! empty($a->assessment['debt'])),
+            // Answered by the student on the profile; blank until they do.
+            'タトゥー'   => fn (Application $a) => $yesNo($p($a)?->has_tattoo),
+            '借金'       => fn (Application $a) => $yesNo($p($a)?->has_debt),
             '宗教'       => fn (Application $a) => Rirekisho::religion($p($a)?->religion) ?? (string) $p($a)?->religion,
-            self::DEVOTION_ROW => fn () => '',   // filled in by hand from the dropdown
+            self::DEVOTION_ROW => fn (Application $a) => self::DEVOTION[$a->assessment['devotion'] ?? ''] ?? '',
             'BMI'        => fn (Application $a) => self::bmi($p($a)?->height_cm, $p($a)?->weight_kg),
-            '色盲検査'   => fn (Application $a) => $yesNo(! empty($a->assessment['color_blind'])),
+            '色盲検査'   => fn (Application $a) => $yesNo($p($a)?->colour_blind),
             '既往症'     => fn (Application $a) => filled($p($a)?->medical_conditions) ? (string) $p($a)->medical_conditions : '無',
             // As on the CV, whose 健康状態 is always 良好.
             '体力'       => fn () => '〇',

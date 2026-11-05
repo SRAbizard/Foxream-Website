@@ -6,7 +6,7 @@
 {{-- Local install only: sign in as a demo account in one click (php artisan demo:setup). --}}
 @if($accounts->isNotEmpty())
     <div class="pj-demo" x-data="{ open: false }" @keydown.escape.window="open = false" @click.outside="open = false">
-        <div class="pj-demo-menu" x-show="open" x-transition.origin.bottom.right x-cloak>
+        <div class="pj-demo-menu" x-show="open" x-transition.origin.bottom.left x-cloak>
             <p class="pj-demo-head">{{ __('Sign in as') }} <small>{{ __('demo accounts, this laptop only') }}</small></p>
             <ul>
                 @foreach($accounts as $user)

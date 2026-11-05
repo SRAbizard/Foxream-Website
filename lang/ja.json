@@ -1679,9 +1679,6 @@
     "Knowledge & skills": "専門知識・スキル",
     "Japanese conversation": "日本語会話力",
     "Recommended (⭐)": "おすすめ（⭐）",
-    "Has a tattoo": "タトゥーあり",
-    "Has debts": "借金あり",
-    "Colour blind": "色覚異常あり",
     "Candidate list (Excel)": "候補者リスト（Excel）",
     "Candidate list for the company": "企業向け候補者リスト",
     "In Japanese, one sheet per job, with the photo, our assessment and a link to each CV (valid for 60 days). Fill in the assessment on each application first.": "日本語で、求人ごとに1シート。写真、当社の評価、各履歴書のリンク（60日間有効）付き。先に各応募の評価を入力してください。",
@@ -1703,6 +1700,16 @@
     "Current semester": "現在の学期",
     "Students in semester 1–2 or 6 and above cannot join the internship yet.": "1〜2学期、または6学期以上の学生はインターンシップに参加できません。",
     "Latest transcript": "最新の成績証明書",
-    "For the candidate list sent to the company. Scores from 1 to 5; they can also be picked in the Excel file, like the religious devotion.": "企業に送る候補者リスト用です。1〜5で評価します。信仰心の強さと同様に、Excelファイルでも選べます。",
-    "Only applications at the ticked steps go on the list. E.g. tick only Screening with the Japan team to send the candidates the company will screen next.": "チェックしたステップの応募だけがリストに入ります。例：次に企業が面談する候補者を送るなら「日本チームの面談」だけをチェックします。"
+    "Only applications at the ticked steps go on the list. E.g. tick only Screening with the Japan team to send the candidates the company will screen next.": "チェックしたステップの応募だけがリストに入ります。例：次に企業が面談する候補者を送るなら「日本チームの面談」だけをチェックします。",
+    "Questions from the companies": "企業からの質問",
+    "Do you have a tattoo?": "タトゥーはありますか？",
+    "Do you have any debts?": "借金はありますか？",
+    "Are you colour blind?": "色覚異常はありますか？",
+    "For the candidate list sent to the company. Tattoo, debts and colour blindness come from the student's profile.": "企業に送る候補者リスト用です。タトゥー・借金・色覚は学生のプロフィールから取ります。",
+    "Scores (1 to 5)": "評価の内訳（1〜5）",
+    "Religious devotion (信仰心の強さ)": "信仰心の強さ",
+    "Put first on the list, with a star.": "リストの先頭に⭐付きで載ります。",
+    "Strong": "強い",
+    "Normal": "普通",
+    "Light": "弱い"
 }
