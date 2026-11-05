@@ -49,8 +49,8 @@ Route::get('fees',           [\App\Http\Controllers\LegalController::class, 'fee
 Route::get('gallery',         [\App\Http\Controllers\GalleryController::class, 'index'])->name('gallery.index');
 Route::get('gallery/{slug}',  [\App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
 
-// The learning platform is PJI Learning. Old /elearning links forward
-// there — or home, until the PJI Learning URL is set in Website Settings.
+// The learning platform lives on its own site. Old /elearning links forward
+// there — or home, until its URL is set in Website Settings.
 Route::get('elearning/{any?}', fn () => redirect()->away(SiteSettings::academyUrl() ?? url('/')))
     ->where('any', '.*');
 

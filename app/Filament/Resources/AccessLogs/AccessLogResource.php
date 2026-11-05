@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 /**
- * Access history, as in PJI Learning: logins (also failed ones) and what
+ * Access history, as in the learning platform: logins (also failed ones) and what
  * students do, with IP and device. Admins with "manage students" see the
  * students' lines; superadmins see everyone's.
  */

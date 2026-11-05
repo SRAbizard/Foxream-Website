@@ -1,7 +1,7 @@
 <p>These Terms &amp; Conditions govern your use of the website and services of {{ $company }} (“we”). By creating an account or using this website, you confirm that you have read, understood and agreed to these Terms &amp; Conditions and our <a href="{{ route('legal.privacy', [], false) }}">Privacy Policy</a>.</p>
 
 <h2>1. Our services</h2>
-<p>We provide information on work programmes in Japan (Tokutei Ginou, Internship and Engineer), job openings from partner companies, and a platform for registration, document management and job applications. Language training is provided through a separate platform, PJI Learning.</p>
+<p>We provide information on work programmes in Japan (Tokutei Ginou, Internship and Engineer), job openings from partner companies, and a platform for registration, document management and job applications. Language training is provided through a separate platform, {{ \App\Support\Brand::learning() }}.</p>
 
 <h2>2. User accounts</h2>
 <ul>

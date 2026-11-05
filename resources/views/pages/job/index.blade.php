@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('title', __('Job Vacancies') . ' — Passion Japan Indonesia')
-@section('og_title', __('Find your Japan job — Passion Japan Indonesia'))
+@section('title', __('Job Vacancies') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Find your Japan job — :brand'))
 
 @php
     $activeFilterCount = collect(['visa','category','region','city','q'])->filter(fn ($k) => filled(request($k)))->count();

@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
- * Maps a student's profile onto the Passion Japan 履歴書 (Japanese CV):
+ * Maps a student's profile onto our 履歴書 (Japanese CV):
  * basic information, education & work history, licences, self-PR and
  * other notes. Values follow the agency's filled-in example (e.g.
  * "School　(Major – S1)", "-" for missing contact details) and the
@@ -212,7 +212,7 @@ class Rirekisho
     {
         $name = $user->studentProfile?->full_name ?: $user->name;
 
-        return 'PASSION JAPAN INDONESIA_履歴書_'.Str::upper($name).'.'.$ext;
+        return Str::upper(\App\Support\Brand::name()).'_履歴書_'.Str::upper($name).'.'.$ext;
     }
 
     /** [year, month, day] for the "年 月 日 現在" line. */

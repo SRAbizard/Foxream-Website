@@ -65,7 +65,7 @@ return [
     |
     */
 
-    // Passion Japan works in Western Indonesia Time (WIB).
+    // The team works in Western Indonesia Time (WIB).
     'timezone' => env('APP_TIMEZONE', 'Asia/Jakarta'),
 
     /*

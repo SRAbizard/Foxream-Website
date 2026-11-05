@@ -16,9 +16,9 @@
     ];
 @endphp
 
-@section('title', __('About Us') . ' — Passion Japan Indonesia')
-@section('og_title', __('About Passion Japan Indonesia'))
-@section('og_description', __('Learn how Passion Japan Indonesia helps Indonesian talent build successful careers in Japan.'))
+@section('title', __('About Us') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('About :brand'))
+@section('og_description', __('Learn how :brand helps Indonesian talent build successful careers in Japan.'))
 
 @section('content')
 
@@ -26,7 +26,7 @@
 <x-jp.page-hero
     :eyebrow="__('About Us')"
     :title="__('Bridging Indonesian talent with Japanese opportunity.')"
-    :subtitle="__('Passion Japan Indonesia is a career-and-education platform that prepares Indonesian workers and students for life and work in Japan — from language and culture training, to job placement and post-arrival support.')"
+    :subtitle="__(':brand is a career-and-education platform that prepares Indonesian workers and students for life and work in Japan — from language and culture training, to job placement and post-arrival support.')"
     :petals="12">
     @php $companyProfileUrl = \App\Support\SiteSettings::companyProfileUrl(); @endphp
     @if($companyProfileUrl)

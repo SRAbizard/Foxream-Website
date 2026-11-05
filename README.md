@@ -55,6 +55,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 ## Hak Cipta
 
-© 2026 PT. Passion Japan Indonesia. Seluruh hak cipta dilindungi.
-Kode sumber dan konten website ini milik PT. Passion Japan Indonesia dan tidak boleh disalin, disebarkan, atau digunakan tanpa izin tertulis.
+© 2026 Foxream. Seluruh hak cipta dilindungi.
+Kode sumber dan konten website ini milik Foxream dan tidak boleh disalin, disebarkan, atau digunakan tanpa izin tertulis.
 Website ini dibangun dengan framework Laravel (lisensi MIT).

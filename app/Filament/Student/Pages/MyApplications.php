@@ -53,13 +53,13 @@ class MyApplications extends Page
     public function nextStep(Application $app): ?array
     {
         $documents = [__('My Documents'), DocumentResource::getUrl('index')];
-        $academy = $this->getAcademyUrl() ? [__('Open PJI Learning'), $this->getAcademyUrl(), true] : null;
+        $academy = $this->getAcademyUrl() ? [__('Open :learning'), $this->getAcademyUrl(), true] : null;
 
         [$text, $link] = match ($app->status) {
             'submitted'    => [__('We received your application. Our Indonesia team will check your profile and documents soon.'), $documents],
             'screening_id' => [__('Our Indonesia team is checking your profile and documents. Make sure your documents are complete.'), $documents],
-            'screening_jp' => [__('Your profile has been sent to the team and the company in Japan, who may screen you more than once. Meanwhile, practise kaiwa with our Indonesia team and in PJI Learning.'), $academy],
-            'interview'    => [__('While you wait for the interview, practise kaiwa with our Indonesia team and in PJI Learning.'), $academy],
+            'screening_jp' => [__('Your profile has been sent to the team and the company in Japan, who may screen you more than once. Meanwhile, practise kaiwa with our Indonesia team and in :learning.'), $academy],
+            'interview'    => [__('While you wait for the interview, practise kaiwa with our Indonesia team and in :learning.'), $academy],
             'passed'       => [__('Congratulations, you passed! Complete your documents in My Documents.'), $documents],
             'contract', 'coe', 'visa' => [__('Follow the steps below: contract, COE, visa and departure.'), null],
             'departure'    => [__('Get ready to fly! Your departure details are below.'), null],

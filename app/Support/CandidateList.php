@@ -35,7 +35,7 @@ class CandidateList
 {
     /** Assessment scores (applications.assessment) => the list's row label. */
     public const SCORES = [
-        'overall'   => 'パッション評価（5段階）',
+        'overall'   => '総合評価（5段階）',
         'character' => '人間性',
         'growth'    => '成長・定着',
         'skill'     => '専門知識・スキル',
@@ -44,7 +44,7 @@ class CandidateList
 
     /** The same scores in the admin form. */
     public const SCORE_LABELS = [
-        'overall'   => 'Passion score',
+        'overall'   => 'Overall score',
         'character' => 'Character',
         'growth'    => 'Growth & staying power',
         'skill'     => 'Knowledge & skills',
@@ -102,7 +102,7 @@ class CandidateList
 
         $title = ($company->name_ja ?: $company->name).'の候補者リスト（LIST KANDIDAT '.Str::upper($company->name).'）';
         $book = new Spreadsheet();
-        $book->getProperties()->setTitle($title)->setCreator('Passion Japan Indonesia');
+        $book->getProperties()->setTitle($title)->setCreator(\App\Support\Brand::company());
         $book->removeSheetByIndex(0);
 
         foreach ($applications->groupBy('job_vacancy_id') as $group) {

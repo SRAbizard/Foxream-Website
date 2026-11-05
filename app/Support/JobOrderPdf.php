@@ -21,7 +21,7 @@ class JobOrderPdf
         ]);
         $title = JobOrder::documentTitle($vacancy);
         $mpdf->SetTitle($title);
-        $mpdf->SetAuthor('PT. Passion Japan Indonesia');
+        $mpdf->SetAuthor(\App\Support\Brand::company());
 
         $code = trim((string) $vacancy->job_order_code);
         $date = ($vacancy->published_at ?? now())->locale('id')->translatedFormat('j F Y');
@@ -34,7 +34,7 @@ class JobOrderPdf
             .'<span style="font-size: 7.5pt; color: #7d7062;">'.e(trim(($code !== '' ? $code.' · ' : '').$date)).'</span>'
             .'</td></tr></table>');
         $mpdf->SetHTMLFooter('<table width="100%" style="font-family: freesans; font-size: 7pt; color: #7d7062; border-top: 0.5pt solid #D8C9B2; padding-top: 3pt;"><tr>'
-            .'<td>PT. Passion Japan Indonesia · Isi dapat berubah sesuai keputusan perusahaan penerima.</td>'
+            .'<td>'.\App\Support\Brand::company().' · Isi dapat berubah sesuai keputusan perusahaan penerima.</td>'
             .'<td style="text-align: right;">{PAGENO} / {nbpg}</td></tr></table>');
 
         $titleId = $vacancy->t('title', 'id');

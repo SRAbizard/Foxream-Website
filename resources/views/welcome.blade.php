@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Passion Japan Indonesia') . ' — ' . __('Step Toward a Successful Career in Japan'))
+@section('title', __(':brand') . ' — ' . __('Step Toward a Successful Career in Japan'))
 
 @php
     use Illuminate\Support\Str;
@@ -131,7 +131,7 @@
 <section class="pj-statement">
     <div class="pj-wrap">
         <p class="big" data-pj-statement>
-            <span data-words>{{ __('Hundreds of Indonesians have already departed with Passion Japan.') }}</span>
+            <span data-words>{{ __('Hundreds of Indonesians have already departed with :brand.') }}</span>
             <span data-words data-hl>{{ __('The next mission is yours.') }}</span>
         </p>
         <div class="pj-stats">
@@ -156,7 +156,7 @@
             @endforeach
         </div>
         <div class="mt-8 flex flex-wrap gap-3">
-            <a href="{{ route('about') }}" wire:navigate class="pj-btn">{{ __('About Passion Japan') }} →</a>
+            <a href="{{ route('about') }}" wire:navigate class="pj-btn">{{ __('About :brand') }} →</a>
             <a href="{{ route('employers') }}" wire:navigate class="pj-btn is-gold">{{ __('For Japanese companies') }} →</a>
         </div>
     </div>
@@ -179,7 +179,7 @@
                 @php
                     $steps = [
                         ['登録', __('Create your profile'), __('Fill in your biodata and education, and upload documents from your dashboard.')],
-                        ['学習', __('Learn the language'), __('Level up your JLPT/JFT at PJI Learning.')],
+                        ['学習', __('Learn the language'), __('Level up your JLPT/JFT at :learning.')],
                         ['面接', 'Mensetsu', __('Online or offline interviews with Japanese companies.')],
                         ['ビザ', __('Visa & COE'), __('We handle the paperwork until your Certificate of Eligibility is issued.')],
                         ['出発', __('Depart!'), __('Fly to Japan and start your first day at work.')],
@@ -194,7 +194,7 @@
                             <p>
                                 {{ $desc }}
                                 @if($i === 1 && $academyUrl)
-                                    <a href="{{ $academyUrl }}" target="_blank" rel="noopener">{{ __('Open PJI Learning') }} ↗</a>
+                                    <a href="{{ $academyUrl }}" target="_blank" rel="noopener">{{ __('Open :learning') }} ↗</a>
                                 @endif
                             </p>
                         </div>
@@ -321,7 +321,7 @@
 <section class="pj-section pt-0!">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">会社紹介</span>{{ __('Get to know Passion Japan') }}</h2>
+            <h2><span class="jp">会社紹介</span>{{ __('Get to know :brand') }}</h2>
         </div>
         <div class="pj-video-frame pj-card mx-auto max-w-4xl">
             @if($companyVideo['type'] === 'youtube')

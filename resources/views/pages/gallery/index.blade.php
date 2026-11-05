@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('title', __('Gallery') . ' — Passion Japan Indonesia')
-@section('og_title', __('Gallery — Passion Japan Indonesia'))
+@section('title', __('Gallery') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Gallery — :brand'))
 @section('og_description', __('Photos and videos from our trainings, events, and student journeys.'))
 
 @section('content')

@@ -87,9 +87,9 @@ class RirekishoPdf
             'margin_footer' => 7,
         ]);
         $mpdf->SetTitle('履歴書 — '.$cv['name']);
-        $mpdf->SetAuthor('PT. Passion Japan Indonesia');
+        $mpdf->SetAuthor(\App\Support\Brand::company());
         $mpdf->SetHTMLFooter('<table width="100%" style="border-top: 0.6pt solid #999; font-family: bizmincho; font-size: 7.5pt;"><tr>'
-            .'<td style="padding-top: 3pt; color: #9E1B32; font-weight: bold;">PASSION JAPAN INDONESIA</td>'
+            .'<td style="padding-top: 3pt; color: #9E1B32; font-weight: bold;">'.e(mb_strtoupper(\App\Support\Brand::name())).'</td>'
             .'<td style="padding-top: 3pt; text-align: right; color: #999;">{PAGENO} / {nbpg}</td></tr></table>');
 
         try {

@@ -1,4 +1,4 @@
-{{-- Passion Japan 履歴書 (Japanese CV), rendered with mPDF. The grid follows
+{{-- The 履歴書 (Japanese CV), rendered with mPDF. The grid follows
      the agency's Word template: basic information, education & work
      history on page 1; licences, self-PR and notes on page 2.
      Data: App\Support\Rirekisho::data(). --}}
@@ -41,7 +41,7 @@
     <tr>
         <td><span class="title">履歴書</span>&nbsp;&nbsp;<span class="title-en">CURRICULUM VITAE</span></td>
         <td style="text-align: right;">
-            <div class="brand">PASSION JAPAN INDONESIA</div>
+            <div class="brand">{{ mb_strtoupper(\App\Support\Brand::name()) }}</div>
             <div class="asof">{{ $ty }} 年 {{ $tm }} 月 {{ $td }} 日 現在</div>
         </td>
     </tr>

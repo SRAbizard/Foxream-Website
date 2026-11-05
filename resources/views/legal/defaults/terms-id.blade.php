@@ -1,7 +1,7 @@
 <p>Syarat &amp; Ketentuan ini mengatur penggunaan website dan layanan {{ $company }} (“kami”). Dengan membuat akun atau menggunakan website ini, Anda dianggap telah membaca, memahami, dan menyetujui Syarat &amp; Ketentuan ini serta <a href="{{ route('legal.privacy', [], false) }}">Kebijakan Privasi</a> kami.</p>
 
 <h2>1. Layanan kami</h2>
-<p>Kami menyediakan informasi program kerja di Jepang (Tokutei Ginou, Internship/Magang, dan Engineer), lowongan dari perusahaan mitra, serta platform pendaftaran, pengelolaan dokumen, dan lamaran kerja. Pelatihan bahasa disediakan melalui platform terpisah, PJI Learning.</p>
+<p>Kami menyediakan informasi program kerja di Jepang (Tokutei Ginou, Internship/Magang, dan Engineer), lowongan dari perusahaan mitra, serta platform pendaftaran, pengelolaan dokumen, dan lamaran kerja. Pelatihan bahasa disediakan melalui platform terpisah, {{ \App\Support\Brand::learning() }}.</p>
 
 <h2>2. Akun pengguna</h2>
 <ul>

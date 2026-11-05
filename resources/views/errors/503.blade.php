@@ -16,9 +16,9 @@
         <p class="font-display text-7xl font-extrabold text-brand-500">503</p>
         <h1 class="mt-4 font-display text-3xl font-bold text-white">{{ __('We\'ll be back soon') }}</h1>
         <p class="mt-4 text-surface-300">
-            {{ __('Passion Japan Indonesia is undergoing scheduled maintenance. Please check back in a few minutes.') }}
+            {{ __(':brand is undergoing scheduled maintenance. Please check back in a few minutes.') }}
         </p>
-        <p class="mt-8 text-xs text-surface-500">Passion Japan Indonesia · {{ date('Y') }}</p>
+        <p class="mt-8 text-xs text-surface-500">{{ \App\Support\Brand::company() }} · {{ date('Y') }}</p>
     </main>
 </body>
 </html>

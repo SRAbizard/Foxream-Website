@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', $album->t('title') . ' — ' . __('Gallery'))
-@section('og_title', $album->t('title') . ' — Passion Japan Indonesia')
+@section('og_title', $album->t('title') . ' — '.\App\Support\Brand::name())
 @section('og_description', $album->t('caption') ?: __('Photos and videos from our trainings, events, and student journeys.'))
 
 @section('content')

@@ -51,8 +51,10 @@ class JobOrderImport
             'job_order'    => $jobOrder,
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
+        $company = \App\Support\Brand::company();
+
         return <<<PROMPT
-        Kamu membantu PT Passion Japan Indonesia menyalin job order (lowongan kerja di Jepang) ke formulir kami untuk calon pekerja dari Indonesia. Baca dokumen job order yang dilampirkan (bisa berbahasa Jepang, Inggris, atau Indonesia), lalu balas HANYA dengan satu objek JSON sesuai format di bawah, tanpa penjelasan apa pun.
+        Kamu membantu {$company} menyalin job order (lowongan kerja di Jepang) ke formulir kami untuk calon pekerja dari Indonesia. Baca dokumen job order yang dilampirkan (bisa berbahasa Jepang, Inggris, atau Indonesia), lalu balas HANYA dengan satu objek JSON sesuai format di bawah, tanpa penjelasan apa pun.
 
         Aturan:
         - Tulis semua isi dalam Bahasa Indonesia yang singkat dan jelas. Istilah Jepang yang penting boleh ditambahkan dalam kurung.

@@ -27,7 +27,7 @@ class StudentPanelProvider extends PanelProvider
         return $panel
             ->id('student')
             ->path('dashboard')
-            ->brandName('Passion Japan Indonesia')
+            ->brandName(fn () => \App\Support\Brand::name())
             ->brandLogo(fn () => view('filament.partials.brand-logo'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('images/favicon-32.png'))

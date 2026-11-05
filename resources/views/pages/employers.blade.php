@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', __('For Employers') . ' — Passion Japan Indonesia')
-@section('og_title', __('Hire skilled Indonesian workers — Passion Japan Indonesia'))
+@section('title', __('For Employers') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Hire skilled Indonesian workers — :brand'))
 @section('og_description', __('Screened candidates, Japanese language training and full visa support for companies in Japan.'))
 
 @php
     $why = [
         ['選考', __('Screened candidates'), __('We check documents, skills and motivation before a candidate ever reaches your interview.')],
-        ['日本語', __('Japanese & work culture'), __('Candidates train at PJI Learning: JLPT/JFT preparation plus Japanese workplace manners.')],
+        ['日本語', __('Japanese & work culture'), __('Candidates train at :learning: JLPT/JFT preparation plus Japanese workplace manners.')],
         ['ビザ', __('Documents & visa handled'), __('We prepare the paperwork through to the Certificate of Eligibility and departure.')],
         ['支援', __('Support after arrival'), __('A contact person for your new staff, so they settle in and stay.')],
     ];

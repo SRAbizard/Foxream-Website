@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', $title . ' — Passion Japan Indonesia')
-@section('og_title', $title . ' — Passion Japan Indonesia')
+@section('title', $title . ' — '.\App\Support\Brand::name())
+@section('og_title', $title . ' — '.\App\Support\Brand::name())
 @section('og_description', $subtitle)
 
 @section('content')

@@ -21,12 +21,12 @@ class CmsSeeder extends Seeder
     private function seedSettings(): void
     {
         $defaults = [
-            'contact.email'    => 'info@passionjapan.id',
+            'contact.email'    => 'info@example.com',
             'contact.phone'    => '+62 882-0078-85021',
             'contact.whatsapp' => '62882007885021',
-            'social.instagram' => 'https://instagram.com/passionjapan',
-            'social.facebook'  => 'https://facebook.com/passionjapan',
-            'social.tiktok'    => 'https://tiktok.com/@passionjapan',
+            'social.instagram' => null,
+            'social.facebook'  => null,
+            'social.tiktok'    => null,
             'stats.students'   => '3,300+',
             'stats.workers'    => '1,200+',
             'stats.companies'  => '100+',

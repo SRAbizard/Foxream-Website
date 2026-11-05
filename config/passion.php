@@ -28,7 +28,7 @@ return [
     */
     'bootstrap_admin' => [
         'name'     => env('BOOTSTRAP_ADMIN_NAME', 'Super Admin'),
-        'email'    => env('BOOTSTRAP_ADMIN_EMAIL', 'admin@passionjapan.id'),
+        'email'    => env('BOOTSTRAP_ADMIN_EMAIL', 'admin@example.com'),
         'password' => env('BOOTSTRAP_ADMIN_PASSWORD', 'password'),
     ],
 
@@ -45,10 +45,10 @@ return [
     'contact' => [
         'whatsapp'  => '62882007885021',
         'phone'     => '+62 882-0078-85021',
-        'email'     => 'info@passionjapan.id',
-        'instagram' => 'https://instagram.com/passionjapan',
-        'facebook'  => 'https://facebook.com/passionjapan',
-        'tiktok'    => 'https://tiktok.com/@passionjapan',
+        'email'     => null,
+        'instagram' => null,
+        'facebook'  => null,
+        'tiktok'    => null,
         'offices'   => [
             ['city' => 'Yokohama', 'country' => 'Japan',     'address' => 'Yokohama, Kanagawa, Japan'],
             ['city' => 'Brebes',   'country' => 'Indonesia', 'address' => 'Brebes, Jawa Tengah, Indonesia'],
@@ -98,8 +98,8 @@ return [
     'jpy_to_idr' => (float) env('PASSION_JPY_TO_IDR', 105),
 
     /*
-    | PJI Learning — the separate learning platform. Overridable
-    | under Admin → Website Settings → PJI Learning.
+    | The separate learning platform (config/brand.php names it). Overridable
+    | under Admin → Website Settings.
     */
     'academy' => [
         'url' => env('ACADEMY_URL'),

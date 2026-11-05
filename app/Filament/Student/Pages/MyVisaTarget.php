@@ -114,11 +114,11 @@ class MyVisaTarget extends Page implements HasForms
                     ->components([
                         ...$this->certificateFields('ssw', fn () => array_keys(Certificates::GROUPS['ssw'])),
                         Callout::make(__('No SSW certificate yet?'))
-                            ->description(__('Study for the test in the PJI Learning app, or join the offline training at Passion Japan Indonesia. Request this visa again once you have passed.'))
+                            ->description(__('Study for the test in the :learning app, or join the offline training at :brand. Request this visa again once you have passed.'))
                             ->info()
                             ->actions(array_filter([
                                 SiteSettings::academyUrl()
-                                    ? Action::make('pjiLearning')->label(__('Open PJI Learning'))->url(SiteSettings::academyUrl())->openUrlInNewTab()
+                                    ? Action::make('pjiLearning')->label(__('Open :learning'))->url(SiteSettings::academyUrl())->openUrlInNewTab()
                                     : null,
                                 Action::make('offlineTraining')->label(__('Ask about offline training'))->color('gray')
                                     ->url('https://wa.me/'.SiteSettings::contact('whatsapp').'?text='.rawurlencode(__('Hello, I would like to join the SSW offline training.')))

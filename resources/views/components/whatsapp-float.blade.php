@@ -1,4 +1,4 @@
-@props(['number' => \App\Support\SiteSettings::contact('whatsapp'), 'message' => 'Halo Passion Japan, saya ingin bertanya tentang program Anda.'])
+@props(['number' => \App\Support\SiteSettings::contact('whatsapp'), 'message' => 'Halo '.\App\Support\Brand::name().', saya ingin bertanya tentang program Anda.'])
 
 <a href="https://wa.me/{{ $number }}?text={{ urlencode($message) }}"
    target="_blank" rel="noopener"

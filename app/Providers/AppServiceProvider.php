@@ -11,6 +11,14 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        // Translations can write the brand as :brand, :company and :learning.
+        $this->app->extend('translator', function (\Illuminate\Translation\Translator $translator, $app) {
+            $brand = new \App\Support\BrandTranslator($translator->getLoader(), $translator->getLocale());
+            $brand->setFallback($translator->getFallback());
+
+            return $brand;
+        });
+
         // Route post-login redirects by role so /admin/login and
         // /dashboard/login behave identically for both admins and students.
         $this->app->bind(

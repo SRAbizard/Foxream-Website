@@ -6,7 +6,7 @@
 @source '../../../vendor/filament/**/*.blade.php';
 
 /* ─────────────────────────────────────────────────────────────────────
-   Passion Japan Indonesia — Filament panel theme (admin + student)
+   Filament panel theme (admin + student)
    Subtle Jejepangan touches:
      • Washi paper texture background
      • Sakura pink accent (used for focus, hover sparkle)
@@ -350,13 +350,13 @@ body:has(.pj-auth) .fi-simple-main .fi-link { color: var(--pj-red) !important; f
 }
 .fi-input-wrp:focus-within { border-color: var(--pj-red); box-shadow: 3px 3px 0 var(--pj-shadow-c) !important; }
 
-/* Brand logo (partials/brand-logo): PJi mark in the panel chrome, full
-   lockup on auth pages. */
-.pj-brand-mark { height: 2.6rem; width: auto; max-width: none; user-select: none; }
-.pj-brand-full { height: 7.5rem; width: auto; max-width: 100%; margin-inline: auto; user-select: none; }
-/* Filament pins the logo box to brandLogoHeight (2rem); let the full
-   lockup set its own height on the auth pages. */
-.fi-logo:has(> .pj-brand-full) { height: auto !important; margin-bottom: .5rem; }
+/* Brand logo (partials/brand-logo): the fox and the name in the panel
+   chrome, the stacked logo on the auth pages. */
+.pj-brand-horizontal { height: 2.1rem; width: auto; max-width: none; user-select: none; }
+.pj-brand-stacked { height: 7rem; width: auto; max-width: 100%; margin-inline: auto; user-select: none; }
+/* Filament pins the logo box to brandLogoHeight (2rem); let the stacked
+   logo set its own height on the auth pages. */
+.fi-logo:has(> .pj-brand-stacked) { height: auto !important; margin-bottom: .5rem; }
 
 /* Topbar language dropdown (partials/locale-switcher) */
 .pj-locale-trigger {

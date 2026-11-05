@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * One line of the access history (Admin → Access history), as in PJI
+ * One line of the access history (Admin → Access history), as in the learning platform
  * Learning: who did what, when, from which IP and device.
  */
 class AccessLog extends Model

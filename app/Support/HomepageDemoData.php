@@ -137,9 +137,9 @@ final class HomepageDemoData
                 'en' => "I don't speak Japanese yet — what should I do?",
                 'ja' => 'まだ日本語が話せませんが、どうすればいいですか？',
             ], 'a' => [
-                'id' => 'Anda bisa belajar dulu di PJI Learning, lembaga pelatihan bahasa Jepang kami. Setelah siap, lamar lowongan yang sesuai di website ini.',
-                'en' => 'You can start learning at PJI Learning, our Japanese language training institute. Once you are ready, apply for a matching job on this website.',
-                'ja' => 'まずは当社の日本語研修機関「PJI Learning」で学ぶことができます。準備ができたら、このサイトで条件に合う求人に応募してください。',
+                'id' => 'Anda bisa belajar dulu di '.\App\Support\Brand::learning().', lembaga pelatihan bahasa Jepang kami. Setelah siap, lamar lowongan yang sesuai di website ini.',
+                'en' => 'You can start learning at '.\App\Support\Brand::learning().', our Japanese language training institute. Once you are ready, apply for a matching job on this website.',
+                'ja' => 'まずは当社の日本語研修機関「'.\App\Support\Brand::learning().'」で学ぶことができます。準備ができたら、このサイトで条件に合う求人に応募してください。',
             ]],
             ['q' => [
                 'id' => 'Bagaimana cara mengikuti ujian kompetensi?',
@@ -188,18 +188,18 @@ final class HomepageDemoData
                     'name'  => 'PT Sakura Indah',
                     'role'  => ['id' => 'Mitra Perusahaan', 'en' => 'Partner Company', 'ja' => 'パートナー企業'],
                     'quote' => [
-                        'id' => 'Kandidat dari Passion Japan datang dengan bahasa Jepang yang siap pakai dan etos kerja yang baik. Sangat terbantu.',
-                        'en' => 'Candidates from Passion Japan arrive with work-ready Japanese and excellent work ethic. Hugely helpful.',
-                        'ja' => 'Passion Japan からの候補者は実務レベルの日本語と素晴らしい労働倫理を備えて来てくれます。大変助かっています。',
+                        'id' => 'Kandidat dari '.\App\Support\Brand::name().' datang dengan bahasa Jepang yang siap pakai dan etos kerja yang baik. Sangat terbantu.',
+                        'en' => 'Candidates from '.\App\Support\Brand::name().' arrive with work-ready Japanese and excellent work ethic. Hugely helpful.',
+                        'ja' => \App\Support\Brand::name().' からの候補者は実務レベルの日本語と素晴らしい労働倫理を備えて来てくれます。大変助かっています。',
                     ],
                 ],
                 [
                     'name'  => 'PT Nippon Jaya',
                     'role'  => ['id' => 'Mitra Perusahaan', 'en' => 'Partner Company', 'ja' => 'パートナー企業'],
                     'quote' => [
-                        'id' => 'Proses rekrutmen yang transparan dan cepat. Tim Passion Japan profesional dari awal sampai penempatan.',
-                        'en' => 'Transparent and fast recruitment process. The Passion Japan team is professional from start to placement.',
-                        'ja' => '透明で迅速な採用プロセス。Passion Japan のチームは最初から配属まで一貫してプロフェッショナルです。',
+                        'id' => 'Proses rekrutmen yang transparan dan cepat. Tim '.\App\Support\Brand::name().' profesional dari awal sampai penempatan.',
+                        'en' => 'Transparent and fast recruitment process. The '.\App\Support\Brand::name().' team is professional from start to placement.',
+                        'ja' => '透明で迅速な採用プロセス。'.\App\Support\Brand::name().' のチームは最初から配属まで一貫してプロフェッショナルです。',
                     ],
                 ],
             ],
@@ -208,9 +208,9 @@ final class HomepageDemoData
                     'name'  => 'Akira Tanaka',
                     'role'  => ['id' => 'Alumni — Engineering, Tokyo', 'en' => 'Alumnus — Engineering, Tokyo', 'ja' => '卒業生 — 技術職、東京'],
                     'quote' => [
-                        'id' => 'Berkat persiapan bahasa dan interview di Passion Japan, saya berhasil bekerja di perusahaan teknik di Tokyo.',
-                        'en' => 'Thanks to Passion Japan\'s language and interview prep, I landed a role at an engineering firm in Tokyo.',
-                        'ja' => 'Passion Japan の語学・面接対策のおかげで、東京のエンジニアリング企業に就職できました。',
+                        'id' => 'Berkat persiapan bahasa dan interview di '.\App\Support\Brand::name().', saya berhasil bekerja di perusahaan teknik di Tokyo.',
+                        'en' => 'Thanks to '.\App\Support\Brand::name().'\'s language and interview prep, I landed a role at an engineering firm in Tokyo.',
+                        'ja' => \App\Support\Brand::name().' の語学・面接対策のおかげで、東京のエンジニアリング企業に就職できました。',
                     ],
                 ],
                 [

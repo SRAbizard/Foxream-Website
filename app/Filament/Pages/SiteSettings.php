@@ -125,13 +125,13 @@ class SiteSettings extends Page
                         TextInput::make('social__tiktok')->label('TikTok')->url()->prefix('https://'),
                     ]),
                 ]),
-                Tab::make('PJI Learning')->icon('heroicon-o-academic-cap')->schema([
+                Tab::make(\App\Support\Brand::learning())->icon('heroicon-o-academic-cap')->schema([
                     Section::make()->columns(1)->components([
                         TextInput::make('academy__url')
-                            ->label(__('PJI Learning website URL'))
+                            ->label(__(':learning website URL'))
                             ->url()
-                            ->placeholder('https://academy.passionjapan.id')
-                            ->helperText(__('The "E-Learning" menu opens this link in a new tab. Leave empty to hide the menu until PJI Learning is online.')),
+                            ->placeholder('https://learning.example.com')
+                            ->helperText(__('The "E-Learning" menu opens this link in a new tab. Leave empty to hide the menu until :learning is online.')),
                     ]),
                 ]),
                 Tab::make(__('Stats'))->icon('heroicon-o-chart-bar')->schema([

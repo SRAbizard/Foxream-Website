@@ -57,22 +57,22 @@ class Legal
     {
         return match ($locale ?? app()->getLocale()) {
             'en' => [
-                'Passion Japan never promises to pass an interview or get a visa in exchange for money.',
-                'Official payments go only to a bank account in the name of PT. Passion Japan Indonesia, always with an official receipt.',
+                \App\Support\Brand::name().' never promises to pass an interview or get a visa in exchange for money.',
+                'Official payments go only to a bank account in the name of '.\App\Support\Brand::company().', always with an official receipt.',
                 'We never ask you to transfer money to a staff member\'s or anyone else\'s personal account.',
                 'Official information comes only from this website and the official channels listed here.',
                 'In doubt? Contact us before you pay anything.',
             ],
             'ja' => [
-                'Passion Japanが金銭と引き換えに面接合格やビザ取得を約束することは一切ありません。',
-                '正規のお支払いは「PT. Passion Japan Indonesia」名義の口座のみで、必ず正式な領収書を発行します。',
+                \App\Support\Brand::name().'が金銭と引き換えに面接合格やビザ取得を約束することは一切ありません。',
+                '正規のお支払いは「'.\App\Support\Brand::company().'」名義の口座のみで、必ず正式な領収書を発行します。',
                 '担当者個人やその他の個人名義の口座への振込をお願いすることはありません。',
                 '公式情報は当ウェブサイトと、ここに記載の公式窓口からのみ発信しています。',
                 '不審に思ったら、お支払いの前に必ずご連絡ください。',
             ],
             default => [
-                'Passion Japan tidak pernah menjanjikan kelulusan interview atau visa dengan imbalan uang.',
-                'Pembayaran resmi hanya ke rekening atas nama PT. Passion Japan Indonesia, dan selalu disertai kuitansi resmi.',
+                \App\Support\Brand::name().' tidak pernah menjanjikan kelulusan interview atau visa dengan imbalan uang.',
+                'Pembayaran resmi hanya ke rekening atas nama '.\App\Support\Brand::company().', dan selalu disertai kuitansi resmi.',
                 'Kami tidak pernah meminta transfer ke rekening pribadi staf atau pihak lain.',
                 'Informasi resmi hanya dari website ini dan kanal resmi kami yang tercantum di sini.',
                 'Ragu? Hubungi kami dulu sebelum membayar apa pun.',
@@ -129,7 +129,7 @@ class Legal
         $offices = (array) Setting::get('contact.offices', config('passion.contact.offices', []));
 
         return [
-            'company' => 'PT. Passion Japan Indonesia',
+            'company' => \App\Support\Brand::company(),
             'email'   => Setting::get('contact.email', config('passion.contact.email')),
             'phone'   => Setting::get('contact.phone', config('passion.contact.phone')),
             'offices' => collect($offices)->map(fn ($o) => $o['address'] ?? trim(($o['city'] ?? '').', '.($o['country'] ?? ''), ', '))->filter()->values()->all(),

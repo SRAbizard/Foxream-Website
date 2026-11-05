@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@section('title', __('Blog') . ' — Passion Japan Indonesia')
-@section('og_title', __('Passion Japan Indonesia Blog'))
+@section('title', __('Blog') . ' — '.\App\Support\Brand::name())
+@section('og_title', __(':brand Blog'))
 @section('og_description', __('Articles, tips, and alumni stories about working and studying in Japan.'))
 
 @section('content')
 <x-jp.page-hero
     :eyebrow="__('Blog')"
     :title="__('Insights for your Japan journey')"
-    :subtitle="__('Articles, tips, and alumni stories — refreshed regularly by the Passion Japan team.')"
+    :subtitle="__('Articles, tips, and alumni stories — refreshed regularly by the :brand team.')"
     :petals="10" />
 
 {{-- Filters --}}

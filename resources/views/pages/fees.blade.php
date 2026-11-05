@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('Programme Fees') . ' — Passion Japan Indonesia')
-@section('og_title', __('Programme Fees') . ' — Passion Japan Indonesia')
+@section('title', __('Programme Fees') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Programme Fees') . ' — '.\App\Support\Brand::name())
 @section('og_description', __('Every official fee, in the open — and how to tell us apart from fraudsters.'))
 
 @section('content')
@@ -9,7 +9,7 @@
 <x-jp.page-hero
     :eyebrow="__('Transparency') . ' · 費用'"
     :title="__('Programme fees, in the open.')"
-    :subtitle="__('Every official fee is listed here. Anything not on this page or in your written agreement is not an official Passion Japan fee.')"
+    :subtitle="__('Every official fee is listed here. Anything not on this page or in your written agreement is not an official :brand fee.')"
     :petals="6"
 />
 

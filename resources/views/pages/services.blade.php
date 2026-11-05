@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('Services') . ' — Passion Japan Indonesia')
-@section('og_title', __('Three routes to work in Japan — Passion Japan Indonesia'))
+@section('title', __('Services') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Three routes to work in Japan — :brand'))
 @section('og_description', __('Tokutei Ginou, Internship and Engineer: who each route fits, what you need, and every step we handle with you.'))
 
 @php
@@ -26,7 +26,7 @@
         ],
     ];
     $support = [
-        ['学習', __('Language training'), __('JLPT/JFT preparation at PJI Learning, our Japanese language platform.')],
+        ['学習', __('Language training'), __('JLPT/JFT preparation at :learning, our Japanese language platform.')],
         ['面接', __('Mensetsu coaching'), __('Interview practice, self-introduction in Japanese and what Japanese companies look for.')],
         ['書類', __('Documents & visa'), __('Passport, medical check-up, document sending and the Certificate of Eligibility.')],
         ['到着', __('Support after arrival'), __('Help settling in and a contact person once you have started work in Japan.')],
@@ -106,7 +106,7 @@
                     <h3>{{ $title }}</h3>
                     <p>{{ $desc }}</p>
                     @if($i === 0 && $academyUrl)
-                        <a href="{{ $academyUrl }}" target="_blank" rel="noopener" class="font-bold underline underline-offset-4 text-sm">{{ __('Open PJI Learning') }} ↗</a>
+                        <a href="{{ $academyUrl }}" target="_blank" rel="noopener" class="font-bold underline underline-offset-4 text-sm">{{ __('Open :learning') }} ↗</a>
                     @endif
                 </div>
             @endforeach

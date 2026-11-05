@@ -69,7 +69,13 @@ class RirekishoDocx
                 $this->insertPhoto($zip, $jpeg);
             }
 
-            $zip->addFromString('word/document.xml', $this->dom->saveXML());
+            $zip->addFromString('word/document.xml', $this->brand($this->dom->saveXML()));
+            // The template names the company in its footer and file properties too.
+            foreach (['word/footer1.xml', 'docProps/core.xml', 'docProps/app.xml'] as $part) {
+                if (($xml = $zip->getFromName($part)) !== false) {
+                    $zip->addFromString($part, $this->brand($xml));
+                }
+            }
             $zip->close();
 
             return file_get_contents($tmp);
@@ -324,6 +330,12 @@ class RirekishoDocx
     }
 
     /** Replace the 写真貼付 placeholder with the photo at the template's 2.7 × 3.6 cm size. */
+    /** The template writes {BRAND} where the brand's name goes. */
+    private function brand(string $xml): string
+    {
+        return str_replace('{BRAND}', htmlspecialchars(mb_strtoupper(Brand::name()), ENT_XML1), $xml);
+    }
+
     private function insertPhoto(ZipArchive $zip, string $jpeg): void
     {
         $zip->addFromString('word/media/rirekisho-photo.jpeg', $jpeg);

@@ -15,7 +15,7 @@
         <div>
             <p class="pj-fraud-title">{{ __('Beware of fraud') }} <span class="jp">詐欺に注意</span></p>
             @unless($compact)
-                <p class="pj-fraud-sub">{{ __('Protect yourself from anyone falsely using the Passion Japan name.') }}</p>
+                <p class="pj-fraud-sub">{{ __('Protect yourself from anyone falsely using the :brand name.') }}</p>
             @endunless
         </div>
     </div>

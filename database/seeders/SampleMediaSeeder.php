@@ -57,7 +57,7 @@ class SampleMediaSeeder extends Seeder
         Setting::set('login.background_path', null, 'login');
         Setting::set('company.profile_pdf_path', $this->pdf('company/company-profile-sample.pdf', [
             'Company Profile (CONTOH)',
-            'Passion Japan Indonesia',
+            \App\Support\Brand::name(),
             '',
             'Dokumen ini adalah contoh. Unggah company profile asli',
             'lewat Admin > Website Settings > Company.',

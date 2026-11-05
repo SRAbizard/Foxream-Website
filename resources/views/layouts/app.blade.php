@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light" data-brand="{{ mb_strtoupper(\App\Support\Brand::name()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="@yield('meta_description', __('Japan Career, Recruitment & Internship Platform'))">
-    {{-- Tab icon: the PJi mark without the white outline. --}}
+    {{-- Tab icon: the fox. --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/favicon-192.png') }}">
@@ -41,15 +41,15 @@
     @endforeach
     <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
 
-    <title>@yield('title', __('Passion Japan Indonesia'))</title>
+    <title>@yield('title', __(':brand'))</title>
 
     {{-- Open Graph / Twitter --}}
     <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:site_name" content="Passion Japan Indonesia">
+    <meta property="og:site_name" content="{{ \App\Support\Brand::name() }}">
     <meta property="og:locale" content="{{ str_replace('-', '_', app()->getLocale()) }}">
-    <meta property="og:title" content="@yield('og_title', __('Passion Japan Indonesia'))">
+    <meta property="og:title" content="@yield('og_title', __(':brand'))">
     <meta property="og:description" content="@yield('og_description', __('Japan Career, Recruitment & Internship Platform'))">
-    <meta property="og:image" content="{{ asset('images/logo-full.png') }}">
+    <meta property="og:image" content="{{ asset('images/brand/og.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta name="twitter:card" content="summary_large_image">
 
@@ -77,17 +77,18 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
         <nav class="pj-navbar" aria-label="{{ __('Main') }}">
             <a href="{{ url('/') }}" wire:navigate class="flex items-center shrink-0">
-                <img src="{{ asset('images/logo-mark.png') }}" alt="Passion Japan Indonesia" class="h-10 sm:h-11 w-auto select-none" draggable="false"
-                     onerror="this.outerHTML='<span class=\'font-display text-lg text-brand-600\'>Passion Japan</span>';">
+                {{-- The fox and the name; the name is white on the dark theme. --}}
+                <img src="{{ \App\Support\Brand::logo('horizontal', 'light') }}" alt="{{ \App\Support\Brand::name() }}" class="h-9 sm:h-10 w-auto select-none dark:hidden" draggable="false">
+                <img src="{{ \App\Support\Brand::logo('horizontal', 'dark') }}" alt="{{ \App\Support\Brand::name() }}" class="h-9 sm:h-10 w-auto select-none hidden dark:block" draggable="false">
             </a>
 
             <div class="hidden lg:flex items-center gap-1">
                 <a href="{{ url('/') }}" wire:navigate class="pj-navlink {{ request()->routeIs('home') ? 'is-active' : '' }}">{{ __('Home') }}</a>
 
-                {{-- Program Passion dropdown — job portal + (external) PJI Learning --}}
+                {{-- Programs dropdown — job portal + (external) learning platform --}}
                 <div class="relative group">
                     <button type="button" class="pj-navlink inline-flex items-center gap-1 {{ request()->routeIs('job.*', 'services') ? 'is-active' : '' }}">
-                        {{ __('Program Passion') }}
+                        {{ __('Programs') }}
                         <svg class="h-3 w-3 opacity-60 transition group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                     </button>
                     <div class="absolute left-0 top-full pt-2 hidden group-hover:block group-focus-within:block min-w-[250px] z-30">
@@ -102,7 +103,7 @@
                                         {{ __('E-Learning') }}
                                         <svg class="h-3 w-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                                     </span>
-                                    <span class="block text-xs opacity-70">{{ __('Learn Japanese at PJI Learning') }}</span>
+                                    <span class="block text-xs opacity-70">{{ __('Learn Japanese at :learning') }}</span>
                                 </a>
                             @endif
                         </div>
@@ -177,7 +178,7 @@
                     </summary>
                     <div class="absolute right-0 mt-2 min-w-[240px] pj-menu flex flex-col text-sm z-40">
                         <a href="{{ url('/') }}" wire:navigate>{{ __('Home') }}</a>
-                        <p class="px-3 pt-3 pb-1 text-[10px] uppercase tracking-wider opacity-60 font-bold">{{ __('Program Passion') }}</p>
+                        <p class="px-3 pt-3 pb-1 text-[10px] uppercase tracking-wider opacity-60 font-bold">{{ __('Programs') }}</p>
                         <a href="{{ route('job.index') }}" wire:navigate>{{ __('Job Vacancies') }}</a>
                         @if($academyUrl)
                             <a href="{{ $academyUrl }}" target="_blank" rel="noopener">{{ __('E-Learning') }} ↗</a>
@@ -241,7 +242,8 @@
     <div class="pj-footer">
         <div class="mx-auto max-w-7xl px-6 py-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             <div>
-                <img src="{{ asset('images/logo-full.png') }}" alt="Passion Japan Indonesia" class="h-36 w-auto mb-4 -ml-2 select-none" draggable="false">
+                {{-- The footer is always dark: the logo with the white name. --}}
+                <img src="{{ \App\Support\Brand::logo('stacked', 'dark') }}" alt="{{ \App\Support\Brand::name() }}" class="h-32 w-auto mb-4 select-none" draggable="false">
                 <p class="text-sm leading-relaxed opacity-80">{{ __('Official job matching for Indonesian workers in Japan, from your application to your first day at work.') }}</p>
                 <div class="mt-5 flex items-center gap-3">
                     <a href="{{ \App\Support\SiteSettings::social('instagram') }}" target="_blank" rel="noopener" aria-label="Instagram" class="opacity-80 hover:opacity-100 transition">
@@ -303,7 +305,7 @@
         <div class="border-t border-white/10">
             <div class="mx-auto max-w-7xl px-6 pt-5 pb-24 text-xs opacity-70">
                 <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-                    <p>&copy; {{ date('Y') }} PT. Passion Japan Indonesia. {{ __('All rights reserved.') }}</p>
+                    <p>&copy; {{ date('Y') }} {{ \App\Support\Brand::company() }}. {{ __('All rights reserved.') }}</p>
                     <nav class="flex flex-wrap gap-x-4 gap-y-1" aria-label="{{ __('Legal') }}">
                         <a href="{{ route('legal.privacy') }}" wire:navigate>{{ __('Privacy Policy') }}</a>
                         <a href="{{ route('legal.terms') }}" wire:navigate>{{ __('Terms & Conditions') }}</a>

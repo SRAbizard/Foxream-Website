@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('Contact') . ' — Passion Japan Indonesia')
-@section('og_title', __('Contact Passion Japan Indonesia'))
+@section('title', __('Contact') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Contact :brand'))
 @section('og_description', __('Get in touch with our team for consultation or job opportunities in Japan.'))
 
 @section('content')

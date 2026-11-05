@@ -1,6 +1,6 @@
 /**
  * First-visit intro (once per browser session): the hinomaru sun grows,
- * "ようこそ" is stamped on it, PASSION JAPAN types in, a 出発 hanko lands,
+ * "ようこそ" is stamped on it, the brand's name types in, a 出発 hanko lands,
  * then the washi sheet lifts away. Click anywhere to skip.
  *
  * The layout's head script adds html.pj-intro (a plain washi cover) before
@@ -22,7 +22,7 @@ export function runIntro() {
             <div class="pj-intro-sun"></div>
             <div class="pj-intro-jp">ようこそ</div>
             <div class="pj-intro-hanko">出発</div>
-            <div class="pj-intro-name">${'PASSION JAPAN'.split('').map((ch) => (ch === ' ' ? '<span class="gap"></span>' : `<span>${ch}</span>`)).join('')}</div>
+            <div class="pj-intro-name">${(document.documentElement.dataset.brand || 'FOXREAM').split('').map((ch) => (ch === ' ' ? '<span class="gap"></span>' : `<span>${ch}</span>`)).join('')}</div>
         </div>
         <span class="pj-intro-skip">Skip ›</span>
         <div class="edge"></div>`;

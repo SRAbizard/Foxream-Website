@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title Passion Japan Indonesia - dev server
+title Foxream - dev server
 cd /d "%~dp0"
 
 rem Runs the site without opening Laragon, using Laragon's PHP binary.
@@ -24,7 +24,7 @@ netstat -ano | findstr /r /c:":3306 .*LISTENING" >nul
 if not errorlevel 1 goto server
 
 echo [..] Menyalakan MySQL...
-start "MySQL - Passion Japan" /min "%MYSQL_DIR%\bin\mysqld.exe" --defaults-file="%MYSQL_DIR%\my.ini" --standalone
+start "MySQL - Foxream" /min "%MYSQL_DIR%\bin\mysqld.exe" --defaults-file="%MYSQL_DIR%\my.ini" --standalone
 rem Wait up to ~30s (ping = 1-second sleep that works even without a console).
 for /l %%i in (1,1,30) do (
     ping -n 2 127.0.0.1 >nul

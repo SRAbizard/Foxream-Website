@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-/** Access history, as in PJI Learning: logins, failed logins and what students do. */
+/** Access history, as in the learning platform: logins, failed logins and what students do. */
 return new class extends Migration {
     public function up(): void
     {

@@ -104,7 +104,7 @@ class SiteSettings
     }
 
     /**
-     * PJI Learning URL (the separate learning platform), or null
+     * The learning platform's URL (config/brand.php names it), or null
      * while it is not online yet — callers hide the E-Learning link then.
      */
     public static function academyUrl(): ?string

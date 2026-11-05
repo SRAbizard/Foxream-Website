@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-/** A campus that works with Passion Japan Indonesia on internships. */
+/** A campus that works with us on internships. */
 class PartnerCampus extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];

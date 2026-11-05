@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $post->t('title') . ' — Passion Japan Indonesia')
+@section('title', $post->t('title') . ' — '.\App\Support\Brand::name())
 @section('og_type', 'article')
 @section('og_title', $post->t('seo_title') ?: $post->t('title'))
 @section('og_description', $post->t('seo_description') ?: $post->t('excerpt'))
@@ -12,9 +12,9 @@
     'headline' => $post->t('title'),
     'description' => $post->t('excerpt'),
     'datePublished' => optional($post->published_at)->toAtomString(),
-    'author' => ['@type' => 'Person', 'name' => $post->author?->name ?? 'Passion Japan'],
-    'image' => $post->thumbnail_url ?: asset('images/logo-full.png'),
-    'publisher' => ['@type' => 'Organization', 'name' => 'Passion Japan Indonesia', 'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo-full.png')]],
+    'author' => ['@type' => 'Person', 'name' => $post->author?->name ?? \App\Support\Brand::name()],
+    'image' => $post->thumbnail_url ?: asset('images/brand/og.png'),
+    'publisher' => ['@type' => 'Organization', 'name' => \App\Support\Brand::company(), 'logo' => ['@type' => 'ImageObject', 'url' => \App\Support\Brand::logo('stacked')]],
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
 @endpush

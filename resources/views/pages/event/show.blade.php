@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $event->t('title') . ' — Passion Japan Indonesia')
+@section('title', $event->t('title') . ' — '.\App\Support\Brand::name())
 @section('og_type', 'event')
 @section('og_title', $event->t('title'))
 @section('og_description', strip_tags($event->t('description')))
@@ -15,7 +15,7 @@
     'endDate' => optional($event->ends_at)->toAtomString(),
     'location' => ['@type' => 'Place', 'name' => $event->t('location')],
     'organizer' => ['@type' => 'Organization', 'name' => $event->t('organizer')],
-    'image' => $event->image_url ?: asset('images/logo-full.png'),
+    'image' => $event->image_url ?: asset('images/brand/og.png'),
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
 @endpush

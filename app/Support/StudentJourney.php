@@ -100,7 +100,7 @@ class StudentJourney
             3 => [__('Still empty: :items.', ['items' => implode(', ', $cv['missing'])]), [__('Complete my CV'), MyProfile::getUrl(panel: 'student')]],
             4 => [__('Pick a job that matches your visa and field.'), [__('Browse jobs'), JobMatching::boardUrl($user)]],
             5 => [$when, $applications],
-            6, 7 => [$when.' '.__('Meanwhile, practise kaiwa with our Indonesia team and in PJI Learning.'), $applications],
+            6, 7 => [$when.' '.__('Meanwhile, practise kaiwa with our Indonesia team and in :learning.'), $applications],
             8 => [__('Now upload the rest of the documents for your visa, such as the passport and the MCU.'), [__('My Documents'), DocumentResource::getUrl('index', panel: 'student')]],
             9 => [match (true) {
                     $lead?->signed_contract_path || $lead?->status === 'coe' => __('Your contract is signed. Now we wait for the COE to be issued.'),

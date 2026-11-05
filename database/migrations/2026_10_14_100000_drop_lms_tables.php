@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Learning moved to Passion Japan Academy — this site is job matching only.
+ * Learning moved to the separate learning platform — this site is job matching only.
  *
  * The original LMS migrations were deleted from the repo, so on a fresh
  * install these drops are no-ops. On databases that already ran them,
@@ -61,6 +61,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        // Irreversible: the LMS lives in Passion Japan Academy now.
+        // Irreversible: the LMS lives in the learning platform now.
     }
 };

@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', __('Events') . ' — Passion Japan Indonesia')
-@section('og_title', __('Upcoming events at Passion Japan Indonesia'))
+@section('title', __('Events') . ' — '.\App\Support\Brand::name())
+@section('og_title', __('Upcoming events at :brand'))
 
 @section('content')
 <x-jp.page-hero
     :eyebrow="__('Events')"
     :title="__('Workshops, seminars, and job fairs')"
-    :subtitle="__('Join our upcoming events to meet recruiters, mentors, and the Passion Japan community.')"
+    :subtitle="__('Join our upcoming events to meet recruiters, mentors, and the :brand community.')"
     :petals="10" />
 
 <section class="mx-auto max-w-7xl px-6 mb-6">
