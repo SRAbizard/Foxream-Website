@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class DocumentResource extends Resource
 {
@@ -50,14 +51,24 @@ class DocumentResource extends Resource
                             ->mapWithKeys(fn ($t) => [$t->key => $t->t('label')])
                             ->all();
                     })
-                    ->helperText(function () {
+                    ->helperText(function (?string $state) {
                         $source = StudentDocumentProgress::targetSource(auth()->user());
-                        return match ($source) {
+                        $text = match ($source) {
                             'confirmed'    => __('Showing only documents required or optional for your confirmed visa target.'),
                             'applications' => __('Showing documents inferred from your job applications.'),
                             default        => __('Showing the default document set. Confirm a visa target for a tailored list.'),
                         };
+
+                        // A type with its own form (the MCU): link to download it.
+                        $type = $state ? DocumentType::where('key', $state)->whereNotNull('template_path')->first() : null;
+                        if (! $type) {
+                            return $text;
+                        }
+
+                        return new HtmlString(e($text).'<br><a href="'.e($type->templateUrl()).'" download="'.e($type->template_name).'" class="font-semibold text-primary-600 underline dark:text-primary-400">'
+                            .e(__('Download the :document form, fill it in, then upload it here.', ['document' => $type->t('label')])).'</a>');
                     })
+                    ->live()
                     ->required()->native(false)->searchable(),
                 TextInput::make('label')->label(__('Custom label'))->maxLength(160)
                     ->placeholder(__('Optional label or note')),

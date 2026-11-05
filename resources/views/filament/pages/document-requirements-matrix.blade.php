@@ -19,9 +19,13 @@
                 </p>
                 {{-- Legend --}}
                 <div class="mt-3 flex flex-wrap items-center gap-3 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-semibold">
+                        <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+                        {{ __('Required to apply') }}
+                    </span>
                     <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-semibold">
                         <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                        {{ __('Required') }}
+                        {{ __('Required after passing') }}
                     </span>
                     <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 font-semibold">
                         <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg>
@@ -68,8 +72,10 @@
                                         </button>
                                     </div>
                                     <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+                                        <span class="font-bold text-amber-600 dark:text-amber-400">{{ $counts['apply'] }}</span>
+                                        {{ __('to apply') }} ·
                                         <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ $counts['required'] }}</span>
-                                        {{ __('required') }} ·
+                                        {{ __('after passing') }} ·
                                         <span class="font-bold text-sky-600 dark:text-sky-400">{{ $counts['optional'] }}</span>
                                         {{ __('optional') }}
                                     </p>
@@ -96,18 +102,22 @@
                                     <td style="padding: 14px 20px;" class="text-center border-l border-gray-200/60 dark:border-white/5">
                                         <button type="button"
                                                 wire:click="cycle('{{ $visa->slug }}', '{{ $type->key }}')"
-                                                title="{{ $state === 'required' ? __('Required — click for Optional') : ($state === 'optional' ? __('Optional — click to remove') : __('Not needed — click for Required')) }}"
+                                                title="{{ match ($state) { 'apply' => __('Required to apply — click for After passing'), 'required' => __('Required after passing — click for Optional'), 'optional' => __('Optional — click to remove'), default => __('Not needed — click for Required to apply') } }}"
                                                 @class([
                                                     'inline-flex items-center justify-center transition cursor-pointer',
                                                     'rounded-lg font-semibold text-xs uppercase tracking-wider',
                                                     'h-9 min-w-[88px] px-3 gap-1.5',
+                                                    'bg-amber-100 text-amber-800 hover:bg-amber-200 ring-1 ring-amber-200 dark:bg-amber-500/20 dark:text-amber-300 dark:ring-amber-500/30 dark:hover:bg-amber-500/30' => $state === 'apply',
                                                     'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 ring-1 ring-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-300 dark:ring-emerald-500/30 dark:hover:bg-emerald-500/30' => $state === 'required',
                                                     'bg-sky-100 text-sky-800 hover:bg-sky-200 ring-1 ring-sky-200 dark:bg-sky-500/20 dark:text-sky-300 dark:ring-sky-500/30 dark:hover:bg-sky-500/30' => $state === 'optional',
                                                     'bg-gray-50 text-gray-400 hover:bg-gray-100 ring-1 ring-gray-200 dark:bg-gray-800/40 dark:text-gray-600 dark:ring-white/5 dark:hover:bg-gray-700/40' => $state === null,
                                                 ])>
-                                            @if ($state === 'required')
+                                            @if ($state === 'apply')
+                                                <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+                                                {{ __('To apply') }}
+                                            @elseif ($state === 'required')
                                                 <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                                {{ __('Required') }}
+                                                {{ __('After passing') }}
                                             @elseif ($state === 'optional')
                                                 <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg>
                                                 {{ __('Optional') }}
@@ -129,7 +139,7 @@
     {{-- Action buttons --}}
     <div class="mt-6 flex items-center justify-between gap-3 flex-wrap">
         <p class="text-xs text-gray-500 dark:text-gray-400">
-            {{ __('Required documents count toward student progress %. Optional documents are accepted but do not block.') }}
+            {{ __('Documents to apply are needed from the start; documents after passing count once they pass the company interview. Optional documents are accepted but do not block.') }}
         </p>
         <div class="flex items-center gap-3">
             <x-filament::button color="gray" wire:click="loadMatrix" type="button" icon="heroicon-o-arrow-path">

@@ -106,7 +106,10 @@ class CompanyResource extends Resource
             \Filament\Tables\Filters\Filter::make('without_jobs')->label(__('No job postings'))
                 ->query(fn ($query) => $query->doesntHave('vacancies')),
         ])
-        ->recordActions(\App\Filament\Support\DeleteActions::row(__(self::DELETE_WARNING)))
+        ->recordActions([
+            \App\Filament\Support\CandidateListAction::make()->iconButton()->tooltip(__('Candidate list (Excel)')),
+            ...\App\Filament\Support\DeleteActions::row(__(self::DELETE_WARNING)),
+        ])
         ->toolbarActions(\App\Filament\Support\DeleteActions::bulk(__(self::DELETE_WARNING)));
     }
 

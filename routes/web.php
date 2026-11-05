@@ -29,6 +29,7 @@ Route::get('admin/job-vacancies/{vacancy}/job-order.pdf', [\App\Http\Controllers
     ->name('admin.job-order-pdf');
 Route::get('cv/rirekisho.pdf', [\App\Http\Controllers\CvPdfController::class, 'mine'])->name('cv.mine');
 Route::get('cv/rirekisho.docx', [\App\Http\Controllers\CvPdfController::class, 'mine'])->defaults('format', 'docx')->name('cv.mine-docx');
+Route::get('cv/shared/{user}/rirekisho.pdf', [\App\Http\Controllers\CvPdfController::class, 'shared'])->middleware('signed')->name('cv.shared');
 Route::get('admin/students/{user}/rirekisho.pdf', [\App\Http\Controllers\CvPdfController::class, 'admin'])->name('admin.student-cv');
 Route::get('admin/students/{user}/rirekisho.docx', [\App\Http\Controllers\CvPdfController::class, 'admin'])->defaults('format', 'docx')->name('admin.student-cv-docx');
 Route::post('jobs/{slug}/apply',  [\App\Http\Controllers\JobController::class, 'apply'])

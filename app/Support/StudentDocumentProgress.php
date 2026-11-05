@@ -19,7 +19,10 @@ class StudentDocumentProgress
      * The default required types when a student has no applications yet.
      * Common baseline that every visa needs.
      */
-    public const DEFAULT_REQUIRED = ['ktp', 'passport', 'ijazah', 'photo'];
+    public const DEFAULT_REQUIRED = ['idcard', 'passport', 'ijazah', 'photo'];
+
+    /** Of those, what is needed before passing the company interview. */
+    public const DEFAULT_APPLY = ['photo'];
 
     /**
      * Visa category slugs the student is targeting.
@@ -62,8 +65,8 @@ class StudentDocumentProgress
 
     /**
      * The visa's required documents plus those of the student's field
-     * (the job category picked on the profile), before any wait for the
-     * contract.
+     * (the job category picked on the profile), including those that wait
+     * until the student passes.
      */
     private static function allRequiredTypes(User $user): array
     {
@@ -84,21 +87,25 @@ class StudentDocumentProgress
     }
 
     /**
-     * Required documents that can wait until the employment contract is
-     * issued (e.g. the passport): empty once an application reached it.
+     * Required documents that can wait until the student passes the
+     * company's interview: all but those the visa needs to apply (set in
+     * the Document Requirements Matrix). Empty once an application is
+     * passed.
      *
      * @return array<int, string>
      */
     public static function laterTypes(User $user): array
     {
-        $contract = $user->applications()->active()->get()->contains(fn ($a) => $a->reached('contract'));
-        if ($contract) {
+        $passed = $user->applications()->active()->get()->contains(fn ($a) => $a->reached('passed'));
+        if ($passed) {
             return [];
         }
 
-        $later = \App\Models\DocumentType::where('after_contract', true)->pluck('key')->all();
+        $slugs = static::targetVisaSlugs($user);
+        $apply = empty($slugs) ? static::DEFAULT_APPLY : VisaCategory::whereIn('slug', $slugs)->get()
+            ->flatMap(fn ($visa) => $visa->applyDocumentTypes())->unique()->all();
 
-        return array_values(array_intersect(static::allRequiredTypes($user), $later));
+        return array_values(array_diff(static::allRequiredTypes($user), $apply));
     }
 
     /**
@@ -114,7 +121,7 @@ class StudentDocumentProgress
 
         $required = static::requiredTypes($user);
 
-        // Documents that wait for the contract can be uploaded early.
+        // Documents that wait until the student passes can be uploaded early.
         return VisaCategory::whereIn('slug', $slugs)->get()
             ->flatMap(fn ($visa) => $visa->optionalDocumentTypes())
             ->merge(static::laterTypes($user))

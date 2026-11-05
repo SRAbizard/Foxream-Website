@@ -18,8 +18,9 @@ class DocumentRequirementsMatrix extends Page
     protected string $view = 'filament.pages.document-requirements-matrix';
 
     /**
-     * Tri-state matrix:
-     *   $matrix[<visa_slug>][<doc_type_key>] = 'required' | 'optional' | null/missing
+     * $matrix[<visa_slug>][<doc_type_key>] = 'apply' | 'required' | 'optional' | null/missing
+     *   apply    = required, and needed to apply (photo, certificates…)
+     *   required = required once the student passes the company interview
      */
     public array $matrix = [];
 
@@ -43,7 +44,15 @@ class DocumentRequirementsMatrix extends Page
         $this->matrix = VisaCategory::orderBy('sort_order')->get()
             ->mapWithKeys(function ($v) use ($activeSet) {
                 $cell = [];
+                foreach ($v->applyDocumentTypes() as $key) {
+                    if (isset($activeSet[$key])) {
+                        $cell[$key] = 'apply';
+                    }
+                }
                 foreach ($v->requiredDocumentTypes() as $key) {
+                    if (isset($cell[$key])) {
+                        continue;
+                    }
                     if (isset($activeSet[$key])) {
                         $cell[$key] = 'required';
                     }
@@ -68,16 +77,17 @@ class DocumentRequirementsMatrix extends Page
     }
 
     /**
-     * Cycle a cell: none → required → optional → none.
+     * Cycle a cell: none → to apply → after passing → optional → none.
      */
     public function cycle(string $visaSlug, string $typeKey): void
     {
         $current = $this->matrix[$visaSlug][$typeKey] ?? null;
         $next = match ($current) {
-            null       => 'required',
+            null       => 'apply',
+            'apply'    => 'required',
             'required' => 'optional',
             'optional' => null,
-            default    => 'required',
+            default    => 'apply',
         };
 
         if ($next === null) {
@@ -107,14 +117,17 @@ class DocumentRequirementsMatrix extends Page
         $activeSet  = array_flip($activeKeys);
 
         foreach ($this->matrix as $visaSlug => $cells) {
+            $apply = [];
             $required = [];
             $optional = [];
             foreach ($cells as $key => $state) {
                 if (! isset($activeSet[$key])) continue;
-                if ($state === 'required') $required[] = $key;
+                if ($state === 'apply') $apply[] = $key;
+                if (in_array($state, ['apply', 'required'], true)) $required[] = $key;
                 if ($state === 'optional') $optional[] = $key;
             }
             VisaCategory::where('slug', $visaSlug)->update([
+                'apply_documents'    => array_values(array_unique($apply)),
                 'required_documents' => array_values(array_unique($required)),
                 'optional_documents' => array_values(array_unique($optional)),
             ]);
@@ -132,12 +145,13 @@ class DocumentRequirementsMatrix extends Page
     /**
      * Helpers for the view to count states per visa.
      *
-     * @return array{required: int, optional: int}
+     * @return array{apply: int, required: int, optional: int}
      */
     public function countsFor(string $visaSlug): array
     {
         $cells = $this->matrix[$visaSlug] ?? [];
         return [
+            'apply'    => count(array_filter($cells, fn ($s) => $s === 'apply')),
             'required' => count(array_filter($cells, fn ($s) => $s === 'required')),
             'optional' => count(array_filter($cells, fn ($s) => $s === 'optional')),
         ];

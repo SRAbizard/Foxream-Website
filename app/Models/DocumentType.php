@@ -22,7 +22,6 @@ class DocumentType extends Model
             'label'       => 'array',
             'description' => 'array',
             'is_active'   => 'boolean',
-            'after_contract' => 'boolean',
         ];
     }
 
@@ -64,6 +63,22 @@ class DocumentType extends Model
         }
         $fallback = __('document.type.'.$key);
         return $fallback === 'document.type.'.$key ? $key : $fallback;
+    }
+
+    /** Public URL of the form students download for this type, if any. */
+    public function templateUrl(): ?string
+    {
+        return $this->template_path ? asset('storage/'.$this->template_path) : null;
+    }
+
+    /**
+     * The document types among these keys that have a form to download.
+     *
+     * @param  array<int, string>  $keys
+     */
+    public static function withTemplates(array $keys): Collection
+    {
+        return static::whereIn('key', $keys)->whereNotNull('template_path')->ordered()->get();
     }
 
     /**

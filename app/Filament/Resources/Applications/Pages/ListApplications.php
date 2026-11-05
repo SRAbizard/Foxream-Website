@@ -2,6 +2,7 @@
 namespace App\Filament\Resources\Applications\Pages;
 
 use App\Filament\Resources\Applications\ApplicationResource;
+use App\Filament\Support\CandidateListAction;
 use App\Support\ExcelExport;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
@@ -13,6 +14,8 @@ class ListApplications extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            CandidateListAction::make(pickCompany: true),
+
             // The applications in the table, with the current search and filters.
             Action::make('export')->label(__('Download list (Excel)'))
                 ->icon('heroicon-o-arrow-down-tray')->color('gray')

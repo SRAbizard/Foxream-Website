@@ -7,9 +7,13 @@ use App\Models\Application;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use App\Support\CandidateList;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
@@ -69,6 +73,23 @@ class ApplicationResource extends Resource
                 View::make('filament.admin.application-progress'),
                 Textarea::make('admin_notes')->label(__('Admin notes'))->rows(4),
             ]),
+
+            // Our assessment, for the candidate list sent to the company (Companies → Candidate list).
+            Section::make(__('Candidate assessment'))->collapsible()
+                ->description(__('For the candidate list sent to the company. Scores from 1 to 5; they can also be picked in the Excel file, like the religious devotion.'))
+                ->components([
+                    Grid::make(['default' => 2, 'lg' => 5])->schema(
+                        collect(CandidateList::SCORES)->map(fn ($ja, $key) => Select::make('assessment.'.$key)
+                            ->label(__(CandidateList::SCORE_LABELS[$key]))
+                            ->options(CandidateList::scoreOptions())->native(false))->values()->all(),
+                    ),
+                    Grid::make(['default' => 2, 'lg' => 4])->schema([
+                        Toggle::make('assessment.recommended')->label(__('Recommended (⭐)'))->inline(false),
+                        Toggle::make('assessment.tattoo')->label(__('Has a tattoo'))->inline(false),
+                        Toggle::make('assessment.debt')->label(__('Has debts'))->inline(false),
+                        Toggle::make('assessment.color_blind')->label(__('Colour blind'))->inline(false),
+                    ]),
+                ]),
 
             // After passing, each section opens once the application reaches its step.
             Section::make(__('Employment contract'))->columns(2)

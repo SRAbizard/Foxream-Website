@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'user_id', 'job_vacancy_id', 'status', 'cover_letter', 'admin_notes', 'reviewed_at', 'reviewed_by',
+    'user_id', 'job_vacancy_id', 'status', 'cover_letter', 'admin_notes', 'assessment', 'reviewed_at', 'reviewed_by',
     'contract_path', 'signed_contract_path', 'signed_contract_at', 'coe_issued_at', 'coe_path',
     'visa_issued_at', 'visa_path', 'departure_at', 'flight_info', 'ticket_path',
 ])]
@@ -60,6 +60,7 @@ class Application extends Model
     protected function casts(): array
     {
         return [
+            'assessment'         => 'array',
             'reviewed_at'        => 'datetime',
             'signed_contract_at' => 'datetime',
             'coe_issued_at'      => 'date',

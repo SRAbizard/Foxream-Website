@@ -59,6 +59,7 @@ class MyVisaTarget extends Page implements HasForms
             'ssw_type'                 => $request['ssw']['type'] ?? null,
             'ssw_year'                 => $request['ssw']['year'] ?? null,
             'ssw_month'                => $request['ssw']['month'] ?? null,
+            'ktm_semester'             => $request['ktm']['semester'] ?? null,
             'visa_target_notes'        => null, // request notes, blank by default
         ]);
     }
@@ -124,6 +125,19 @@ class MyVisaTarget extends Page implements HasForms
                                     ->openUrlInNewTab(),
                             ]))
                             ->columnSpanFull(),
+                    ]),
+
+                Section::make(__('Student ID card & transcript'))
+                    ->description(__('Internship is for students in semester 3 to 5.'))
+                    ->visible(fn (Get $get) => VisaRequirements::needsCampus($slug($get)))
+                    ->columns(2)
+                    ->components([
+                        Select::make('ktm_semester')->label(__('Current semester'))
+                            ->options(collect(VisaRequirements::INTERNSHIP_SEMESTERS)->mapWithKeys(fn ($n) => [$n => __('Semester :n', ['n' => $n])]))
+                            ->helperText(__('Students in semester 1–2 or 6 and above cannot join the internship yet.'))
+                            ->required()->native(false)->columnSpanFull(),
+                        $this->upload('ktm', __('Student ID card (KTM)')),
+                        $this->upload('transcript', __('Latest transcript')),
                     ]),
 
                 Section::make(__('Diploma & transcript'))
@@ -222,6 +236,7 @@ class MyVisaTarget extends Page implements HasForms
                 'year'        => $state["{$part}_year"] ?? null,
                 'month'       => $state["{$part}_month"] ?? null,
                 'document_id' => $document?->id,
+                'semester'    => $part === 'ktm' ? ($state['ktm_semester'] ?? null) : null,
             ]);
         }
 

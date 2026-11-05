@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['slug', 'name', 'description', 'color', 'sort_order', 'required_documents', 'optional_documents'])]
+#[Fillable(['slug', 'name', 'description', 'color', 'sort_order', 'required_documents', 'apply_documents', 'optional_documents'])]
 class VisaCategory extends Model
 {
     use HasJsonTranslations;
@@ -20,6 +20,7 @@ class VisaCategory extends Model
             'name'               => 'array',
             'description'        => 'array',
             'required_documents' => 'array',
+            'apply_documents'    => 'array',
             'optional_documents' => 'array',
         ];
     }
@@ -41,6 +42,15 @@ class VisaCategory extends Model
     public function requiredDocumentTypes(): array
     {
         return array_values(array_filter((array) ($this->required_documents ?? [])));
+    }
+
+    /**
+     * The required documents a student needs to apply (photo, certificates…);
+     * the other required ones can wait until they pass the company interview.
+     */
+    public function applyDocumentTypes(): array
+    {
+        return array_values(array_intersect((array) ($this->apply_documents ?? []), $this->requiredDocumentTypes()));
     }
 
     /**

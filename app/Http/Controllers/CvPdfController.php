@@ -38,6 +38,12 @@ class CvPdfController extends Controller
         return $this->send($request, $user, $format);
     }
 
+    /** The CV link in the candidate list sent to a company: signed, works for a limited time. */
+    public function shared(Request $request, User $user): Response
+    {
+        return $this->send($request, $user, 'pdf');
+    }
+
     private function send(Request $request, User $user, string $format): Response
     {
         $job = $request->string('job')->limit(160)->toString() ?: null;

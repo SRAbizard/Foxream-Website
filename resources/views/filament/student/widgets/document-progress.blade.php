@@ -46,10 +46,27 @@
 
                 @if (! empty($progress['later']))
                     <p class="mt-3 text-xs text-gray-600 dark:text-gray-300">
-                        {{ __('Can wait until your employment contract is issued: :docs.', [
+                        {{ __('Can wait until you pass the company interview: :docs.', [
                             'docs' => collect($progress['later'])->map(fn ($t) => \App\Models\DocumentType::labelFor($t))->implode(', '),
                         ]) }}
                     </p>
+                @endif
+
+                {{-- Forms to download, fill in and upload back (the MCU form) --}}
+                @php
+                    $forms = \App\Models\DocumentType::withTemplates(array_merge($progress['required'], $progress['optional'], $progress['later']));
+                @endphp
+                @if ($forms->isNotEmpty())
+                    <div class="mt-4 flex flex-wrap items-center gap-2">
+                        <span class="text-xs text-gray-500 dark:text-gray-400 mr-1 font-semibold uppercase tracking-wider">{{ __('Forms to download:') }}</span>
+                        @foreach ($forms as $form)
+                            <a href="{{ $form->templateUrl() }}" download="{{ $form->template_name }}"
+                               class="inline-flex items-center gap-1 rounded-md bg-primary-50 px-2 py-1 text-xs font-semibold text-primary-700 hover:underline dark:bg-primary-500/10 dark:text-primary-400">
+                                <x-filament::icon icon="heroicon-o-arrow-down-tray" class="h-3.5 w-3.5" />
+                                {{ __(':document form', ['document' => $form->t('label')]) }}
+                            </a>
+                        @endforeach
+                    </div>
                 @endif
 
                 {{-- Optional documents (not blocking, but encouraged) --}}

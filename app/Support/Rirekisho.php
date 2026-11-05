@@ -194,7 +194,7 @@ class Rirekisho
 ");
     }
 
-    private static function religion(?string $value): ?string
+    public static function religion(?string $value): ?string
     {
         if (blank($value)) {
             return null;

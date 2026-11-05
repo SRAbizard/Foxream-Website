@@ -10,7 +10,9 @@ use App\Models\StudentProfile;
  * admin approves it:
  *   - Tokutei Ginou: JFT A2 / JLPT N4 or higher, and an SSW certificate
  *   - Gijinkoku:     JLPT N3 or higher, the diploma and the transcript
- *   - Internship:    the campus (not every campus works with us)
+ *   - Internship:    the campus (not every campus works with us), the
+ *                    student ID card (KTM) and the latest transcript, in
+ *                    semester 3 to 5
  * Keyed by visa category slug. The uploads are kept as student documents
  * and listed in student_profiles.visa_request.
  */
@@ -28,7 +30,11 @@ class VisaRequirements
         'ssw'        => 'ssw',
         'ijazah'     => 'ijazah',
         'transcript' => 'transcript',
+        'ktm'        => 'ktm',
     ];
+
+    /** Internship is for students in these semesters. */
+    public const INTERNSHIP_SEMESTERS = [3, 4, 5];
 
     public static function language(?string $slug): array
     {
@@ -57,7 +63,8 @@ class VisaRequirements
             self::language($slug) ? 'language' : null,
             self::needsSsw($slug) ? 'ssw' : null,
             self::needsDiploma($slug) ? 'ijazah' : null,
-            self::needsDiploma($slug) ? 'transcript' : null,
+            self::needsDiploma($slug) || self::needsCampus($slug) ? 'transcript' : null,
+            self::needsCampus($slug) ? 'ktm' : null,
         ]));
     }
 
@@ -92,13 +99,16 @@ class VisaRequirements
             ];
         }
 
-        $labels = ['language' => __('Language certificate'), 'ssw' => __('SSW certificate'), 'ijazah' => __('Diploma'), 'transcript' => __('Transcript')];
+        $labels = ['language' => __('Language certificate'), 'ssw' => __('SSW certificate'), 'ijazah' => __('Diploma'), 'transcript' => __('Transcript'), 'ktm' => __('Student ID card (KTM)')];
         foreach ($labels as $part => $label) {
             if (! isset($request[$part])) {
                 continue;
             }
             $item  = $request[$part];
             $value = isset($item['type']) ? Certificates::label($item['type']) : null;
+            if (! empty($item['semester'])) {
+                $value = __('Semester :n', ['n' => $item['semester']]);
+            }
             if ($value && ! empty($item['year'])) {
                 $value .= ' · '.$item['year'].(! empty($item['month']) ? '/'.$item['month'] : '');
             }
