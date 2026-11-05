@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * The candidate list we send to a company (候補者リスト), in Japanese:
  * one sheet per job, one column per candidate. What the rows are depends
  * on the job's visa, as in our templates:
- *   - Tokutei Ginou: Japanese level, our assessment, health, the driving
+ *   - Tokutei Ginou: gender, Japanese level, our assessment, health, the driving
  *     licence for driver jobs and the SSW certificate
  *   - Internship:    gender, age, university and major
  *   - Gijinkoku:     Japanese level, our assessment, education, major,
@@ -203,6 +203,7 @@ class CandidateList
         $yesNo = self::yesNo(...);
 
         $rows = self::head() + [
+            '性別'     => self::gender(...),
             '年齢'     => self::age(...),
             '日本語検定' => fn (Application $a) => (string) Certificates::japaneseLevel($p($a)?->licenses),
         ] + self::scoreRows() + [
