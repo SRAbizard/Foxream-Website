@@ -10,8 +10,8 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $supported = array_keys(config('passion.locales', []));
-        $fallback  = config('passion.default_locale', config('app.locale', 'id'));
+        $supported = array_keys(config('site.locales', []));
+        $fallback  = config('site.default_locale', config('app.locale', 'id'));
 
         // Indonesian until the visitor picks a language; the browser's language is not used.
         $locale = $request->query('lang')

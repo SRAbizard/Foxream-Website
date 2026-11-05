@@ -56,7 +56,7 @@ class ListContactMessages extends ListRecords
                     ->label(__('Unread only'))
                     ->query(fn ($query) => $query->whereNull('read_at')),
                 SelectFilter::make('locale')
-                    ->options(collect(config('passion.locales'))->map(fn ($m) => $m['native'])->toArray()),
+                    ->options(collect(config('site.locales'))->map(fn ($m) => $m['native'])->toArray()),
             ])
             ->recordActions([
                 ViewAction::make(),

@@ -5,7 +5,7 @@
 @php
     use Illuminate\Support\Str;
 
-    $rate = (float) config('passion.jpy_to_idr', 105);
+    $rate = (float) config('site.jpy_to_idr', 105);
 
     // Most-used categories become the quick chips + marquee.
     $catCounts = $jobs->countBy('category');

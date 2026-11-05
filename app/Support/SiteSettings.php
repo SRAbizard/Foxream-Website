@@ -7,7 +7,7 @@ use App\Models\Setting;
 /**
  * Single read-side surface for everything edited under Admin → Website
  * Settings. Each accessor reads the Setting model first, falls back to
- * config/passion.php so the public site keeps working before any value
+ * config/site.php so the public site keeps working before any value
  * has been overridden.
  */
 class SiteSettings
@@ -17,7 +17,7 @@ class SiteSettings
      */
     public static function contact(string $key): ?string
     {
-        return Setting::get("contact.{$key}", config("passion.contact.{$key}"));
+        return Setting::get("contact.{$key}", config("site.contact.{$key}"));
     }
 
     /**
@@ -25,7 +25,7 @@ class SiteSettings
      */
     public static function social(string $key): ?string
     {
-        return Setting::get("social.{$key}", config("passion.contact.{$key}"));
+        return Setting::get("social.{$key}", config("site.contact.{$key}"));
     }
 
     /**
@@ -33,7 +33,7 @@ class SiteSettings
      */
     public static function stat(string $key): ?string
     {
-        return Setting::get("stats.{$key}", config("passion.stats.{$key}"));
+        return Setting::get("stats.{$key}", config("site.stats.{$key}"));
     }
 
     /**
@@ -46,7 +46,7 @@ class SiteSettings
     public static function offices(): array
     {
         $stored = Setting::get('contact.offices', null);
-        $offices = is_array($stored) ? $stored : config('passion.contact.offices', []);
+        $offices = is_array($stored) ? $stored : config('site.contact.offices', []);
 
         return collect($offices)
             ->filter(fn ($o) => filled($o['city'] ?? null) || filled($o['address'] ?? null))
@@ -109,7 +109,7 @@ class SiteSettings
      */
     public static function academyUrl(): ?string
     {
-        $url = Setting::get('academy.url', config('passion.academy.url'));
+        $url = Setting::get('academy.url', config('site.academy.url'));
         return filled($url) ? $url : null;
     }
 

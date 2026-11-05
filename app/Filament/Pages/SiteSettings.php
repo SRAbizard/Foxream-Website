@@ -47,7 +47,7 @@ class SiteSettings extends Page
             }
         }
         // Offices are stored as a JSON array under the key contact.offices
-        $offices = Setting::get('contact.offices', config('passion.contact.offices', []));
+        $offices = Setting::get('contact.offices', config('site.contact.offices', []));
         $data['contact__offices'] = is_array($offices) ? $offices : [];
 
         // Company profile PDF path
@@ -104,7 +104,7 @@ class SiteSettings extends Page
 
     private function defaultFor(string $key): ?string
     {
-        return data_get(config('passion'), $key) ?? null;
+        return data_get(config('site'), $key) ?? null;
     }
 
     public function form(Schema $schema): Schema

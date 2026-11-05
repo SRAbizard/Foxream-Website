@@ -14,18 +14,18 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        foreach (config('passion.roles', []) as $name) {
+        foreach (config('site.roles', []) as $name) {
             Role::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
         }
 
-        $bootstrap = config('passion.bootstrap_admin');
+        $bootstrap = config('site.bootstrap_admin');
 
         $admin = User::firstOrCreate(
             ['email' => $bootstrap['email']],
             [
                 'name'              => $bootstrap['name'],
                 'password'          => Hash::make($bootstrap['password']),
-                'locale'            => config('passion.default_locale', 'id'),
+                'locale'            => config('site.default_locale', 'id'),
                 'email_verified_at' => now(),
                 'is_active'         => true,
             ],

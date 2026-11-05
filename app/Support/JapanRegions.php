@@ -7,14 +7,14 @@ use Illuminate\Support\Str;
 
 /**
  * Groups free-text vacancy locations into Japan's eight regions
- * (config/passion.php → regions) for the homepage map and the
+ * (config/site.php → regions) for the homepage map and the
  * ?region= filter on /jobs.
  */
 class JapanRegions
 {
     public static function all(): array
     {
-        return config('passion.regions', []);
+        return config('site.regions', []);
     }
 
     public static function get(?string $key): ?array

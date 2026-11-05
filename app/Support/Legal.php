@@ -88,7 +88,7 @@ class Legal
     public static function officialChannels(): array
     {
         $facts = self::companyFacts();
-        $wa    = Setting::get('contact.whatsapp', config('passion.contact.whatsapp'));
+        $wa    = Setting::get('contact.whatsapp', config('site.contact.whatsapp'));
 
         return array_values(array_filter([
             ['label' => __('Website'), 'value' => preg_replace('~^https?://~', '', rtrim(config('app.url'), '/')), 'url' => url('/')],
@@ -126,12 +126,12 @@ class Legal
     /** Company details used inside the default texts. */
     public static function companyFacts(): array
     {
-        $offices = (array) Setting::get('contact.offices', config('passion.contact.offices', []));
+        $offices = (array) Setting::get('contact.offices', config('site.contact.offices', []));
 
         return [
             'company' => \App\Support\Brand::company(),
-            'email'   => Setting::get('contact.email', config('passion.contact.email')),
-            'phone'   => Setting::get('contact.phone', config('passion.contact.phone')),
+            'email'   => Setting::get('contact.email', config('site.contact.email')),
+            'phone'   => Setting::get('contact.phone', config('site.contact.phone')),
             'offices' => collect($offices)->map(fn ($o) => $o['address'] ?? trim(($o['city'] ?? '').', '.($o['country'] ?? ''), ', '))->filter()->values()->all(),
             'site'    => url('/'),
         ];

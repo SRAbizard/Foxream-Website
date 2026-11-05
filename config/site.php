@@ -95,7 +95,7 @@ return [
     | Rough JPY→IDR rate for the "show salary in Rupiah" toggle. It is only
     | an estimate and the UI labels it as such.
     */
-    'jpy_to_idr' => (float) env('PASSION_JPY_TO_IDR', 105),
+    'jpy_to_idr' => (float) env('SITE_JPY_TO_IDR', 105),
 
     /*
     | The separate learning platform (config/brand.php names it). Overridable

@@ -1,6 +1,6 @@
 {{-- Language dropdown in the panel topbar (admin + student). --}}
 @php
-    $locales = config('passion.locales', []);
+    $locales = config('site.locales', []);
     $current = app()->getLocale();
 @endphp
 

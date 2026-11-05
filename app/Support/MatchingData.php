@@ -87,7 +87,7 @@ class MatchingData
 
     public static function rate(): float
     {
-        return (float) config('passion.jpy_to_idr', 105);
+        return (float) config('site.jpy_to_idr', 105);
     }
 
     public function quiz(): array

@@ -4,7 +4,7 @@
      right. The login wallpaper (Website Settings → Login page wallpaper,
      or the bundled Japan photo) fills the whole page under a wash, like
      the homepage hero; petals fall over it. Styles live in
-     resources/css/filament/passion-theme.css under `.pj-auth`. --}}
+     resources/css/filament/theme.css under `.pj-auth`. --}}
 @php
     $route = request()->route()?->getName() ?? '';
     $variant = match (true) {

@@ -28,15 +28,15 @@ class TranslatableTabs
         ?string $description = null,
         array $componentMods = [],
     ): Section {
-        $locales = array_keys(config('passion.locales', []));
-        $defaultLocale = config('passion.default_locale', 'id');
+        $locales = array_keys(config('site.locales', []));
+        $defaultLocale = config('site.default_locale', 'id');
         $label ??= str($field)->replace('_', ' ')->title()->toString();
 
         $tabs = collect($locales)->map(function (string $locale) use (
             $field, $component, $required, $requiredOnDefaultLocaleOnly,
             $defaultLocale, $componentMods,
         ) {
-            $meta = config("passion.locales.{$locale}");
+            $meta = config("site.locales.{$locale}");
 
             // Native names live in config but should still pass through the
             // translator so JP user sees "インドネシア語" instead of "Indonesia"
@@ -86,12 +86,12 @@ class TranslatableTabs
         if ($description) {
             $section->description($description);
         } elseif ($required && $requiredOnDefaultLocaleOnly) {
-            $defaultMeta = config("passion.locales.{$defaultLocale}");
+            $defaultMeta = config("site.locales.{$defaultLocale}");
             $section->description(__('Required in :default. :other are optional.', [
                 'default' => __($defaultMeta['native'] ?? strtoupper($defaultLocale)),
                 'other'   => collect($locales)
                     ->reject(fn ($l) => $l === $defaultLocale)
-                    ->map(fn ($l) => __(config("passion.locales.{$l}.native") ?? strtoupper($l)))
+                    ->map(fn ($l) => __(config("site.locales.{$l}.native") ?? strtoupper($l)))
                     ->join(' & '),
             ]));
         }

@@ -58,7 +58,7 @@ class StudentPanelProvider extends PanelProvider
             ->profile(isSimple: false)
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
-            ->viteTheme('resources/css/filament/passion-theme.css')
+            ->viteTheme('resources/css/filament/theme.css')
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
                 fn (): string => view('filament.partials.login-jp-decoration')->render(),

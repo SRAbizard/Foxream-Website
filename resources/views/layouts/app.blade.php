@@ -36,7 +36,7 @@
     </script>
 
     {{-- hreflang alternates for SEO multilingual --}}
-    @foreach(config('passion.locales') as $code => $meta)
+    @foreach(config('site.locales') as $code => $meta)
         <link rel="alternate" hreflang="{{ $code }}" href="{{ url()->current() }}?lang={{ $code }}">
     @endforeach
     <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
@@ -146,7 +146,7 @@
                     </button>
                     <div class="absolute right-0 top-full pt-2 hidden group-hover:block group-focus-within:block min-w-[190px] z-30">
                         <div class="pj-menu">
-                            @foreach(config('passion.locales') as $code => $meta)
+                            @foreach(config('site.locales') as $code => $meta)
                                 <a href="{{ route('locale.switch', $code) }}" class="flex items-center gap-2 text-sm {{ app()->getLocale() === $code ? 'font-bold' : '' }}">
                                     <x-flag :code="$code" /><span>{{ $meta['native'] }}</span>
                                 </a>
@@ -194,7 +194,7 @@
                             <a href="/dashboard/login" class="sm:hidden font-bold">{{ __('Login') }}</a>
                         @endguest
                         <div class="sm:hidden mt-2 pt-2 border-t-2 border-dashed border-current/20 flex items-center gap-1.5 px-1">
-                            @foreach(config('passion.locales') as $code => $meta)
+                            @foreach(config('site.locales') as $code => $meta)
                                 <a href="{{ route('locale.switch', $code) }}" class="pj-iconbtn {{ app()->getLocale() === $code ? 'bg-[var(--pj-sakura)]!' : '' }}" aria-label="{{ $meta['native'] }}">
                                     <x-flag :code="$code" /> <span class="uppercase">{{ $code }}</span>
                                 </a>

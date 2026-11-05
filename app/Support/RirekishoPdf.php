@@ -32,7 +32,7 @@ class RirekishoPdf
     public static function libreOffice(): ?string
     {
         $candidates = array_filter([
-            config('passion.libreoffice'),
+            config('site.libreoffice'),
             '/usr/bin/soffice', '/usr/bin/libreoffice', '/usr/local/bin/soffice',
             '/Applications/LibreOffice.app/Contents/MacOS/soffice',
             'C:\Program Files\LibreOffice\program\soffice.exe',

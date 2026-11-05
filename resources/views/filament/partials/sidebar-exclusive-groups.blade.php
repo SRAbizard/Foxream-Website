@@ -14,8 +14,8 @@
  * Filament's sidebar init reads localStorage).
  */
 (function () {
-    if (window.__passionExclusiveNav) return;
-    window.__passionExclusiveNav = true;
+    if (window.__exclusiveNav) return;
+    window.__exclusiveNav = true;
 
     const TRIGGER_SELECTOR = '.fi-sidebar-group-btn, .fi-sidebar-group-collapse-btn';
 

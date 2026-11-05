@@ -11,7 +11,7 @@ class SitemapController extends Controller
 {
     public function index(): Response
     {
-        $locales = array_keys(config('passion.locales', []));
+        $locales = array_keys(config('site.locales', []));
         $now     = now()->toAtomString();
 
         $urls = [

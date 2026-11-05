@@ -8,7 +8,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/css/filament/passion-theme.css',
+                'resources/css/filament/theme.css',
                 'resources/js/app.js',
             ],
             refresh: true,
