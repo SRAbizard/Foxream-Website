@@ -59,6 +59,7 @@ return [
         'students'  => '0',
         'workers'   => '0',
         'companies' => '0',
+        'years'     => null,   // years of experience, About page; empty hides it
     ],
 
     /*

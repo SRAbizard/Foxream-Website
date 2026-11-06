@@ -1732,5 +1732,6 @@
     "Light mode": "ライトモード",
     "Dark mode": "ダークモード",
     "Interview": "面接",
-    "Gate": "搭乗口"
+    "Gate": "搭乗口",
+    "Shown on the About page. Leave empty to hide it.": "会社概要ページに表示されます。空欄にすると非表示になります。"
 }

@@ -30,6 +30,7 @@ class CmsSeeder extends Seeder
             'stats.students'   => '0',
             'stats.workers'    => '0',
             'stats.companies'  => '0',
+            'stats.years'      => null,
         ];
         foreach ($defaults as $k => $v) {
             $group = explode('.', $k)[0];

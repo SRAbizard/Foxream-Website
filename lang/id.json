@@ -1731,5 +1731,6 @@
     "Light mode": "Mode terang",
     "Dark mode": "Mode gelap",
     "Interview": "Wawancara",
-    "Gate": "Gerbang"
+    "Gate": "Gerbang",
+    "Shown on the About page. Leave empty to hide it.": "Tampil di halaman Tentang Kami. Kosongkan untuk menyembunyikannya."
 }

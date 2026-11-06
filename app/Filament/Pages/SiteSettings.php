@@ -34,7 +34,7 @@ class SiteSettings extends Page
         // group => [keys]
         'contact' => ['contact.email', 'contact.phone', 'contact.whatsapp'],
         'social'  => ['social.instagram', 'social.facebook', 'social.tiktok'],
-        'stats'   => ['stats.students', 'stats.workers', 'stats.companies'],
+        'stats'   => ['stats.students', 'stats.workers', 'stats.companies', 'stats.years'],
         'academy' => ['academy.url'],
     ];
 
@@ -140,10 +140,13 @@ class SiteSettings extends Page
                     ]),
                 ]),
                 Tab::make(__('Stats'))->icon('heroicon-o-chart-bar')->schema([
-                    Section::make()->columns(3)->components([
+                    Section::make()->columns(['default' => 1, 'sm' => 2, 'lg' => 4])->components([
                         TextInput::make('stats__students')->label(__('Trained Students')),
                         TextInput::make('stats__workers')->label(__('Workers')),
                         TextInput::make('stats__companies')->label(__('Partner Companies')),
+                        TextInput::make('stats__years')->label(__('Years of Experience'))
+                            ->placeholder('8+')
+                            ->helperText(__('Shown on the About page. Leave empty to hide it.')),
                     ]),
                 ]),
                 Tab::make(__('Company'))->icon('heroicon-o-building-office-2')->schema([

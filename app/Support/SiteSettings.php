@@ -42,7 +42,7 @@ class SiteSettings
     }
 
     /**
-     * Stat value (students, workers, companies).
+     * Stat value (students, workers, companies, years).
      */
     public static function stat(string $key): ?string
     {

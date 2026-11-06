@@ -12,8 +12,10 @@
         ['value' => \App\Support\SiteSettings::stat('students'),  'label' => __('Trained Students')],
         ['value' => \App\Support\SiteSettings::stat('workers'),   'label' => __('Workers placed in Japan')],
         ['value' => \App\Support\SiteSettings::stat('companies'), 'label' => __('Partner Companies')],
-        ['value' => '8+',                                          'label' => __('Years of Experience')],
+        ['value' => \App\Support\SiteSettings::stat('years'),     'label' => __('Years of Experience')],
     ];
+    // An empty stat (e.g. no years of experience set) is left out.
+    $stats = array_values(array_filter($stats, fn ($s) => filled($s['value'])));
     // For companies in Japan: why us and how hiring works.
     $why = [
         ['01', __('Screened candidates'), __('We check documents, skills and motivation before a candidate ever reaches your interview.')],
@@ -100,7 +102,7 @@
 {{-- STATS --}}
 <section class="py-16 bg-surface-900/40">
     <div class="mx-auto max-w-5xl px-6">
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-center">
+        <div class="grid gap-4 sm:grid-cols-2 {{ count($stats) === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }} text-center">
             @foreach($stats as $s)
                 <div class="rounded-2xl border border-surface-700/60 bg-surface-900/40 p-6">
                     <p class="font-display text-3xl font-bold text-white">{{ $s['value'] }}</p>
