@@ -72,7 +72,7 @@ class AccessLogResource extends Resource
                 Filter::make('date')
                     ->schema([DatePicker::make('date')->label(__('Date'))->native(false)])
                     ->query(fn (Builder $query, array $data) => $query->when($data['date'] ?? null, fn ($q, $d) => $q->whereDate('created_at', $d)))
-                    ->indicateUsing(fn (array $data) => ($data['date'] ?? null) ? __('Date').': '.\Illuminate\Support\Carbon::parse($data['date'])->format('d M Y') : null),
+                    ->indicateUsing(fn (array $data) => ($data['date'] ?? null) ? __('Date').': '.\Illuminate\Support\Carbon::parse($data['date'])->isoFormat('ll') : null),
             ])
             ->paginated([25, 50, 100])
             ->defaultPaginationPageOption(50)

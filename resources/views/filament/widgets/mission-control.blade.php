@@ -16,9 +16,9 @@
     {{-- ===== HERO: greeting + quick actions ===== --}}
     <section class="pjm-card pjm-hero">
         <div class="pjm-hero-copy">
-            <span class="pjm-sticker">管制室 · {{ __('Mission Control') }}</span>
+            <span class="pjm-sticker">{{ __('Mission Control') }}</span>
             <h2 class="pjm-title">{{ $greeting['text'] }}, {{ $firstName }}!</h2>
-            <p class="pjm-jp">{{ $greeting['jp'] }} · {{ $today }}</p>
+            <p class="pjm-jp">{{ $today }}</p>
             <p class="pjm-summary">
                 @if($summary->isNotEmpty())
                     {{ __('Today on the radar:') }} <b>{{ $summary->join(', ', ' '.__('and').' ') }}</b>.
@@ -75,7 +75,7 @@
         @if($students)
         <section class="pjm-card pjm-pipe">
             <header class="pjm-head">
-                <h3>{{ __('Application pipeline') }} <small>応募の流れ</small></h3>
+                <h3>{{ __('Application pipeline') }}</h3>
                 <span class="pjm-muted">{{ __('Click a stage to open those applications') }}</span>
             </header>
             <ol class="pjm-stages">
@@ -99,7 +99,7 @@
         @endif
 
         <section class="pjm-card pjm-todo">
-            <header class="pjm-head"><h3>{{ __('Needs your action') }} <small>やること</small></h3></header>
+            <header class="pjm-head"><h3>{{ __('Needs your action') }}</h3></header>
             <ul>
                 @foreach($todos as $t)
                     <li>
@@ -118,7 +118,7 @@
     <div class="pjm-row">
         <section class="pjm-card pjm-chart" x-data="{ hover: null }">
             <header class="pjm-head">
-                <h3>{{ __('Activity') }} <small>活動</small></h3>
+                <h3>{{ __('Activity') }}</h3>
                 <div class="pjm-tabs" role="group" aria-label="{{ __('Chart range') }}">
                     @foreach([7, 30, 90] as $d)
                         <button type="button" wire:click="setRange({{ $d }})" aria-pressed="{{ $range === $d ? 'true' : 'false' }}">
@@ -150,7 +150,7 @@
         </section>
 
         <section class="pjm-card pjm-map" x-data="{ sel: @js($busiest['key'] ?? 'kanto'), regions: @js($map) }">
-            <header class="pjm-head"><h3>{{ __('Open jobs by region') }} <small>求人マップ</small></h3></header>
+            <header class="pjm-head"><h3>{{ __('Open jobs by region') }}</h3></header>
             <div class="pjm-map-body">
                 <svg viewBox="0 0 400 440" class="pjm-japan" role="group" aria-label="{{ __('Job map of Japan') }}">
                     <path class="land" d="M292 34 Q318 18 344 26 Q372 30 384 54 Q378 80 356 92 Q338 108 314 104 Q294 96 286 74 Q282 50 292 34 Z"/>
@@ -169,7 +169,7 @@
                 <div class="pjm-map-list">
                     <template x-for="r in regions.filter(r => r.key === sel)" :key="r.key">
                         <div>
-                            <p class="pjm-region"><b x-text="r.name"></b> <span x-text="r.jp"></span></p>
+                            <p class="pjm-region"><b x-text="r.name"></b></p>
                             <template x-if="r.jobs.length === 0"><p class="pjm-muted">{{ __('No open jobs in this region yet.') }}</p></template>
                             <ul>
                                 <template x-for="j in r.jobs" :key="j.url">
@@ -185,7 +185,7 @@
 
     {{-- ===== Recent activity ===== --}}
     <section class="pjm-card pjm-feed">
-        <header class="pjm-head"><h3>{{ __('Recent activity') }} <small>最近の動き</small></h3></header>
+        <header class="pjm-head"><h3>{{ __('Recent activity') }}</h3></header>
         @if($feed->isEmpty())
             <p class="pjm-muted">{{ __('No activity yet.') }}</p>
         @else

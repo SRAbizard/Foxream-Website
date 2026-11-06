@@ -42,13 +42,13 @@
                         @if ($profile->visa_target_requested_at)
                             <div>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('Requested') }}</p>
-                                <p class="text-gray-900 dark:text-gray-100">{{ $profile->visa_target_requested_at->format('d M Y H:i') }}</p>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $profile->visa_target_requested_at->isoFormat('lll') }}</p>
                             </div>
                         @endif
                         @if ($profile->visa_target_reviewed_at)
                             <div>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ __('Reviewed') }}</p>
-                                <p class="text-gray-900 dark:text-gray-100">{{ $profile->visa_target_reviewed_at->format('d M Y H:i') }}</p>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $profile->visa_target_reviewed_at->isoFormat('lll') }}</p>
                             </div>
                         @endif
                     </div>

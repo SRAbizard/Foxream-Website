@@ -14,7 +14,7 @@
 <ul>
     <li>To process your account registration and job applications.</li>
     <li>To match your profile with suitable jobs and visa routes.</li>
-    <li>To prepare your CV (履歴書) and application documents for partner companies in Japan.</li>
+    <li>To prepare your CV and application documents for partner companies in Japan.</li>
     <li>To arrange training, selection, visas, departure and support after you arrive in Japan.</li>
     <li>To contact you about the recruitment process and our programmes.</li>
     <li>To keep the website secure and prevent misuse.</li>

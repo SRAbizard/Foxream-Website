@@ -13,7 +13,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.6-3.3 8.3-8 9-4.7-.7-8-4.4-8-9V6l8-3z"/><path d="M12 8v5M12 16.5v.01"/></svg>
         </span>
         <div>
-            <p class="pj-fraud-title">{{ __('Beware of fraud') }} <span class="jp">詐欺に注意</span></p>
+            <p class="pj-fraud-title">{{ __('Beware of fraud') }}</p>
             @unless($compact)
                 <p class="pj-fraud-sub">{{ __('Protect yourself from anyone falsely using the :brand name.') }}</p>
             @endunless

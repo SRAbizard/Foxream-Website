@@ -101,7 +101,7 @@ class ApplicationResource extends Resource
                     self::file('contract_path', __('Contract to sign')),
                     self::file('signed_contract_path', __('Signed contract (from the student)'))
                         ->helperText(fn (?Application $record) => $record?->signed_contract_at
-                            ? __('Uploaded :date', ['date' => $record->signed_contract_at->format('d M Y H:i')]) : null),
+                            ? __('Uploaded :date', ['date' => $record->signed_contract_at->isoFormat('lll')]) : null),
                 ]),
             Section::make('COE')->columns(2)
                 ->visible(fn (?Application $record) => $record?->reached('contract'))

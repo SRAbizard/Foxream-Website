@@ -53,7 +53,7 @@
                         @endif
                         <h2 class="mt-3 font-display text-lg font-bold text-white group-hover:text-brand-400 transition">{{ $post->t('title') }}</h2>
                         <p class="mt-2 text-sm text-surface-400 line-clamp-3 flex-1">{{ $post->t('excerpt') }}</p>
-                        <p class="mt-4 text-xs text-surface-500">{{ optional($post->published_at)->format('d M Y') }}{{ $post->author ? ' · '.$post->author->name : '' }}</p>
+                        <p class="mt-4 text-xs text-surface-500">{{ optional($post->published_at)->isoFormat('ll') }}{{ $post->author ? ' · '.$post->author->name : '' }}</p>
                     </div>
                 </a>
             @endforeach

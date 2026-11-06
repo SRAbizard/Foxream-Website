@@ -63,7 +63,7 @@ class MyApplications extends Page
             'passed'       => [__('Congratulations, you passed! Complete your documents in My Documents.'), $documents],
             'contract', 'coe', 'visa' => [__('Follow the steps below: contract, COE, visa and departure.'), null],
             'departure'    => [__('Get ready to fly! Your departure details are below.'), null],
-            'departed'     => [__('Have a safe trip and good luck in Japan! 頑張って!'), null],
+            'departed'     => [__('Have a safe trip and good luck in Japan!'), null],
             'rejected'     => [__('You were not selected for this job. Do not give up: other jobs in your field are waiting.'), [__('Browse jobs'), route('job.index')]],
             'withdrawn'    => [__('This application was withdrawn.'), null],
             default        => [null, null],

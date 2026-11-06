@@ -1,6 +1,6 @@
 {{-- Region job map block. Needs $regions (App\Support\MatchingData::regions()); see match-quiz.blade.php for the page wiring. --}}
 <div class="pj-head">
-    <h2><span class="jp">求人マップ</span>{{ __('Where in Japan do you want to work?') }}</h2>
+    <h2>{{ __('Where in Japan do you want to work?') }}</h2>
     <p class="pj-lede">{{ __('Tap a region on the map to see its openings.') }}</p>
 </div>
 <div class="pj-map">

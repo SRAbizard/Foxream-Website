@@ -22,7 +22,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
- * Admin dashboard — "管制室 · Mission Control". One full-width Livewire
+ * Admin dashboard — "Mission Control". One full-width Livewire
  * widget: greeting + quick actions, KPI cards with 14-day sparklines,
  * the application pipeline, an activity chart (7/30/90 days), a job map
  * by region, a to-do list and a recent-activity feed. Client-side
@@ -94,7 +94,6 @@ class AdminWelcomeWidget extends Widget
         $map = $regions->map(fn ($r, $key) => [
             'key'   => $key,
             'name'  => __($r['name']),
-            'jp'    => $r['jp'],
             'x'     => $r['x'],
             'y'     => $r['y'],
             'jobs'  => ($jobsByRegion[$key] ?? collect())->map(fn ($v) => [
@@ -182,10 +181,10 @@ class AdminWelcomeWidget extends Widget
         $h = $now->hour;
 
         return match (true) {
-            $h < 11 => ['jp' => 'おはようございます', 'text' => __('Good morning')],
-            $h < 15 => ['jp' => 'こんにちは', 'text' => __('Good afternoon')],
-            $h < 18 => ['jp' => 'こんにちは', 'text' => __('Good evening')],
-            default => ['jp' => 'こんばんは', 'text' => __('Good night')],
+            $h < 11 => ['text' => __('Good morning')],
+            $h < 15 => ['text' => __('Good afternoon')],
+            $h < 18 => ['text' => __('Good evening')],
+            default => ['text' => __('Good night')],
         };
     }
 

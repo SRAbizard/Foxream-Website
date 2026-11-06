@@ -85,7 +85,7 @@ class StudentResource extends Resource
                     ->icon(fn (User $r) => $r->email_verified_at ? 'heroicon-s-check-badge' : null)
                     ->iconPosition(\Filament\Support\Enums\IconPosition::After)
                     ->iconColor('success')
-                    ->tooltip(fn (User $r) => $r->email_verified_at ? __('Email verified on :date', ['date' => $r->email_verified_at->format('d M Y')]) : __('Email not verified yet'))
+                    ->tooltip(fn (User $r) => $r->email_verified_at ? __('Email verified on :date', ['date' => $r->email_verified_at->isoFormat('ll')]) : __('Email not verified yet'))
                     ->description(fn (User $r) => $r->is_active === false ? __('Inactive') : null),
                 TextColumn::make('email')->label(__('Email'))->searchable()->copyable(),
                 TextColumn::make('phone')->label(__('Phone'))->placeholder('—')->toggleable(),

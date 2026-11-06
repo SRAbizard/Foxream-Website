@@ -16,15 +16,15 @@
     ];
     // For companies in Japan: why us and how hiring works.
     $why = [
-        ['選考', __('Screened candidates'), __('We check documents, skills and motivation before a candidate ever reaches your interview.')],
-        ['日本語', __('Japanese & work culture'), __('Candidates train at :learning: JLPT/JFT preparation plus Japanese workplace manners.')],
-        ['ビザ', __('Documents & visa handled'), __('We prepare the paperwork through to the Certificate of Eligibility and departure.')],
-        ['支援', __('Support after arrival'), __('A contact person for your new staff, so they settle in and stay.')],
+        ['01', __('Screened candidates'), __('We check documents, skills and motivation before a candidate ever reaches your interview.')],
+        ['02', __('Japanese & work culture'), __('Candidates train at :learning: JLPT/JFT preparation plus Japanese workplace manners.')],
+        ['03', __('Documents & visa handled'), __('We prepare the paperwork through to the Certificate of Eligibility and departure.')],
+        ['04', __('Support after arrival'), __('A contact person for your new staff, so they settle in and stay.')],
     ];
     $process = [
         [__('Consultation'), __('Tell us the role, number of workers, visa route and timing.')],
         [__('Candidate selection'), __('We shortlist candidates who match your requirements.')],
-        ['Mensetsu', __('Online or on-site interviews with your team.')],
+        [__('Interview'), __('Online or on-site interviews with your team.')],
         [__('Visa & COE'), __('Contracts, medical check-up, documents and the COE.')],
         [__('Arrival & follow-up'), __('Departure, onboarding and support once they start.')],
     ];
@@ -115,8 +115,8 @@
 <section class="pj-section">
     <div class="pj-wrap">
         <div class="pj-head">
-            <span class="pj-sticker is-pink">{{ __('For companies in Japan') }} · 企業の皆様へ</span>
-            <h2><span class="jp">選ばれる理由</span>{{ __('Why companies work with us') }}</h2>
+            <span class="pj-sticker is-pink">{{ __('For companies in Japan') }}</span>
+            <h2>{{ __('Why companies work with us') }}</h2>
         </div>
         <div class="pj-cards-4">
             @foreach($why as [$jp, $title, $desc])
@@ -133,7 +133,7 @@
 <section class="pj-section pt-0!">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">流れ</span>{{ __('How hiring works') }}</h2>
+            <h2>{{ __('How hiring works') }}</h2>
         </div>
         <ol class="pj-tickets" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); list-style: none; padding: 0;">
             @foreach($process as $i => [$title, $desc])

@@ -1649,7 +1649,7 @@
     "Our Indonesia team is checking your profile and documents. Make sure your documents are complete.": "Tim Indonesia sedang memeriksa profil dan dokumenmu. Pastikan dokumenmu sudah lengkap.",
     "Follow the steps below: contract, COE, visa and departure.": "Ikuti langkah di bawah: kontrak, COE, visa, lalu keberangkatan.",
     "Get ready to fly! Your departure details are below.": "Siap-siap terbang! Detail keberangkatanmu ada di bawah.",
-    "Have a safe trip and good luck in Japan! 頑張って!": "Selamat jalan dan sukses di Jepang! 頑張って!",
+    "Have a safe trip and good luck in Japan!": "Selamat jalan dan sukses di Jepang!",
     "This application has ended. To open it again, use \"Change step\" at the top.": "Lamaran ini sudah selesai. Untuk membukanya lagi, pakai \"Ubah langkah\" di atas.",
     "Last moved :when by :name": "Terakhir dipindah :when oleh :name",
     "Change step": "Ubah langkah",
@@ -1729,5 +1729,7 @@
     "Tick the box to agree.": "Centang kotak untuk menyetujui.",
     "I agree": "Saya setuju",
     "Light mode": "Mode terang",
-    "Dark mode": "Mode gelap"
+    "Dark mode": "Mode gelap",
+    "Interview": "Wawancara",
+    "Gate": "Gerbang"
 }

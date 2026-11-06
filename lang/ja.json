@@ -908,7 +908,7 @@
     "Diploma (D3)": "短大（D3）",
     "Bachelor in engineering / IT": "大学（工学・IT）",
     "Other bachelor": "大学（その他）",
-    "Mission to Japan": "Mission to Japan",
+    "Mission to Japan": "日本へのミッション",
     "Your mission:": "あなたのミッション：",
     "work in": "働く場所は",
     "Japan.": "日本。",
@@ -1650,7 +1650,7 @@
     "Our Indonesia team is checking your profile and documents. Make sure your documents are complete.": "インドネシアチームがプロフィールと書類を確認しています。書類がそろっているか確認してください。",
     "Follow the steps below: contract, COE, visa and departure.": "以下の手順に沿って進めてください：契約、COE、ビザ、出発。",
     "Get ready to fly! Your departure details are below.": "出発の準備をしましょう！出発の詳細は下にあります。",
-    "Have a safe trip and good luck in Japan! 頑張って!": "気をつけて、日本でも頑張ってください！",
+    "Have a safe trip and good luck in Japan!": "気をつけて、日本でも頑張ってください！",
     "This application has ended. To open it again, use \"Change step\" at the top.": "この応募は終了しています。再開するには上の「ステップを変更」を使ってください。",
     "Last moved :when by :name": ":when に :name が変更",
     "Change step": "ステップを変更",
@@ -1730,5 +1730,7 @@
     "Tick the box to agree.": "同意するにはチェックを入れてください。",
     "I agree": "同意する",
     "Light mode": "ライトモード",
-    "Dark mode": "ダークモード"
+    "Dark mode": "ダークモード",
+    "Interview": "面接",
+    "Gate": "搭乗口"
 }

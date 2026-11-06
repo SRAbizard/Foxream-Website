@@ -24,7 +24,7 @@
     <div class="pj-auth-bg" style="background-image: url('{{ $photo }}')"></div>
 
     <div class="pj-auth-art">
-        <span class="pj-auth-sticker">日本へのミッション · {{ __('Mission to Japan') }}</span>
+        <span class="pj-auth-sticker">{{ __('Mission to Japan') }}</span>
         <p class="pj-auth-title">{{ $title }}</p>
         <p class="pj-auth-sub">{{ $sub }}</p>
 
@@ -35,11 +35,11 @@
             </svg>
             <div class="pj-auth-pass">
                 <div class="main">
-                    <span class="top">搭乗券 · BOARDING PASS</span>
+                    <span class="top">{{ __('Boarding pass') }}</span>
                     <span class="route"><b>CGK</b><i></i><b>NRT</b></span>
-                    <span class="meta">{{ __('Passenger') }} <b>{{ __('You') }}</b> · Gate <b>{{ $variant === 'admin' ? 'Admin' : 'Mensetsu' }}</b></span>
+                    <span class="meta">{{ __('Passenger') }} <b>{{ __('You') }}</b> · {{ __('Gate') }} <b>{{ $variant === 'admin' ? 'Admin' : __('Interview') }}</b></span>
                 </div>
-                <div class="stub">出発</div>
+                <div class="stub">{{ __('Departure') }}</div>
             </div>
         </div>
     </div>

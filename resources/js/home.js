@@ -165,7 +165,7 @@ function boot() {
         const list = data.jobs.filter((j) => j.region === key);
         $$('[data-pj-pin]').forEach((p) => p.classList.toggle('is-active', p.dataset.pjPin === key));
         cityCard.innerHTML = `
-            <div class="pj-city-head"><h3>${esc(r.name)}</h3><span class="jp">${esc(r.jp)}</span></div>
+            <div class="pj-city-head"><h3>${esc(r.name)}</h3></div>
             <p class="pj-city-count"><b>${list.length}</b> ${esc(t.jobsInRegion)}</p>
             ${list.length ? `<div class="pj-mini-jobs">${list.slice(0, 4).map(miniJob).join('')}</div>` : `<p class="pj-lede">${esc(t.noJobsRegion)}</p>`}
             <div><a class="pj-btn" href="${esc(jobsUrl({ region: key }))}">${esc(t.seeRegion.replace(':region', r.name))} →</a></div>`;

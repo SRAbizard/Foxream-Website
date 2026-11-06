@@ -14,7 +14,7 @@
 <ul>
     <li>Memproses pendaftaran akun dan lamaran kerja Anda.</li>
     <li>Mencocokkan profil Anda dengan lowongan dan jalur visa yang sesuai.</li>
-    <li>Menyusun CV (履歴書) dan dokumen lamaran untuk perusahaan mitra di Jepang.</li>
+    <li>Menyusun CV dan dokumen lamaran untuk perusahaan mitra di Jepang.</li>
     <li>Mengurus pelatihan, seleksi, visa, keberangkatan, dan pendampingan setelah tiba di Jepang.</li>
     <li>Menghubungi Anda terkait proses rekrutmen dan informasi program.</li>
     <li>Menjaga keamanan website dan mencegah penyalahgunaan.</li>

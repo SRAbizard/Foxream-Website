@@ -186,7 +186,7 @@ class MyVisaTarget extends Page implements HasForms
             ->maxSize(5120)
             ->required(fn (Get $get) => ! $existing($get))
             ->helperText(fn (Get $get) => $existing($get)
-                ? __('Already uploaded on :date. Upload again only to replace it.', ['date' => $existing($get)->created_at->format('d M Y')])
+                ? __('Already uploaded on :date. Upload again only to replace it.', ['date' => $existing($get)->created_at->isoFormat('ll')])
                 : __('PDF or photo, at most 5 MB.'));
     }
 

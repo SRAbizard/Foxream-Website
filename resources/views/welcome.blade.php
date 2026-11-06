@@ -37,7 +37,7 @@
     <canvas data-pj-petals aria-hidden="true"></canvas>
     <div class="pj-wrap pj-hero-grid">
         <div class="pj-hero-copy">
-            <span class="pj-sticker">日本へのミッション · {{ __('Mission to Japan') }}</span>
+            <span class="pj-sticker">{{ __('Mission to Japan') }}</span>
             <h1>
                 <span class="l">{{ __('Your mission:') }}</span>
                 <span class="l">{{ __('work in') }}</span>
@@ -96,7 +96,7 @@
             <svg class="fuji" data-depth="4" viewBox="0 0 400 200"><path d="M0 200 L120 70 Q150 40 170 38 L230 38 Q250 40 280 70 L400 200 Z" fill="#2B4795" stroke="var(--pj-line)" stroke-width="3" stroke-linejoin="round"/><path d="M148 58 Q160 40 172 38 L228 38 Q240 40 252 58 L236 72 L222 60 L208 76 L196 60 L182 74 L166 62 Z" fill="#FFFAF2" stroke="var(--pj-line)" stroke-width="3" stroke-linejoin="round"/></svg>
             <div class="pj-pass pj-card" data-depth="28" data-base-rotate="-4">
                 <div class="pj-pass-main">
-                    <div class="pj-pass-top"><span>搭乗券 · BOARDING PASS</span><span>PJ {{ date('Y') }}</span></div>
+                    <div class="pj-pass-top"><span>{{ __('Boarding pass') }}</span><span>{{ Str::upper(Str::substr(\App\Support\Brand::name(), 0, 2)) }} {{ date('Y') }}</span></div>
                     <div class="pj-pass-route">
                         <div><b>CGK</b><small>Jakarta</small></div>
                         <div class="line"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="var(--pj-red)"/></svg></div>
@@ -105,10 +105,10 @@
                     <div class="pj-pass-meta">
                         <span>{{ __('Passenger') }}<b>{{ auth()->user()?->name ? Str::limit(auth()->user()->name, 12) : __('You') }}</b></span>
                         <span>{{ __('Seat') }}<b data-pj-bp-seat>{{ __('All fields') }}</b></span>
-                        <span>Gate<b>Mensetsu</b></span>
+                        <span>{{ __('Gate') }}<b>{{ __('Interview') }}</b></span>
                     </div>
                 </div>
-                <div class="pj-pass-stub">出発</div>
+                <div class="pj-pass-stub">{{ __('Departure') }}</div>
             </div>
         </div>
     </div>
@@ -166,7 +166,7 @@
 <section class="pj-route pj-section" id="rute">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">ミッションルート</span>{{ __('Your mission route') }}</h2>
+            <h2>{{ __('Your mission route') }}</h2>
             <p class="pj-lede">{{ __('Five checkpoints from Jakarta to Japan. Every checkpoint you pass gets a stamp.') }}</p>
         </div>
         <div data-pj-route-stage>
@@ -178,16 +178,16 @@
             <ol class="pj-steps">
                 @php
                     $steps = [
-                        ['登録', __('Create your profile'), __('Fill in your biodata and education, and upload documents from your dashboard.')],
-                        ['学習', __('Learn the language'), __('Level up your JLPT/JFT at :learning.')],
-                        ['面接', 'Mensetsu', __('Online or offline interviews with Japanese companies.')],
-                        ['ビザ', __('Visa & COE'), __('We handle the paperwork until your Certificate of Eligibility is issued.')],
-                        ['出発', __('Depart!'), __('Fly to Japan and start your first day at work.')],
+                        [__('Create your profile'), __('Fill in your biodata and education, and upload documents from your dashboard.')],
+                        [__('Learn the language'), __('Level up your JLPT/JFT at :learning.')],
+                        [__('Interview'), __('Online or offline interviews with Japanese companies.')],
+                        [__('Visa & COE'), __('We handle the paperwork until your Certificate of Eligibility is issued.')],
+                        [__('Depart!'), __('Fly to Japan and start your first day at work.')],
                     ];
                 @endphp
-                @foreach($steps as $i => [$jp, $title, $desc])
+                @foreach($steps as $i => [$title, $desc])
                     <li class="pj-step" data-pj-step>
-                        <div class="pj-stamp">{{ $jp }}<small>0{{ $i + 1 }}</small></div>
+                        <div class="pj-stamp">0{{ $i + 1 }}</div>
                         <div>
                             <span class="tag">{{ __('CHECKPOINT') }} 0{{ $i + 1 }}</span>
                             <h3>{{ $title }}</h3>
@@ -251,7 +251,7 @@
 <section class="pj-section" id="lowongan">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">おすすめ求人</span>{{ __('Featured jobs') }}</h2>
+            <h2>{{ __('Featured jobs') }}</h2>
         </div>
         <div class="pj-jobs-tools">
             <a href="{{ route('job.index') }}" wire:navigate class="font-bold underline decoration-2 underline-offset-4">{{ __('See all :count jobs', ['count' => $jobs->count()]) }} →</a>
@@ -286,7 +286,7 @@
                                 <b>{{ $j['min'] ? number_format($j['min']).($j['max'] ? ' – '.number_format($j['max']) : '').' '.$j['currency'] : __('Salary on request') }}</b>
                             @endif
                         </div>
-                        <span class="pj-hanko" title="{{ __('Partner company') }}">認定</span>
+                        <span class="pj-hanko" title="{{ __('Partner company') }}" aria-label="{{ __('Partner company') }}">✓</span>
                     </a>
                 @endforeach
             </div>
@@ -299,7 +299,7 @@
 <section class="pj-section pt-0!">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">提携企業</span>{{ __('Our partner companies in Japan') }}</h2>
+            <h2>{{ __('Our partner companies in Japan') }}</h2>
             <p class="pj-lede">{{ __('Every job on this site comes from a company we work with directly.') }}</p>
         </div>
         <ul class="pj-partners">
@@ -321,7 +321,7 @@
 <section class="pj-section pt-0!">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">会社紹介</span>{{ __('Get to know :brand') }}</h2>
+            <h2>{{ __('Get to know :brand') }}</h2>
         </div>
         <div class="pj-video-frame pj-card mx-auto max-w-4xl">
             @if($companyVideo['type'] === 'youtube')
@@ -343,10 +343,9 @@
 @if($albums->isNotEmpty())
 <section class="pj-section pj-gallery" id="galeri">
     <div class="pj-scallop absolute top-0 inset-x-0" aria-hidden="true"></div>
-    <span class="pj-gallery-deco" aria-hidden="true">思い出</span>
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">ギャラリー</span>{{ __('From our albums') }}</h2>
+            <h2>{{ __('From our albums') }}</h2>
             <p class="pj-lede">{{ __('Real moments from our candidates, from the mensetsu room to campuses across Indonesia.') }}</p>
         </div>
         <div class="pj-polaroids">
@@ -372,7 +371,7 @@
 <section class="pj-section">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">みんなの声</span>{{ __('What people say about us') }}</h2>
+            <h2>{{ __('What people say about us') }}</h2>
         </div>
         <div class="pj-notes-grid" style="--cols: {{ in_array($testimonials->count(), [2, 4]) ? 2 : 3 }}">
             @foreach($testimonials as $t)
@@ -394,7 +393,7 @@
 <section class="pj-section pt-0!">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">よくある質問</span>{{ __('Frequently Asked Questions') }}</h2>
+            <h2>{{ __('Frequently Asked Questions') }}</h2>
         </div>
         <div class="pj-faq">
             @foreach($faqs as $faq)

@@ -6,7 +6,7 @@
 
 @section('content')
 
-<x-jp.page-hero :eyebrow="$doc === 'privacy' ? __('Legal') . ' · 個人情報' : __('Legal') . ' · 利用規約'" :title="$title" :subtitle="$subtitle" :petals="6" />
+<x-jp.page-hero :eyebrow="__('Legal')" :title="$title" :subtitle="$subtitle" :petals="6" />
 
 <section class="mx-auto max-w-3xl px-6 pb-20">
     <p class="text-sm opacity-70">{{ __('Last updated: :date', ['date' => $updatedAt->translatedFormat('j F Y')]) }}</p>

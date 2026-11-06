@@ -14,7 +14,7 @@
 @section('content')
 <x-jp.page-hero
     page="contact"
-    :eyebrow="__('Contact') . ' · お問い合わせ'"
+    :eyebrow="__('Contact')"
     :title="__('Let\'s talk.')"
     :subtitle="__('Looking for a job in Japan, or for workers from Indonesia? Free consultation, in Indonesian, Japanese or English.')"
     :petals="10" />
@@ -30,7 +30,7 @@
                         {{ __('A candidate') }} <small>{{ __('looking for a job in Japan') }}</small>
                     </button>
                     <button type="button" role="tab" :aria-selected="who === 'employer'" :class="who === 'employer' && 'is-on'" @click="who = 'employer'">
-                        {{ __('A company') }} · 企業の方 <small>{{ __('looking for workers') }}</small>
+                        {{ __('A company') }} <small>{{ __('looking for workers') }}</small>
                     </button>
                 </div>
 

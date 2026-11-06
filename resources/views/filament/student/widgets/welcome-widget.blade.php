@@ -33,7 +33,7 @@
             <div class="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div class="flex-1 min-w-0">
                     <p class="text-xs uppercase tracking-[0.2em] font-bold text-primary-600 dark:text-primary-400">
-                        ようこそ · {{ __('Welcome') }}
+                        {{ __('Welcome') }}
                     </p>
                     <h2 class="mt-2 text-2xl md:text-3xl font-bold text-gray-950 dark:text-white tracking-tight">
                         {{ __('Hello, :name', ['name' => $user?->name ?? __('Student')]) }} <span aria-hidden="true">👋</span>

@@ -3,7 +3,7 @@
      [data-pj-home] wrapper — behaviour lives in resources/js/home.js. --}}
 <div class="pj-head">
     <span class="pj-sticker is-pink">{{ __('Mission 01 · 1 minute') }}</span>
-    <h2><span class="jp">相性チェック</span>{{ __('Check your match') }}</h2>
+    <h2>{{ __('Check your match') }}</h2>
     <p class="pj-lede">{{ __('Answer 4 questions. We will show the visa route that fits you best and matching jobs.') }}</p>
 </div>
 <div class="pj-quiz">

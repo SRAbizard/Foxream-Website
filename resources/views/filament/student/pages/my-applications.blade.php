@@ -22,7 +22,7 @@
             <article @class(['pja-pass', 'is-ended' => $ended, 'is-departed' => $departed])>
                 <div class="pja-main">
                     <p class="pja-top">
-                        <span>{{ __('Boarding pass') }} · 搭乗券</span>
+                        <span>{{ __('Boarding pass') }}</span>
                         <span>No. {{ str_pad((string) $app->id, 5, '0', STR_PAD_LEFT) }}</span>
                     </p>
 
@@ -100,7 +100,7 @@
                             'title' => __('Employment contract'),
                             'done'  => (bool) $app->signed_contract_path,
                             'text'  => match (true) {
-                                (bool) $app->signed_contract_path => __('Signed copy uploaded on :date.', ['date' => $app->signed_contract_at?->format('d M Y')]),
+                                (bool) $app->signed_contract_path => __('Signed copy uploaded on :date.', ['date' => $app->signed_contract_at?->isoFormat('ll')]),
                                 (bool) $app->contract_path        => __('Your contract is ready. Download it, sign it, then upload the signed copy.'),
                                 default                           => __('Being prepared. We will notify you when it is ready to sign.'),
                             },
@@ -112,7 +112,7 @@
                             'title' => 'COE',
                             'done'  => (bool) $app->coe_issued_at,
                             'text'  => $app->coe_issued_at
-                                ? __('Issued on :date.', ['date' => $app->coe_issued_at->format('d M Y')])
+                                ? __('Issued on :date.', ['date' => $app->coe_issued_at->isoFormat('ll')])
                                 : ($app->reached('contract') ? __('Waiting for the COE to be issued. This usually takes 1 to 3 months.') : __('After the contract is signed.')),
                             'links' => $link('coe_path', __('View COE')),
                         ],
@@ -121,7 +121,7 @@
                             'title' => __('Visa'),
                             'done'  => (bool) $app->visa_issued_at,
                             'text'  => $app->visa_issued_at
-                                ? __('Issued on :date.', ['date' => $app->visa_issued_at->format('d M Y')])
+                                ? __('Issued on :date.', ['date' => $app->visa_issued_at->isoFormat('ll')])
                                 : ($app->reached('coe') ? __('Our team helps you apply. Keep your passport and documents in My Documents ready.') : __('After the COE is issued.')),
                             'links' => $link('visa_path', __('View visa')),
                         ],
@@ -193,7 +193,7 @@
                     <ul>
                         @foreach($past as $s)
                             <li>
-                                <span>{{ $s->type_label }} · {{ $s->starts_at?->format('d M Y H:i') ?? '—' }}</span>
+                                <span>{{ $s->type_label }} · {{ $s->starts_at?->isoFormat('lll') ?? '—' }}</span>
                                 @if($s->result)
                                     <x-filament::badge :color="$s->result === 'passed' ? 'success' : 'danger'">{{ __('schedule.result.'.$s->result) }}</x-filament::badge>
                                 @endif

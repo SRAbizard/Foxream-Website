@@ -26,17 +26,17 @@
         ],
     ];
     $support = [
-        ['学習', __('Language training'), __('JLPT/JFT preparation at :learning, our Japanese language platform.')],
-        ['面接', __('Mensetsu coaching'), __('Interview practice, self-introduction in Japanese and what Japanese companies look for.')],
-        ['書類', __('Documents & visa'), __('Passport, medical check-up, document sending and the Certificate of Eligibility.')],
-        ['到着', __('Support after arrival'), __('Help settling in and a contact person once you have started work in Japan.')],
+        ['01', __('Language training'), __('JLPT/JFT preparation at :learning, our Japanese language platform.')],
+        ['02', __('Mensetsu coaching'), __('Interview practice, self-introduction in Japanese and what Japanese companies look for.')],
+        ['03', __('Documents & visa'), __('Passport, medical check-up, document sending and the Certificate of Eligibility.')],
+        ['04', __('Support after arrival'), __('Help settling in and a contact person once you have started work in Japan.')],
     ];
     $academyUrl = \App\Support\SiteSettings::academyUrl();
 @endphp
 
 @section('content')
 <x-jp.page-hero
-    :eyebrow="__('Services') . ' · サービス'"
+    :eyebrow="__('Services')"
     :title="__('Three routes to work in Japan.')"
     :subtitle="__('Each route has its own requirements. Find the one that fits you, then let us handle every step with you.')"
     :petals="8" />
@@ -47,7 +47,6 @@
             @php $c = $copy[$r['type']] ?? null; @endphp
             <article class="pj-route-card pj-card" id="{{ $r['slug'] }}">
                 <div class="grid gap-4 content-start">
-                    <span class="jp text-sm">{{ $r['jp'] }}</span>
                     <h2>{{ $r['name'] }}</h2>
                     @if($r['desc'])<p class="pj-lede">{{ $r['desc'] }}</p>@endif
                     @if($c)
@@ -96,7 +95,7 @@
 <section class="pj-section pt-0!">
     <div class="pj-wrap">
         <div class="pj-head">
-            <h2><span class="jp">サポート</span>{{ __('Support at every step') }}</h2>
+            <h2>{{ __('Support at every step') }}</h2>
             <p class="pj-lede">{{ __('Whichever route you choose, the same team stays with you from the first consultation to your first day at work.') }}</p>
         </div>
         <div class="pj-cards-4">

@@ -7,7 +7,7 @@
 @section('content')
 
 <x-jp.page-hero
-    :eyebrow="__('Transparency') . ' · 費用'"
+    :eyebrow="__('Transparency')"
     :title="__('Programme fees, in the open.')"
     :subtitle="__('Every official fee is listed here. Anything not on this page or in your written agreement is not an official :brand fee.')"
     :petals="6"

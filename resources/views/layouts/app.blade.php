@@ -222,7 +222,7 @@
         <div class="pj-scallop" aria-hidden="true"></div>
         <div class="relative mx-auto max-w-7xl px-6 py-14 lg:py-20 grid gap-8 lg:grid-cols-[1.3fr_.7fr] items-center">
             <div>
-                <p class="text-xs uppercase tracking-[0.2em] font-bold opacity-80">{{ __('Free consultation') }} · 無料相談</p>
+                <p class="text-xs uppercase tracking-[0.2em] font-bold opacity-80">{{ __('Free consultation') }}</p>
                 <h2 class="mt-3 font-display text-4xl sm:text-6xl lg:text-7xl leading-none">{{ __('Ready to depart?') }}</h2>
                 <p class="mt-4 max-w-xl text-lg opacity-90">{{ __('Create a free account, complete your profile, and apply for your first job today. Our team is ready to help on WhatsApp.') }}</p>
                 <div class="mt-7 flex flex-wrap items-center gap-3">

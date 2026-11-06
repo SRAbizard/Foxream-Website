@@ -215,7 +215,7 @@
                                         {{ __('document.status.'.$doc->status) }}
                                     </span>
                                 </td>
-                                <td class="py-2 pr-4 text-gray-500 dark:text-gray-400">{{ $doc->created_at->format('d M Y') }}</td>
+                                <td class="py-2 pr-4 text-gray-500 dark:text-gray-400">{{ $doc->created_at->isoFormat('ll') }}</td>
                                 <td class="py-2 pr-4 text-gray-500 dark:text-gray-400">{{ $doc->verifier?->name ?? '—' }}</td>
                                 <td class="py-2">
                                     <a href="{{ $doc->file_url }}" target="_blank" class="text-primary-600 hover:underline text-xs">{{ __('View') }} →</a>
@@ -273,7 +273,7 @@
                     <tbody>
                         @foreach($logs as $log)
                             <tr class="border-b border-gray-100 dark:border-white/5 last:border-0">
-                                <td class="py-2 pr-4 whitespace-nowrap text-xs text-gray-500">{{ $log->created_at->format('d M Y H:i') }}</td>
+                                <td class="py-2 pr-4 whitespace-nowrap text-xs text-gray-500">{{ $log->created_at->isoFormat('lll') }}</td>
                                 <td class="py-2 pr-4">
                                     <x-filament::badge :color="in_array($log->action, \App\Models\AccessLog::WARNINGS, true) ? 'warning' : 'gray'">{{ $log->label() }}</x-filament::badge>
                                 </td>
