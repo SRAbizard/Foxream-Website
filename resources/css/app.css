@@ -279,12 +279,26 @@ html.light .pj-footer .text-white { color: #F5EDE0 !important; }
     background: radial-gradient(circle at 11px 22px, var(--pj-washi) 11px, transparent 11.5px) 0 0 / 22px 22px repeat-x;
 }
 .pj-page-hero h1 { text-shadow: 4px 4px 0 var(--pj-sakura); }
-.pj-page-hero .pj-hero-art {
-    position: absolute; z-index: -1; right: 0; bottom: 0; width: min(640px, 58vw); height: auto; max-height: 100%;
-    /* soften the left edge where the hills are cut off */
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%); mask-image: linear-gradient(90deg, transparent, #000 20%);
+/* The page's picture, under a scrim in the band colour so the title reads:
+   solid on the left where the text is, clear on the right. On a phone the
+   text spans the width, so the scrim is even. */
+.pj-page-hero-bg {
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        linear-gradient(90deg,
+            color-mix(in srgb, var(--pj-hero-bg) 94%, transparent) 0%,
+            color-mix(in srgb, var(--pj-hero-bg) 82%, transparent) 38%,
+            color-mix(in srgb, var(--pj-hero-bg) 20%, transparent) 72%,
+            transparent 100%),
+        var(--pj-page-hero-img) center 60% / cover no-repeat;
 }
-@media (max-width: 760px) { .pj-page-hero .pj-hero-art { width: 92vw; opacity: .3; } }
+@media (max-width: 760px) {
+    .pj-page-hero-bg {
+        background:
+            linear-gradient(color-mix(in srgb, var(--pj-hero-bg) 80%, transparent), color-mix(in srgb, var(--pj-hero-bg) 80%, transparent)),
+            var(--pj-page-hero-img) center / cover no-repeat;
+    }
+}
 
 /* ────────────────────────────────────────────────────────────────────
    HOMEPAGE — "Misi ke Jepang"

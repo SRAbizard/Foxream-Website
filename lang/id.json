@@ -1717,5 +1717,10 @@
     "looking for a job in Japan": "ingin bekerja di Jepang",
     "A company": "Perusahaan",
     "looking for workers": "mencari pekerja",
-    "For companies in Japan": "Untuk perusahaan di Jepang"
+    "For companies in Japan": "Untuk perusahaan di Jepang",
+    "Job openings": "Lowongan kerja",
+    "Page headers": "Latar judul halaman",
+    "Page header pictures": "Gambar latar judul halaman",
+    "The picture behind the title at the top of each page. Leave empty to use the default illustration.": "Gambar di belakang judul di bagian atas tiap halaman. Kosongkan untuk memakai ilustrasi bawaan.",
+    "Landscape, 2000×1116 or larger. The left side sits behind the title.": "Mendatar, 2000×1116 atau lebih besar. Sisi kiri berada di belakang judul."
 }

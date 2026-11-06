@@ -13,6 +13,19 @@ use App\Models\Setting;
 class SiteSettings
 {
     /**
+     * Pages whose title band has a background picture, with their names
+     * (translated where shown). Defaults are public/images/page-hero/{key}.jpg.
+     */
+    public const PAGE_HEROES = [
+        'jobs'    => 'Job openings',
+        'events'  => 'Events',
+        'blog'    => 'Blog',
+        'gallery' => 'Gallery',
+        'about'   => 'About Us',
+        'contact' => 'Contact',
+    ];
+
+    /**
      * Contact value (email, phone, whatsapp).
      */
     public static function contact(string $key): ?string
@@ -186,6 +199,20 @@ class SiteSettings
         }
         // Default: an illustration of Mt Fuji at sunset, with a pagoda and sakura
         return asset('images/login/japan.jpg');
+    }
+
+    /**
+     * The picture behind a page's title band: the admin's upload, else the
+     * bundled one, else null (the band is then plain).
+     */
+    public static function pageHeroUrl(string $page): ?string
+    {
+        $path = Setting::get("page_hero.{$page}");
+        if (self::uploaded($path)) {
+            return asset('storage/'.$path);
+        }
+
+        return is_file(public_path("images/page-hero/{$page}.jpg")) ? asset("images/page-hero/{$page}.jpg") : null;
     }
 
     /**

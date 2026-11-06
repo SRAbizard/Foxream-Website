@@ -5,6 +5,7 @@
 
 @section('content')
 <x-jp.page-hero
+    page="gallery"
     :eyebrow="__('Documentation')"
     :title="$album->t('title')"
     :subtitle="$album->t('caption')"

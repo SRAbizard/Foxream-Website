@@ -39,6 +39,7 @@
 
 {{-- HERO --}}
 <x-jp.page-hero
+    page="about"
     :eyebrow="__('About Us')"
     :title="__('Bridging Indonesian talent with Japanese opportunity.')"
     :subtitle="__(':brand is a career-and-education platform that prepares Indonesian workers and students for life and work in Japan — from language and culture training, to job placement and post-arrival support.')"

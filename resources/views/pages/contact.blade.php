@@ -13,6 +13,7 @@
 
 @section('content')
 <x-jp.page-hero
+    page="contact"
     :eyebrow="__('Contact') . ' · お問い合わせ'"
     :title="__('Let\'s talk.')"
     :subtitle="__('Looking for a job in Japan, or for workers from Indonesia? Free consultation, in Indonesian, Japanese or English.')"

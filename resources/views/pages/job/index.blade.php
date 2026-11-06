@@ -8,6 +8,7 @@
 
 @section('content')
 <x-jp.page-hero
+    page="jobs"
     :eyebrow="__('Careers')"
     :title="__('Find your job in Japan')"
     :subtitle="__('Browse verified opportunities from our partner companies. Filter by visa, role, or city.')"

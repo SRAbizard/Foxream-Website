@@ -4,16 +4,22 @@
     'subtitle' => null,
     'petals'   => 10,     // sakura petal density
     'minH'     => '',     // optional extra min-height utility
+    'page'     => null,   // which page's background picture (SiteSettings::PAGE_HEROES)
 ])
+
+@php $bg = $page ? \App\Support\SiteSettings::pageHeroUrl($page) : null; @endphp
 
 {{--
     Reusable hero band for internal pages, in the "Misi ke Jepang" style:
-    washi paper, a Japan scene (sun, Fuji, clouds, pagoda, sakura branch),
-    falling sakura, and a chunky title. Pass eyebrow / title /
-    subtitle as attributes; anything in the slot renders under the title.
+    the page's picture (Admin → Website Settings → Page headers, or the
+    bundled illustration), falling sakura and a chunky title. Pass eyebrow /
+    title / subtitle as attributes; anything in the slot renders under the
+    title.
 --}}
-<section {{ $attributes->class(['pj-page-hero', $minH]) }}>
-    <x-jp.hero-art />
+<section {{ $attributes->class(['pj-page-hero', $minH, 'has-bg' => $bg]) }}>
+    @if($bg)
+        <div class="pj-page-hero-bg" style="--pj-page-hero-img: url('{{ $bg }}')" aria-hidden="true"></div>
+    @endif
 
     <x-jp.sakura-petals :count="$petals" />
 

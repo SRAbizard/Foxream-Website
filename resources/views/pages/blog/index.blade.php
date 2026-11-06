@@ -5,6 +5,7 @@
 
 @section('content')
 <x-jp.page-hero
+    page="blog"
     :eyebrow="__('Blog')"
     :title="__('Insights for your Japan journey')"
     :subtitle="__('Articles, tips, and alumni stories — refreshed regularly by the :brand team.')"

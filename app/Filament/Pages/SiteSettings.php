@@ -68,6 +68,11 @@ class SiteSettings extends Page
         // Login page wallpaper
         $data['login__background_path'] = Setting::get('login.background_path');
 
+        // Page title-band pictures
+        foreach (array_keys(\App\Support\SiteSettings::PAGE_HEROES) as $page) {
+            $data["page_hero__{$page}"] = Setting::get("page_hero.{$page}");
+        }
+
         // Homepage scrolling bands: [{id, en, ja}, …]
         foreach (['red', 'ink'] as $band) {
             $items = Setting::get("homepage.marquee_{$band}", []);
@@ -215,6 +220,22 @@ class SiteSettings extends Page
                             $this->marqueeRepeater('marquee__ink', __('Dark band'), __('Empty = "Official job openings", "Verified partner companies", …')),
                         ]),
                 ]),
+                Tab::make(__('Page headers'))->icon('heroicon-o-rectangle-group')->schema([
+                    Section::make(__('Page header pictures'))
+                        ->description(__('The picture behind the title at the top of each page. Leave empty to use the default illustration.'))
+                        ->columns(2)
+                        ->components(collect(\App\Support\SiteSettings::PAGE_HEROES)
+                            ->map(fn (string $label, string $page) => FileUpload::make("page_hero__{$page}")
+                                ->label(__($label))
+                                ->image()
+                                ->disk('public')
+                                ->directory('page-hero')
+                                ->imageEditor()
+                                ->maxSize(5120)
+                                ->helperText(__('Landscape, 2000×1116 or larger. The left side sits behind the title.')))
+                            ->values()
+                            ->all()),
+                ]),
                 Tab::make(__('Login background'))->icon('heroicon-o-photo')->schema([
                     Section::make(__('Login page wallpaper'))
                         ->description(__('Background photo shown on every login / register / password-reset page (admin & student). Leave empty to use the default Mt Fuji photo.'))
@@ -339,6 +360,10 @@ class SiteSettings extends Page
 
         // Login page wallpaper single-file upload
         Setting::set('login.background_path', $state['login__background_path'] ?? null, 'login');
+
+        foreach (array_keys(\App\Support\SiteSettings::PAGE_HEROES) as $page) {
+            Setting::set("page_hero.{$page}", $state["page_hero__{$page}"] ?? null, 'page_hero');
+        }
 
         Notification::make()
             ->title(__('Settings saved'))

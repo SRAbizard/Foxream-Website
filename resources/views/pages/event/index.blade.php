@@ -4,6 +4,7 @@
 
 @section('content')
 <x-jp.page-hero
+    page="events"
     :eyebrow="__('Events')"
     :title="__('Workshops, seminars, and job fairs')"
     :subtitle="__('Join our upcoming events to meet recruiters, mentors, and the :brand community.')"

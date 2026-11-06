@@ -1718,5 +1718,10 @@
     "looking for a job in Japan": "日本で働きたい方",
     "A company": "企業の方",
     "looking for workers": "人材をお探しの企業様",
-    "For companies in Japan": "日本の企業様へ"
+    "For companies in Japan": "日本の企業様へ",
+    "Job openings": "求人",
+    "Page headers": "ページ見出しの背景",
+    "Page header pictures": "ページ見出しの背景画像",
+    "The picture behind the title at the top of each page. Leave empty to use the default illustration.": "各ページ上部のタイトルの背景画像です。空欄の場合は既定のイラストを使用します。",
+    "Landscape, 2000×1116 or larger. The left side sits behind the title.": "横長、2000×1116 以上。左側がタイトルの背景になります。"
 }

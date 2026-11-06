@@ -5,6 +5,7 @@
 
 @section('content')
 <x-jp.page-hero
+    page="gallery"
     :eyebrow="__('Documentation')"
     :title="__('Moments from our journey')"
     :subtitle="__('Photos and videos from our trainings, events, and student journeys.')"
