@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light" data-brand="{{ mb_strtoupper(\App\Support\Brand::name()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light" data-intro-desktop="{{ \App\Support\Brand::introVideo('desktop') }}" data-intro-mobile="{{ \App\Support\Brand::introVideo('mobile') }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,8 +29,11 @@
             };
             try {
                 if (window.pjIsDark()) { html.classList.remove('light'); html.classList.add('dark'); }
-                // First visit this session → washi cover until resources/js/intro.js takes over.
-                if (! sessionStorage.getItem('pj-intro-seen') && ! matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('pj-intro');
+                // First visit this session → black cover until resources/js/intro.js plays the intro video;
+                // not with reduced motion, data saver, or no video.
+                var saveData = navigator.connection && navigator.connection.saveData;
+                if (! sessionStorage.getItem('pj-intro-seen') && ! saveData && html.dataset.introDesktop
+                    && ! matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('pj-intro');
             } catch (e) {}
         })();
     </script>

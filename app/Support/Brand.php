@@ -26,6 +26,14 @@ class Brand
         return (string) config('brand.learning');
     }
 
+    /** URL of the intro video, 'desktop' (landscape) or 'mobile' (portrait); null when there is none. */
+    public static function introVideo(string $cut): ?string
+    {
+        $path = config("brand.intro.{$cut}");
+
+        return $path && is_file(public_path($path)) ? asset($path) : null;
+    }
+
     /** @return array{brand: string, company: string, learning: string} */
     public static function replacements(): array
     {
