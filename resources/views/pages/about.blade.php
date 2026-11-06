@@ -14,6 +14,21 @@
         ['value' => \App\Support\SiteSettings::stat('companies'), 'label' => __('Partner Companies')],
         ['value' => '8+',                                          'label' => __('Years of Experience')],
     ];
+    // For companies in Japan: why us and how hiring works.
+    $why = [
+        ['選考', __('Screened candidates'), __('We check documents, skills and motivation before a candidate ever reaches your interview.')],
+        ['日本語', __('Japanese & work culture'), __('Candidates train at :learning: JLPT/JFT preparation plus Japanese workplace manners.')],
+        ['ビザ', __('Documents & visa handled'), __('We prepare the paperwork through to the Certificate of Eligibility and departure.')],
+        ['支援', __('Support after arrival'), __('A contact person for your new staff, so they settle in and stay.')],
+    ];
+    $process = [
+        [__('Consultation'), __('Tell us the role, number of workers, visa route and timing.')],
+        [__('Candidate selection'), __('We shortlist candidates who match your requirements.')],
+        ['Mensetsu', __('Online or on-site interviews with your team.')],
+        [__('Visa & COE'), __('Contracts, medical check-up, documents and the COE.')],
+        [__('Arrival & follow-up'), __('Departure, onboarding and support once they start.')],
+    ];
+    $categories = \App\Models\JobCategory::orderBy('sort_order')->get();
 @endphp
 
 @section('title', __('About Us') . ' — '.\App\Support\Brand::name())
@@ -91,6 +106,53 @@
                     <p class="mt-1 text-xs text-surface-400 uppercase tracking-wider">{{ $s['label'] }}</p>
                 </div>
             @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- For companies in Japan --}}
+<section class="pj-section">
+    <div class="pj-wrap">
+        <div class="pj-head">
+            <span class="pj-sticker is-pink">{{ __('For companies in Japan') }} · 企業の皆様へ</span>
+            <h2><span class="jp">選ばれる理由</span>{{ __('Why companies work with us') }}</h2>
+        </div>
+        <div class="pj-cards-4">
+            @foreach($why as [$jp, $title, $desc])
+                <div class="pj-mini-step pj-card">
+                    <span class="n">{{ $jp }}</span>
+                    <h3>{{ $title }}</h3>
+                    <p>{{ $desc }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<section class="pj-section pt-0!">
+    <div class="pj-wrap">
+        <div class="pj-head">
+            <h2><span class="jp">流れ</span>{{ __('How hiring works') }}</h2>
+        </div>
+        <ol class="pj-tickets" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); list-style: none; padding: 0;">
+            @foreach($process as $i => [$title, $desc])
+                <li class="pj-ticket">
+                    <span class="n">0{{ $i + 1 }}</span>
+                    <h4>{{ $title }}</h4>
+                    <p class="text-sm opacity-80">{{ $desc }}</p>
+                </li>
+            @endforeach
+        </ol>
+        @if($categories->isNotEmpty())
+            <div class="mt-8">
+                <p class="text-xs font-extrabold tracking-[.14em] uppercase opacity-70 mb-3">{{ __('Fields we recruit for') }}</p>
+                <div class="pj-chips">
+                    @foreach($categories as $c)<span class="pj-chip">{{ $c->t('name') }}</span>@endforeach
+                </div>
+            </div>
+        @endif
+        <div class="mt-8">
+            <a href="{{ route('contact', ['for' => 'employer']) }}" wire:navigate class="pj-btn is-red">{{ __('Request workers') }} →</a>
         </div>
     </div>
 </section>
