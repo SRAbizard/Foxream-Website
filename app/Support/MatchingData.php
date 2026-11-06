@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 /**
  * Data behind the interactive job-matching tools (hero finder, match quiz,
  * region map, featured cards), shared by the homepage and /jobs. Everything
- * is serialised into the page once as JSON (#pj-home-data) and driven by
+ * is serialised into the page once as JSON (#site-home-data) and driven by
  * resources/js/home.js.
  */
 class MatchingData
@@ -144,7 +144,7 @@ class MatchingData
         ];
     }
 
-    /** JSON for the <script id="pj-home-data"> tag (safe to print raw). */
+    /** JSON for the <script id="site-home-data"> tag (safe to print raw). */
     public function json(): string
     {
         return json_encode($this->payload(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP);

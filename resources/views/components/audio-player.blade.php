@@ -1,10 +1,10 @@
 @php $themeAudioUrl = \App\Support\SiteSettings::themeAudioUrl(); @endphp
 @if($themeAudioUrl)
-    <audio id="pj-theme-audio" src="{{ $themeAudioUrl }}" loop preload="auto" aria-hidden="true"></audio>
+    <audio id="site-theme-audio" src="{{ $themeAudioUrl }}" loop preload="auto" aria-hidden="true"></audio>
 
     {{-- Prominent floating speaker — pulses while muted to advertise the music --}}
-    <div class="fixed bottom-6 left-6 z-50 inline-flex items-center gap-3" id="pj-audio-wrap">
-        <button id="pj-audio-toggle"
+    <div class="fixed bottom-6 left-6 z-50 inline-flex items-center gap-3" id="site-audio-wrap">
+        <button id="site-audio-toggle"
                 type="button"
                 title="{{ __('Toggle background music') }}"
                 aria-label="{{ __('Toggle background music') }}"
@@ -14,46 +14,46 @@
             <span class="audio-pulse absolute inset-0 rounded-full ring-2 ring-brand-500/70"></span>
             <span class="audio-pulse audio-pulse-2 absolute inset-0 rounded-full ring-2 ring-brand-500/70"></span>
         </button>
-        <span id="pj-audio-hint"
+        <span id="site-audio-hint"
               class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold text-white bg-surface-900/90 backdrop-blur border border-brand-500/40 shadow-lg whitespace-nowrap">
             🎵 {{ __('Tap to enable music') }}
         </span>
     </div>
 
     <style>
-        #pj-audio-toggle .audio-icon-on, #pj-audio-toggle .audio-icon-off { display: none; }
-        #pj-audio-toggle.is-playing .audio-icon-on  { display: block; }
-        #pj-audio-toggle:not(.is-playing) .audio-icon-off { display: block; }
-        #pj-audio-toggle:not(.is-playing) {
-            animation: pj-audio-breathe 1.6s ease-in-out infinite;
+        #site-audio-toggle .audio-icon-on, #site-audio-toggle .audio-icon-off { display: none; }
+        #site-audio-toggle.is-playing .audio-icon-on  { display: block; }
+        #site-audio-toggle:not(.is-playing) .audio-icon-off { display: block; }
+        #site-audio-toggle:not(.is-playing) {
+            animation: site-audio-breathe 1.6s ease-in-out infinite;
         }
-        @keyframes pj-audio-breathe {
+        @keyframes site-audio-breathe {
             0%, 100% { transform: scale(1); }
             50%      { transform: scale(1.1); }
         }
-        #pj-audio-toggle.is-playing .audio-pulse {
-            animation: pj-audio-ripple 1.8s ease-out infinite;
+        #site-audio-toggle.is-playing .audio-pulse {
+            animation: site-audio-ripple 1.8s ease-out infinite;
         }
-        #pj-audio-toggle.is-playing .audio-pulse-2 { animation-delay: 0.6s; }
-        #pj-audio-toggle:not(.is-playing) .audio-pulse { display: none; }
-        @keyframes pj-audio-ripple {
+        #site-audio-toggle.is-playing .audio-pulse-2 { animation-delay: 0.6s; }
+        #site-audio-toggle:not(.is-playing) .audio-pulse { display: none; }
+        @keyframes site-audio-ripple {
             0%   { transform: scale(1);    opacity: 0.7; }
             100% { transform: scale(1.7);  opacity: 0; }
         }
-        #pj-audio-hint {
+        #site-audio-hint {
             opacity: 0;
             transform: translateX(-8px);
             transition: opacity 0.3s ease, transform 0.3s ease;
             pointer-events: none;
         }
-        #pj-audio-hint.is-visible { opacity: 1; transform: none; }
+        #site-audio-hint.is-visible { opacity: 1; transform: none; }
     </style>
 
     <script>
         (function () {
-            var audio  = document.getElementById('pj-theme-audio');
-            var toggle = document.getElementById('pj-audio-toggle');
-            var hint   = document.getElementById('pj-audio-hint');
+            var audio  = document.getElementById('site-theme-audio');
+            var toggle = document.getElementById('site-audio-toggle');
+            var hint   = document.getElementById('site-audio-hint');
             if (! audio || ! toggle) return;
             if (window.__pjAudioInit) return;
             window.__pjAudioInit = true;
@@ -62,14 +62,14 @@
             // from a previous session. New visitors land in silence and choose
             // to turn the music on themselves via the floating button.
             var saved = null;
-            try { saved = localStorage.getItem('pj-audio-muted'); } catch (e) {}
+            try { saved = localStorage.getItem('site-audio-muted'); } catch (e) {}
             var startUnmuted = saved === '0';
 
             // Resume position across navigation (sessionStorage, expires after 60s)
             var resumeAt = 0;
             try {
-                var rawTime  = sessionStorage.getItem('pj-audio-time');
-                var rawSaved = sessionStorage.getItem('pj-audio-time-at');
+                var rawTime  = sessionStorage.getItem('site-audio-time');
+                var rawSaved = sessionStorage.getItem('site-audio-time-at');
                 if (rawTime && rawSaved) {
                     var age = (Date.now() - parseInt(rawSaved, 10)) / 1000;
                     if (age < 60) resumeAt = parseFloat(rawTime) || 0;
@@ -96,8 +96,8 @@
             var savePos = function () {
                 if (audio.currentTime > 0 && ! audio.paused) {
                     try {
-                        sessionStorage.setItem('pj-audio-time',    String(audio.currentTime));
-                        sessionStorage.setItem('pj-audio-time-at', String(Date.now()));
+                        sessionStorage.setItem('site-audio-time',    String(audio.currentTime));
+                        sessionStorage.setItem('site-audio-time-at', String(Date.now()));
                     } catch (e) {}
                 }
             };
@@ -113,7 +113,7 @@
                 ev.stopPropagation();
                 audio.muted = ! audio.muted;
                 if (! audio.muted) audio.play().catch(function () {});
-                try { localStorage.setItem('pj-audio-muted', audio.muted ? '1' : '0'); } catch (e) {}
+                try { localStorage.setItem('site-audio-muted', audio.muted ? '1' : '0'); } catch (e) {}
                 updateUI();
                 hideHint();
             });

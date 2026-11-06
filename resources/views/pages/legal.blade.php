@@ -16,11 +16,11 @@
 
     <div class="mt-12 flex flex-wrap gap-3">
         @if($doc === 'privacy')
-            <a href="{{ route('legal.terms') }}" wire:navigate class="pj-btn is-red">{{ __('Terms & Conditions') }} →</a>
+            <a href="{{ route('legal.terms') }}" wire:navigate class="site-btn is-red">{{ __('Terms & Conditions') }} →</a>
         @else
-            <a href="{{ route('legal.privacy') }}" wire:navigate class="pj-btn is-red">{{ __('Privacy Policy') }} →</a>
+            <a href="{{ route('legal.privacy') }}" wire:navigate class="site-btn is-red">{{ __('Privacy Policy') }} →</a>
         @endif
-        <a href="{{ route('contact') }}" wire:navigate class="pj-btn">{{ __('Contact') }}</a>
+        <a href="{{ route('contact') }}" wire:navigate class="site-btn">{{ __('Contact') }}</a>
     </div>
 </section>
 

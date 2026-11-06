@@ -1,9 +1,9 @@
 @php $themeAudioUrl = \App\Support\SiteSettings::themeAudioUrl(); @endphp
 @if($themeAudioUrl)
-    <audio id="pj-theme-audio" src="{{ $themeAudioUrl }}" loop preload="auto" aria-hidden="true"></audio>
+    <audio id="site-theme-audio" src="{{ $themeAudioUrl }}" loop preload="auto" aria-hidden="true"></audio>
 
     {{-- Compact floating speaker — bottom-left, doesn't fight Filament's own UI --}}
-    <button id="pj-audio-toggle"
+    <button id="site-audio-toggle"
             type="button"
             title="{{ __('Toggle background music') }}"
             aria-label="{{ __('Toggle background music') }}"
@@ -14,12 +14,12 @@
     </button>
 
     <style>
-        #pj-audio-toggle.is-playing .audio-icon-on { display: block !important; }
-        #pj-audio-toggle:not(.is-playing) .audio-icon-off { display: block !important; }
-        #pj-audio-toggle:not(.is-playing) {
-            animation: pj-audio-breathe 1.6s ease-in-out infinite;
+        #site-audio-toggle.is-playing .audio-icon-on { display: block !important; }
+        #site-audio-toggle:not(.is-playing) .audio-icon-off { display: block !important; }
+        #site-audio-toggle:not(.is-playing) {
+            animation: site-audio-breathe 1.6s ease-in-out infinite;
         }
-        @keyframes pj-audio-breathe {
+        @keyframes site-audio-breathe {
             0%, 100% { transform: scale(1); }
             50%      { transform: scale(1.08); }
         }
@@ -27,22 +27,22 @@
 
     <script>
         (function () {
-            var audio  = document.getElementById('pj-theme-audio');
-            var toggle = document.getElementById('pj-audio-toggle');
+            var audio  = document.getElementById('site-theme-audio');
+            var toggle = document.getElementById('site-audio-toggle');
             if (! audio || ! toggle) return;
             if (window.__pjAudioInit) return;
             window.__pjAudioInit = true;
 
             // Muted by default — only honour an explicit "unmuted" preference.
             var saved = null;
-            try { saved = localStorage.getItem('pj-audio-muted'); } catch (e) {}
+            try { saved = localStorage.getItem('site-audio-muted'); } catch (e) {}
             var startUnmuted = saved === '0';
 
             // Resume position across navigation (sessionStorage)
             var resumeAt = 0;
             try {
-                var rawTime  = sessionStorage.getItem('pj-audio-time');
-                var rawSaved = sessionStorage.getItem('pj-audio-time-at');
+                var rawTime  = sessionStorage.getItem('site-audio-time');
+                var rawSaved = sessionStorage.getItem('site-audio-time-at');
                 if (rawTime && rawSaved) {
                     var age = (Date.now() - parseInt(rawSaved, 10)) / 1000;
                     if (age < 60) resumeAt = parseFloat(rawTime) || 0;
@@ -62,8 +62,8 @@
             var savePos = function () {
                 if (audio.currentTime > 0 && ! audio.paused) {
                     try {
-                        sessionStorage.setItem('pj-audio-time',    String(audio.currentTime));
-                        sessionStorage.setItem('pj-audio-time-at', String(Date.now()));
+                        sessionStorage.setItem('site-audio-time',    String(audio.currentTime));
+                        sessionStorage.setItem('site-audio-time-at', String(Date.now()));
                     } catch (e) {}
                 }
             };
@@ -78,7 +78,7 @@
                 ev.stopPropagation();
                 audio.muted = ! audio.muted;
                 if (! audio.muted) audio.play().catch(function () {});
-                try { localStorage.setItem('pj-audio-muted', audio.muted ? '1' : '0'); } catch (e) {}
+                try { localStorage.setItem('site-audio-muted', audio.muted ? '1' : '0'); } catch (e) {}
                 updateUI();
             });
 

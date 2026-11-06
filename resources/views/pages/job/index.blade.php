@@ -150,15 +150,15 @@
 </section>
 
 {{-- Matching tools: quiz + region map (shared with resources/js/home.js) --}}
-<section class="pj-section bg-[var(--pj-washi-2)]" data-pj-home id="matching">
-    <div class="pj-scallop absolute top-0 inset-x-0" style="--pj-scallop: var(--pj-washi)" aria-hidden="true"></div>
-    <div class="pj-wrap">
-        <div class="pj-match-row">
+<section class="site-section bg-[var(--site-washi-2)]" data-site-home id="matching">
+    <div class="site-scallop absolute top-0 inset-x-0" style="--site-scallop: var(--site-washi)" aria-hidden="true"></div>
+    <div class="site-wrap">
+        <div class="site-match-row">
             <div id="cek" class="scroll-mt-28">@include('partials.match-quiz', ['quiz' => $matching->quiz()])</div>
             <div id="peta" class="scroll-mt-28">@include('partials.job-map', ['regions' => $matching->regions()])</div>
         </div>
     </div>
     {{-- MatchingData::json() is JSON_HEX_TAG-encoded, so printing it raw is safe. --}}
-    <script type="application/json" id="pj-home-data">{!! $matching->json() !!}</script>
+    <script type="application/json" id="site-home-data">{!! $matching->json() !!}</script>
 </section>
 @endsection

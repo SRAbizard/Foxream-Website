@@ -22,14 +22,14 @@ class CmsSeeder extends Seeder
     {
         $defaults = [
             'contact.email'    => 'info@example.com',
-            'contact.phone'    => '+62 882-0078-85021',
-            'contact.whatsapp' => '62882007885021',
+            'contact.phone'    => null,
+            'contact.whatsapp' => null,
             'social.instagram' => null,
             'social.facebook'  => null,
             'social.tiktok'    => null,
-            'stats.students'   => '3,300+',
-            'stats.workers'    => '1,200+',
-            'stats.companies'  => '100+',
+            'stats.students'   => '0',
+            'stats.workers'    => '0',
+            'stats.companies'  => '0',
         ];
         foreach ($defaults as $k => $v) {
             $group = explode('.', $k)[0];

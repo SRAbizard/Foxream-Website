@@ -1,1 +1,1 @@
-<div class="pj-auth-welcome"><span>{{ __('Welcome') }}</span></div>
+<div class="site-auth-welcome"><span>{{ __('Welcome') }}</span></div>

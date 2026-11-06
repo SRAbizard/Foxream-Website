@@ -16,16 +16,16 @@
     title / subtitle as attributes; anything in the slot renders under the
     title.
 --}}
-<section {{ $attributes->class(['pj-page-hero', $minH, 'has-bg' => $bg]) }}>
+<section {{ $attributes->class(['site-page-hero', $minH, 'has-bg' => $bg]) }}>
     @if($bg)
-        <div class="pj-page-hero-bg" style="--pj-page-hero-img: url('{{ $bg }}')" aria-hidden="true"></div>
+        <div class="site-page-hero-bg" style="--site-page-hero-img: url('{{ $bg }}')" aria-hidden="true"></div>
     @endif
 
     <x-jp.sakura-petals :count="$petals" />
 
     <div class="relative mx-auto max-w-7xl px-6 pt-10 pb-14 sm:pt-16 sm:pb-20">
         @if($eyebrow)
-            <span class="pj-sticker">{{ $eyebrow }}</span>
+            <span class="site-sticker">{{ $eyebrow }}</span>
         @endif
         @if($title)
             <h1 class="mt-5 font-display text-4xl sm:text-6xl leading-[1.02] max-w-3xl text-balance">
@@ -33,7 +33,7 @@
             </h1>
         @endif
         @if($subtitle)
-            <p class="mt-5 max-w-2xl text-lg pj-lede">{{ $subtitle }}</p>
+            <p class="mt-5 max-w-2xl text-lg site-lede">{{ $subtitle }}</p>
         @endif
 
         {{ $slot }}

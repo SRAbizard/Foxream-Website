@@ -16,7 +16,7 @@
 <section class="mx-auto max-w-5xl px-6 pb-20 grid gap-10">
     <div>
         @if($fees)
-            <div class="pj-card pj-fee-table">
+            <div class="site-card site-fee-table">
                 <table>
                     <thead>
                         <tr>
@@ -37,10 +37,10 @@
                 </table>
             </div>
         @else
-            <div class="pj-card p-6 sm:p-8 grid gap-3">
+            <div class="site-card p-6 sm:p-8 grid gap-3">
                 <h2 class="font-display text-2xl">{{ __('The fee breakdown is being prepared') }}</h2>
                 <p class="opacity-80">{{ __('Contact us through an official channel for the latest fees for your programme. We will always confirm them in writing.') }}</p>
-                <div><a href="{{ route('contact') }}" wire:navigate class="pj-btn is-red">{{ __('Ask about fees') }} →</a></div>
+                <div><a href="{{ route('contact') }}" wire:navigate class="site-btn is-red">{{ __('Ask about fees') }} →</a></div>
             </div>
         @endif
 

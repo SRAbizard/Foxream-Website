@@ -13,27 +13,27 @@
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Theme: washi (light) is the default; apply a saved "dark" choice
-         BEFORE paint to avoid a flash. .pj-js opts into JS-driven reveals. --}}
+         BEFORE paint to avoid a flash. .site-js opts into JS-driven reveals. --}}
     <script>
         (function () {
             var html = document.documentElement;
-            html.classList.add('pj-js');
+            html.classList.add('site-js');
             // One theme for the website and both Filament panels: Filament
-            // stores light|dark|system under "theme"; "pj-theme" is the
+            // stores light|dark|system under "theme"; "site-theme" is the
             // site's older key, used only when "theme" was never set.
-            window.pjIsDark = function () {
+            window.siteIsDark = function () {
                 var t = null;
-                try { t = localStorage.getItem('theme') || localStorage.getItem('pj-theme'); } catch (e) {}
+                try { t = localStorage.getItem('theme') || localStorage.getItem('site-theme'); } catch (e) {}
                 if (t === 'system') return matchMedia('(prefers-color-scheme: dark)').matches;
                 return t === 'dark';
             };
             try {
-                if (window.pjIsDark()) { html.classList.remove('light'); html.classList.add('dark'); }
+                if (window.siteIsDark()) { html.classList.remove('light'); html.classList.add('dark'); }
                 // First visit this session → black cover until resources/js/intro.js plays the intro video;
                 // not with reduced motion, data saver, or no video.
                 var saveData = navigator.connection && navigator.connection.saveData;
-                if (! sessionStorage.getItem('pj-intro-seen') && ! saveData && html.dataset.introDesktop
-                    && ! matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('pj-intro');
+                if (! sessionStorage.getItem('site-intro-seen') && ! saveData && html.dataset.introDesktop
+                    && ! matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('site-intro');
             } catch (e) {}
         })();
     </script>
@@ -76,9 +76,9 @@
     ];
 @endphp
 
-<header class="pj-header">
+<header class="site-header">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
-        <nav class="pj-navbar" aria-label="{{ __('Main') }}">
+        <nav class="site-navbar" aria-label="{{ __('Main') }}">
             <a href="{{ url('/') }}" wire:navigate class="flex items-center shrink-0">
                 {{-- The fox and the name; the name is white on the dark theme. --}}
                 <img src="{{ \App\Support\Brand::logo('horizontal', 'light') }}" alt="{{ \App\Support\Brand::name() }}" class="h-9 sm:h-10 w-auto select-none dark:hidden" draggable="false">
@@ -86,16 +86,16 @@
             </a>
 
             <div class="hidden lg:flex items-center gap-1">
-                <a href="{{ url('/') }}" wire:navigate class="pj-navlink {{ request()->routeIs('home') ? 'is-active' : '' }}">{{ __('Home') }}</a>
+                <a href="{{ url('/') }}" wire:navigate class="site-navlink {{ request()->routeIs('home') ? 'is-active' : '' }}">{{ __('Home') }}</a>
 
                 {{-- Programs dropdown — job portal + (external) learning platform --}}
                 <div class="relative group">
-                    <button type="button" class="pj-navlink inline-flex items-center gap-1 {{ request()->routeIs('job.*', 'services') ? 'is-active' : '' }}">
+                    <button type="button" class="site-navlink inline-flex items-center gap-1 {{ request()->routeIs('job.*', 'services') ? 'is-active' : '' }}">
                         {{ __('Programs') }}
                         <svg class="h-3 w-3 opacity-60 transition group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                     </button>
                     <div class="absolute left-0 top-full pt-2 hidden group-hover:block group-focus-within:block min-w-[250px] z-30">
-                        <div class="pj-menu">
+                        <div class="site-menu">
                             <a href="{{ route('job.index') }}" wire:navigate>
                                 <span class="block font-bold">{{ __('Job Vacancies') }}</span>
                                 <span class="block text-xs opacity-70">{{ __('Verified jobs from partner companies') }}</span>
@@ -114,17 +114,17 @@
                 </div>
 
                 @foreach($navLinks as $link)
-                    <a href="{{ route($link['route']) }}" wire:navigate class="pj-navlink {{ request()->routeIs($link['active']) ? 'is-active' : '' }}">{{ $link['label'] }}</a>
+                    <a href="{{ route($link['route']) }}" wire:navigate class="site-navlink {{ request()->routeIs($link['active']) ? 'is-active' : '' }}">{{ $link['label'] }}</a>
                 @endforeach
 
                 {{-- Perusahaan dropdown — About + Contact --}}
                 <div class="relative group">
-                    <button type="button" class="pj-navlink inline-flex items-center gap-1 {{ request()->routeIs('about', 'contact') ? 'is-active' : '' }}">
+                    <button type="button" class="site-navlink inline-flex items-center gap-1 {{ request()->routeIs('about', 'contact') ? 'is-active' : '' }}">
                         {{ __('Company') }}
                         <svg class="h-3 w-3 opacity-60 transition group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                     </button>
                     <div class="absolute left-0 top-full pt-2 hidden group-hover:block group-focus-within:block min-w-[200px] z-30">
-                        <div class="pj-menu">
+                        <div class="site-menu">
                             <a href="{{ route('about') }}" wire:navigate class="font-semibold">{{ __('About Us') }}</a>
                             <a href="{{ route('contact') }}" wire:navigate class="font-semibold">{{ __('Contact') }}</a>
                         </div>
@@ -134,7 +134,7 @@
 
             <div class="flex items-center gap-1.5">
                 {{-- Theme toggle (sun/moon) --}}
-                <button type="button" data-theme-toggle class="pj-iconbtn hidden! sm:inline-flex!"
+                <button type="button" data-theme-toggle class="site-iconbtn hidden! sm:inline-flex!"
                         title="{{ __('Toggle dark / light mode') }}" aria-label="{{ __('Toggle dark / light mode') }}">
                     <svg class="theme-icon-sun h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     <svg class="theme-icon-moon h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
@@ -142,12 +142,12 @@
 
                 {{-- Language switcher --}}
                 <div class="relative group hidden sm:block">
-                    <button type="button" class="pj-iconbtn" aria-label="{{ __('Language') }}">
+                    <button type="button" class="site-iconbtn" aria-label="{{ __('Language') }}">
                         <x-flag :code="app()->getLocale()" />
                         <span class="uppercase">{{ app()->getLocale() }}</span>
                     </button>
                     <div class="absolute right-0 top-full pt-2 hidden group-hover:block group-focus-within:block min-w-[190px] z-30">
-                        <div class="pj-menu">
+                        <div class="site-menu">
                             @foreach(config('site.locales') as $code => $meta)
                                 <a href="{{ route('locale.switch', $code) }}" class="flex items-center gap-2 text-sm {{ app()->getLocale() === $code ? 'font-bold' : '' }}">
                                     <x-flag :code="$code" /><span>{{ $meta['native'] }}</span>
@@ -160,25 +160,25 @@
                 @auth
                     @php($user = auth()->user())
                     @if ($user->hasAnyRole(['superadmin', 'admin']))
-                        <a href="/admin" class="pj-navlink hidden sm:inline-flex">{{ __('Admin Panel') }}</a>
+                        <a href="/admin" class="site-navlink hidden sm:inline-flex">{{ __('Admin Panel') }}</a>
                     @else
-                        <a href="/dashboard" class="pj-navlink hidden sm:inline-flex">{{ __('Student Dashboard') }}</a>
+                        <a href="/dashboard" class="site-navlink hidden sm:inline-flex">{{ __('Student Dashboard') }}</a>
                     @endif
                     <form method="POST" action="/dashboard/logout" class="hidden sm:inline-flex">
                         @csrf
-                        <button type="submit" class="pj-navlink">{{ __('Logout') }}</button>
+                        <button type="submit" class="site-navlink">{{ __('Logout') }}</button>
                     </form>
                 @else
-                    <a href="/dashboard/login" class="pj-navlink hidden sm:inline-flex">{{ __('Login') }}</a>
-                    <a href="/dashboard/register" class="pj-btn is-red py-2.5! px-4! text-sm whitespace-nowrap">{{ __('Start Mission') }}</a>
+                    <a href="/dashboard/login" class="site-navlink hidden sm:inline-flex">{{ __('Login') }}</a>
+                    <a href="/dashboard/register" class="site-btn is-red py-2.5! px-4! text-sm whitespace-nowrap">{{ __('Start Mission') }}</a>
                 @endauth
 
                 {{-- Mobile menu --}}
                 <details class="lg:hidden relative">
-                    <summary class="list-none pj-iconbtn" aria-label="{{ __('Menu') }}">
+                    <summary class="list-none site-iconbtn" aria-label="{{ __('Menu') }}">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </summary>
-                    <div class="absolute right-0 mt-2 min-w-[240px] pj-menu flex flex-col text-sm z-40">
+                    <div class="absolute right-0 mt-2 min-w-[240px] site-menu flex flex-col text-sm z-40">
                         <a href="{{ url('/') }}" wire:navigate>{{ __('Home') }}</a>
                         <p class="px-3 pt-3 pb-1 text-[10px] uppercase tracking-wider opacity-60 font-bold">{{ __('Programs') }}</p>
                         <a href="{{ route('job.index') }}" wire:navigate>{{ __('Job Vacancies') }}</a>
@@ -196,11 +196,11 @@
                         @endguest
                         <div class="sm:hidden mt-2 pt-2 border-t-2 border-dashed border-current/20 flex items-center gap-1.5 px-1">
                             @foreach(config('site.locales') as $code => $meta)
-                                <a href="{{ route('locale.switch', $code) }}" class="pj-iconbtn {{ app()->getLocale() === $code ? 'bg-[var(--pj-sakura)]!' : '' }}" aria-label="{{ $meta['native'] }}">
+                                <a href="{{ route('locale.switch', $code) }}" class="site-iconbtn {{ app()->getLocale() === $code ? 'bg-[var(--site-sakura)]!' : '' }}" aria-label="{{ $meta['native'] }}">
                                     <x-flag :code="$code" /> <span class="uppercase">{{ $code }}</span>
                                 </a>
                             @endforeach
-                            <button type="button" data-theme-toggle class="pj-iconbtn ml-auto" aria-label="{{ __('Toggle dark / light mode') }}">
+                            <button type="button" data-theme-toggle class="site-iconbtn ml-auto" aria-label="{{ __('Toggle dark / light mode') }}">
                                 <svg class="theme-icon-sun h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                 <svg class="theme-icon-moon h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                             </button>
@@ -218,16 +218,16 @@
 
 <footer class="mt-24">
     {{-- "Ready to depart?" CTA band --}}
-    <section class="pj-footer-cta">
-        <div class="pj-scallop" aria-hidden="true"></div>
+    <section class="site-footer-cta">
+        <div class="site-scallop" aria-hidden="true"></div>
         <div class="relative mx-auto max-w-7xl px-6 py-14 lg:py-20 grid gap-8 lg:grid-cols-[1.3fr_.7fr] items-center">
             <div>
                 <p class="text-xs uppercase tracking-[0.2em] font-bold opacity-80">{{ __('Free consultation') }}</p>
                 <h2 class="mt-3 font-display text-4xl sm:text-6xl lg:text-7xl leading-none">{{ __('Ready to depart?') }}</h2>
                 <p class="mt-4 max-w-xl text-lg opacity-90">{{ __('Create a free account, complete your profile, and apply for your first job today. Our team is ready to help on WhatsApp.') }}</p>
                 <div class="mt-7 flex flex-wrap items-center gap-3">
-                    <a href="/dashboard/register" class="pj-btn is-gold">{{ __('Start your mission') }} →</a>
-                    <a href="https://wa.me/{{ \App\Support\SiteSettings::contact('whatsapp') }}" target="_blank" rel="noopener" class="pj-btn">
+                    <a href="/dashboard/register" class="site-btn is-gold">{{ __('Start your mission') }} →</a>
+                    <a href="https://wa.me/{{ \App\Support\SiteSettings::contact('whatsapp') }}" target="_blank" rel="noopener" class="site-btn">
                         {{ __('Talk to us on WhatsApp') }}
                     </a>
                 </div>
@@ -240,7 +240,7 @@
         </div>
     </section>
 
-    <div class="pj-footer">
+    <div class="site-footer">
         <div class="mx-auto max-w-7xl px-6 py-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             <div>
                 {{-- The footer is always dark: the logo with the white name. --}}
@@ -337,16 +337,16 @@
         // Livewire copies the new page's <html> attributes (class="light"
         // from the server), so re-apply the saved theme right after the
         // swap — before paint — and again once navigation finishes.
-        function pjApplyTheme () {
-            var html = document.documentElement, dark = window.pjIsDark ? window.pjIsDark() : false;
+        function siteApplyTheme () {
+            var html = document.documentElement, dark = window.siteIsDark ? window.siteIsDark() : false;
             html.classList.toggle('dark', dark);
             html.classList.toggle('light', ! dark);
-            html.classList.add('pj-js');
+            html.classList.add('site-js');
         }
         document.addEventListener('livewire:navigating', function (e) {
-            if (e.detail && typeof e.detail.onSwap === 'function') e.detail.onSwap(pjApplyTheme);
+            if (e.detail && typeof e.detail.onSwap === 'function') e.detail.onSwap(siteApplyTheme);
         });
-        document.addEventListener('livewire:navigated', pjApplyTheme);
+        document.addEventListener('livewire:navigated', siteApplyTheme);
 
         // ─── Theme toggle ────────────────────────────────────────────
         // Bound by delegation so it keeps working after wire:navigate swaps.
@@ -359,12 +359,12 @@
             // Write both keys so the admin/student dashboards follow too.
             try {
                 localStorage.setItem('theme', goingDark ? 'dark' : 'light');
-                localStorage.setItem('pj-theme', goingDark ? 'dark' : 'light');
+                localStorage.setItem('site-theme', goingDark ? 'dark' : 'light');
             } catch (err) {}
         });
 
         // ─── Reveal-on-scroll (IntersectionObserver) ─────────────────
-        function pjBindReveal () {
+        function siteBindReveal () {
             if (! ('IntersectionObserver' in window)) {
                 document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
                 return;
@@ -379,12 +379,12 @@
             }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
             document.querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) { io.observe(el); });
         }
-        pjBindReveal();
+        siteBindReveal();
 
         // ─── Lite YouTube embed: click poster to load iframe ─────────
-        function pjBindLiteYT () {
-            document.querySelectorAll('[data-pj-lite-yt]:not([data-pj-bound])').forEach(function (el) {
-                el.setAttribute('data-pj-bound', '1');
+        function siteBindLiteYT () {
+            document.querySelectorAll('[data-site-lite-yt]:not([data-site-bound])').forEach(function (el) {
+                el.setAttribute('data-site-bound', '1');
                 el.addEventListener('click', function () {
                     var url = el.dataset.embedUrl;
                     if (!url) return;
@@ -399,11 +399,11 @@
                 });
             });
         }
-        pjBindLiteYT();
+        siteBindLiteYT();
 
         document.addEventListener('livewire:navigated', function () {
-            pjBindReveal();
-            pjBindLiteYT();
+            siteBindReveal();
+            siteBindLiteYT();
         });
     })();
 </script>

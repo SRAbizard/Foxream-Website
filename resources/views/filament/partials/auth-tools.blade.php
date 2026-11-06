@@ -1,10 +1,10 @@
 {{-- Language and light/dark on the auth pages (login, register, password
      reset), top right of the form card. The theme choice is also saved
      for the public site, so both stay the same. --}}
-<div class="pj-auth-tools">
+<div class="site-auth-tools">
     @include('filament.partials.locale-switcher')
 
-    <button type="button" class="pj-theme-toggle"
+    <button type="button" class="site-theme-toggle"
         x-data
         x-on:click="const t = $store.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('theme', t) } catch (e) {} $dispatch('theme-changed', t)"
         x-bind:aria-label="$store.theme === 'dark' ? @js(__('Light mode')) : @js(__('Dark mode'))"

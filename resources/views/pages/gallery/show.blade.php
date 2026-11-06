@@ -68,27 +68,27 @@
 </section>
 
 {{-- Lightbox modal --}}
-<dialog id="pj-gallery-lightbox" class="bg-transparent backdrop:bg-black/85 backdrop:backdrop-blur-sm p-0 m-0 w-full h-full max-w-full max-h-full">
+<dialog id="site-gallery-lightbox" class="bg-transparent backdrop:bg-black/85 backdrop:backdrop-blur-sm p-0 m-0 w-full h-full max-w-full max-h-full">
     <div class="relative w-full h-full flex items-center justify-center p-4 sm:p-10">
         <button type="button" data-close
                 class="absolute top-4 right-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface-900/80 text-white hover:bg-surface-800 backdrop-blur">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
-        <div id="pj-gallery-content" class="w-full max-w-5xl max-h-[90vh] flex flex-col items-center justify-center"></div>
+        <div id="site-gallery-content" class="w-full max-w-5xl max-h-[90vh] flex flex-col items-center justify-center"></div>
     </div>
 </dialog>
 
 @push('head')
 <style>
-    #pj-gallery-lightbox[open] { display: flex; }
-    #pj-gallery-lightbox::backdrop { cursor: pointer; }
+    #site-gallery-lightbox[open] { display: flex; }
+    #site-gallery-lightbox::backdrop { cursor: pointer; }
 </style>
 @endpush
 
 <script>
 (function () {
-    var dialog  = document.getElementById('pj-gallery-lightbox');
-    var content = document.getElementById('pj-gallery-content');
+    var dialog  = document.getElementById('site-gallery-lightbox');
+    var content = document.getElementById('site-gallery-content');
     if (! dialog || ! content) return;
 
     document.querySelectorAll('[data-gallery-trigger]').forEach(function (btn) {

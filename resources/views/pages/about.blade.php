@@ -112,15 +112,15 @@
 </section>
 
 {{-- For companies in Japan --}}
-<section class="pj-section">
-    <div class="pj-wrap">
-        <div class="pj-head">
-            <span class="pj-sticker is-pink">{{ __('For companies in Japan') }}</span>
+<section class="site-section">
+    <div class="site-wrap">
+        <div class="site-head">
+            <span class="site-sticker is-pink">{{ __('For companies in Japan') }}</span>
             <h2>{{ __('Why companies work with us') }}</h2>
         </div>
-        <div class="pj-cards-4">
+        <div class="site-cards-4">
             @foreach($why as [$jp, $title, $desc])
-                <div class="pj-mini-step pj-card">
+                <div class="site-mini-step site-card">
                     <span class="n">{{ $jp }}</span>
                     <h3>{{ $title }}</h3>
                     <p>{{ $desc }}</p>
@@ -130,14 +130,14 @@
     </div>
 </section>
 
-<section class="pj-section pt-0!">
-    <div class="pj-wrap">
-        <div class="pj-head">
+<section class="site-section pt-0!">
+    <div class="site-wrap">
+        <div class="site-head">
             <h2>{{ __('How hiring works') }}</h2>
         </div>
-        <ol class="pj-tickets" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); list-style: none; padding: 0;">
+        <ol class="site-tickets" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); list-style: none; padding: 0;">
             @foreach($process as $i => [$title, $desc])
-                <li class="pj-ticket">
+                <li class="site-ticket">
                     <span class="n">0{{ $i + 1 }}</span>
                     <h4>{{ $title }}</h4>
                     <p class="text-sm opacity-80">{{ $desc }}</p>
@@ -147,13 +147,13 @@
         @if($categories->isNotEmpty())
             <div class="mt-8">
                 <p class="text-xs font-extrabold tracking-[.14em] uppercase opacity-70 mb-3">{{ __('Fields we recruit for') }}</p>
-                <div class="pj-chips">
-                    @foreach($categories as $c)<span class="pj-chip">{{ $c->t('name') }}</span>@endforeach
+                <div class="site-chips">
+                    @foreach($categories as $c)<span class="site-chip">{{ $c->t('name') }}</span>@endforeach
                 </div>
             </div>
         @endif
         <div class="mt-8">
-            <a href="{{ route('contact', ['for' => 'employer']) }}" wire:navigate class="pj-btn is-red">{{ __('Request workers') }} →</a>
+            <a href="{{ route('contact', ['for' => 'employer']) }}" wire:navigate class="site-btn is-red">{{ __('Request workers') }} →</a>
         </div>
     </div>
 </section>

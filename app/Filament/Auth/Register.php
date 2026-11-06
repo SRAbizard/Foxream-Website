@@ -34,7 +34,7 @@ class Register extends BaseRegister
 
     protected function getConsentFormComponent(): Component
     {
-        $link = fn (string $doc, string $label) => '<button type="button" class="pj-legal-link" wire:click.prevent.stop="mountAction(\'legal\', { doc: \''.$doc.'\' })">'.e($label).'</button>';
+        $link = fn (string $doc, string $label) => '<button type="button" class="site-legal-link" wire:click.prevent.stop="mountAction(\'legal\', { doc: \''.$doc.'\' })">'.e($label).'</button>';
 
         return Checkbox::make('consent')
             ->label(new HtmlString(__('I agree to the :terms and the :privacy, including the processing of my personal data for job placement in Japan.', [

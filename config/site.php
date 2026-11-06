@@ -43,26 +43,22 @@ return [
     'libreoffice' => env('LIBREOFFICE_BIN'),
 
     'contact' => [
-        'whatsapp'  => '62882007885021',
-        'phone'     => '+62 882-0078-85021',
+        'whatsapp'  => null,
+        'phone'     => null,
         'email'     => null,
         'instagram' => null,
         'facebook'  => null,
         'tiktok'    => null,
-        'offices'   => [
-            ['city' => 'Yokohama', 'country' => 'Japan',     'address' => 'Yokohama, Kanagawa, Japan'],
-            ['city' => 'Brebes',   'country' => 'Indonesia', 'address' => 'Brebes, Jawa Tengah, Indonesia'],
-            ['city' => 'Yogyakarta','country' => 'Indonesia','address' => 'Yogyakarta, DI Yogyakarta, Indonesia'],
-        ],
+        'offices'   => [],
     ],
 
     /*
     | Headline stats shown on the homepage. Phase 3 will pull live counts.
     */
     'stats' => [
-        'students'  => '3,300+',
-        'workers'   => '1,200+',
-        'companies' => '100+',
+        'students'  => '0',
+        'workers'   => '0',
+        'companies' => '0',
     ],
 
     /*

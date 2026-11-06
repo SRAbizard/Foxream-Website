@@ -118,7 +118,7 @@ class MyVisaTarget extends Page implements HasForms
                             ->info()
                             ->actions(array_filter([
                                 SiteSettings::academyUrl()
-                                    ? Action::make('pjiLearning')->label(__('Open :learning'))->url(SiteSettings::academyUrl())->openUrlInNewTab()
+                                    ? Action::make('learningPlatform')->label(__('Open :learning'))->url(SiteSettings::academyUrl())->openUrlInNewTab()
                                     : null,
                                 Action::make('offlineTraining')->label(__('Ask about offline training'))->color('gray')
                                     ->url('https://wa.me/'.SiteSettings::contact('whatsapp').'?text='.rawurlencode(__('Hello, I would like to join the SSW offline training.')))
