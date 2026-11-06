@@ -62,6 +62,11 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->databaseNotificationsPolling('60s')
             ->viteTheme('resources/css/filament/theme.css')
+            // Language and light/dark on the auth pages, in the form card.
+            ->renderHook(
+                PanelsRenderHook::SIMPLE_PAGE_START,
+                fn (): string => view('filament.partials.auth-tools')->render(),
+            )
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
                 fn (): string => view('filament.partials.login-jp-decoration')->render(),

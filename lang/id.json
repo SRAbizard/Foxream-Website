@@ -1722,5 +1722,12 @@
     "Page headers": "Latar judul halaman",
     "Page header pictures": "Gambar latar judul halaman",
     "The picture behind the title at the top of each page. Leave empty to use the default illustration.": "Gambar di belakang judul di bagian atas tiap halaman. Kosongkan untuk memakai ilustrasi bawaan.",
-    "Landscape, 2000×1116 or larger. The left side sits behind the title.": "Mendatar, 2000×1116 atau lebih besar. Sisi kiri berada di belakang judul."
+    "Landscape, 2000×1116 or larger. The left side sits behind the title.": "Mendatar, 2000×1116 atau lebih besar. Sisi kiri berada di belakang judul.",
+    "Terms & Conditions and Privacy Policy": "Syarat & Ketentuan dan Kebijakan Privasi",
+    "Please read both documents, then tick the box at the bottom.": "Silakan baca kedua dokumen, lalu centang kotak di bagian bawah.",
+    "I have read and agree to the Terms & Conditions and the Privacy Policy, including the processing of my personal data for job placement in Japan.": "Saya telah membaca dan menyetujui Syarat & Ketentuan serta Kebijakan Privasi, termasuk pemrosesan data pribadi saya untuk penempatan kerja di Jepang.",
+    "Tick the box to agree.": "Centang kotak untuk menyetujui.",
+    "I agree": "Saya setuju",
+    "Light mode": "Mode terang",
+    "Dark mode": "Mode gelap"
 }

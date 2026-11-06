@@ -268,6 +268,37 @@ body:has(.pj-auth) .fi-simple-main .fi-link { color: var(--pj-red) !important; f
     padding: .45rem .8rem; border: 2.5px solid var(--pj-line); border-radius: 999px; background: var(--pj-sakura); color: var(--pj-ink);
     transform: rotate(-2deg);
 }
+/* Language + theme, top right of the form card */
+body:has(.pj-auth) .fi-simple-main { position: relative; }
+.pj-auth-tools { position: absolute; top: .9rem; right: .9rem; z-index: 2; display: flex; align-items: center; gap: .35rem; }
+.pj-auth-tools .pj-locale-trigger { margin-inline: 0; height: 2.1rem; padding-inline: .6rem; }
+.pj-theme-toggle {
+    display: inline-grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 999px;
+    border: 2px solid var(--pj-line); background: var(--pj-washi); color: var(--pj-ink);
+    transition: background-color .15s, box-shadow .15s, transform .12s;
+}
+.pj-theme-toggle:hover { background: var(--pj-sakura); box-shadow: 2px 2px 0 var(--pj-shadow-c); transform: translate(-1px, -1px); }
+@media (max-width: 480px) {
+    /* Small cards: the tools get their own row above the logo. */
+    .pj-auth-tools { position: static; justify-content: flex-end; margin-bottom: .25rem; }
+}
+
+/* Terms / Privacy links in the consent box, and the pop-up */
+.pj-legal-link { color: var(--pj-red); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.pj-legal-link:hover { text-decoration-thickness: 2px; }
+.pj-legal-nav { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.25rem; }
+.pj-legal-nav button {
+    font-size: .78rem; font-weight: 800; padding: .35rem .75rem; border-radius: 999px;
+    border: 2px solid var(--pj-line); background: var(--pj-washi); color: var(--pj-ink);
+}
+.pj-legal-nav button:hover { background: var(--pj-sakura); }
+.pj-legal-doc { scroll-margin-top: 7rem; }
+.pj-legal-doc + .pj-legal-doc { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px dashed color-mix(in srgb, var(--pj-line) 35%, transparent); }
+.pj-legal-doc > h2 { font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; font-size: 1.5rem; line-height: 1.15; color: var(--pj-ink); text-shadow: 2px 2px 0 var(--pj-sakura); }
+.pj-legal-doc .fi-prose h2 { font-size: 1.05rem; margin-top: 1.4em; }
+.pj-legal-doc .fi-prose h3 { font-size: .98rem; }
+.pj-legal-date { margin: .2rem 0 1rem; font-size: .8rem; opacity: .65; }
+
 .pj-auth-back { text-align: center; margin-top: 1.1rem; }
 .pj-auth-back a { display: inline-flex; align-items: center; gap: .4rem; font-size: .88rem; font-weight: 700; color: var(--pj-ink); opacity: .75; }
 .pj-auth-back a:hover { opacity: 1; color: var(--pj-red); }

@@ -1723,5 +1723,12 @@
     "Page headers": "ページ見出しの背景",
     "Page header pictures": "ページ見出しの背景画像",
     "The picture behind the title at the top of each page. Leave empty to use the default illustration.": "各ページ上部のタイトルの背景画像です。空欄の場合は既定のイラストを使用します。",
-    "Landscape, 2000×1116 or larger. The left side sits behind the title.": "横長、2000×1116 以上。左側がタイトルの背景になります。"
+    "Landscape, 2000×1116 or larger. The left side sits behind the title.": "横長、2000×1116 以上。左側がタイトルの背景になります。",
+    "Terms & Conditions and Privacy Policy": "利用規約とプライバシーポリシー",
+    "Please read both documents, then tick the box at the bottom.": "両方の文書をお読みのうえ、下のチェックボックスにチェックを入れてください。",
+    "I have read and agree to the Terms & Conditions and the Privacy Policy, including the processing of my personal data for job placement in Japan.": "利用規約およびプライバシーポリシー(日本での就職紹介のための個人情報の取り扱いを含む)を読み、同意します。",
+    "Tick the box to agree.": "同意するにはチェックを入れてください。",
+    "I agree": "同意する",
+    "Light mode": "ライトモード",
+    "Dark mode": "ダークモード"
 }
