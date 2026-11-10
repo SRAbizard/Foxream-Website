@@ -26,6 +26,12 @@ class Brand
         return (string) config('brand.learning');
     }
 
+    /** Who built the site, for the footer credit; null when there is none. */
+    public static function maker(): ?string
+    {
+        return filled(config('brand.maker')) ? (string) config('brand.maker') : null;
+    }
+
     /** URL of the intro video, 'desktop' (landscape) or 'mobile' (portrait); null when there is none. */
     public static function introVideo(string $cut): ?string
     {

@@ -1,60 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Foxream — job matching for Indonesian workers in Japan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel 13, Filament 5 (admin panel at `/admin`, candidate dashboard at
+`/dashboard`), Livewire 4 and Tailwind 4. The brand name, legal name and
+logos are set in `config/brand.php` (`BRAND_*` in `.env`), never in the code.
 
-## About Laravel
+## Running it on a laptop
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Double-click `start-dev.bat`: it serves http://localhost:8001 with SQLite
+(`database/database.sqlite`). After changing CSS or JavaScript, run
+`npm run build`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Sample content to try the site with (FAQs, testimonials, companies,
+vacancies, a blog post, an event and an album) and one-click demo accounts:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan db:seed --class=SampleContentSeeder
+php artisan demo:setup
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Never run these two on the live site.
 
-## Contributing
+## Deploying
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### What the server needs
 
-## Code of Conduct
+- PHP 8.3 or newer with the `pdo_sqlite` (or `pdo_mysql`), `mbstring`,
+  `intl`, `gd`, `zip`, `fileinfo` and `bcmath` extensions
+- Composer, and Node.js 20+ to build the CSS and JavaScript
+- The web server's document root pointing at `public/`
+- An SMTP mailbox: candidates must confirm their email before they can sign in
+- Optional: LibreOffice, for the rirekisho (CV) PDF; without it a simpler
+  PDF is made instead
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+No queue worker or cron job is needed.
 
-## Security Vulnerabilities
+### The `.env` file
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Copy `.env.example` to `.env` and set at least:
 
-## Hak Cipta
+| Setting | Value |
+| --- | --- |
+| `APP_ENV` | `production` (this also hides the demo accounts and their switcher) |
+| `APP_DEBUG` | `false` |
+| `APP_URL` | the site's address, e.g. `https://example.com` |
+| `DB_*` | the database; SQLite needs nothing else |
+| `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS` | the SMTP mailbox |
+| `BOOTSTRAP_ADMIN_NAME`, `BOOTSTRAP_ADMIN_EMAIL`, `BOOTSTRAP_ADMIN_PASSWORD` | the first admin account, created by `db:seed` |
+| `BRAND_NAME`, `BRAND_COMPANY`, `BRAND_LEARNING`, `BRAND_MAKER` | the brand; `BRAND_MAKER` is the "Made by" line in the footer |
+| `DEEPL_API_KEY`, `GEMINI_API_KEY` | optional: Japanese translation for the CV, and reading job orders |
+| `LIBREOFFICE_BIN` | optional: path to `soffice` if it is not in a standard place |
 
-© 2026 Foxream. Seluruh hak cipta dilindungi.
-Kode sumber dan konten website ini milik Foxream dan tidak boleh disalin, disebarkan, atau digunakan tanpa izin tertulis.
-Website ini dibangun dengan framework Laravel (lisensi MIT).
+Keep passwords and API keys in the server's `.env` only, never in the code
+or in chat.
+
+### First install
+
+```bash
+git clone https://github.com/SRAbizard/foxream-website.git
+cd foxream-website
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
+cp .env.example .env        # then fill it in, see above
+php artisan key:generate
+php artisan migrate --force
+php artisan db:seed --force # roles, first admin, categories, visa steps; no sample content
+php artisan storage:link
+php artisan optimize
+php artisan filament:optimize
+```
+
+The web server must be able to write to `storage/` and `bootstrap/cache/`.
+
+### Every update
+
+```bash
+php artisan down
+git pull
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
+php artisan migrate --force
+php artisan optimize:clear
+php artisan optimize
+php artisan filament:optimize
+php artisan up
+```
+
+### After the first install
+
+Sign in at `/admin` with the bootstrap admin, change its password, then fill in:
+
+- **Website Settings**: contact details, social media, offices, the numbers
+  on the homepage and About page (empty ones are hidden), the page
+  pictures and the learning platform's address
+- **Legal**: privacy policy, terms and the anti-fraud warnings; have them
+  checked against the company's real details
+- the content itself: companies, job vacancies, FAQs, testimonials, blog,
+  events and gallery
+
+Uploaded files live in `storage/app/public`. To move them from another
+install, copy that folder; the database only stores their paths.

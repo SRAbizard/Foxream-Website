@@ -1,7 +1,7 @@
 @props(['compact' => false])
 
 {{-- Anti-fraud warning with the official channels. Points are edited in
-     Admin → Legal & Fees; see App\Support\Legal. --}}
+     Admin → Legal; see App\Support\Legal. --}}
 @php
     $points   = \App\Support\Legal::fraudPoints();
     $channels = \App\Support\Legal::officialChannels();
@@ -36,6 +36,6 @@
     @endif
 
     @if($compact)
-        <a href="{{ route('fees') }}#waspada" wire:navigate class="site-fraud-more">{{ __('Read more & programme fees') }} →</a>
+        <a href="{{ route('contact') }}#waspada" wire:navigate class="site-fraud-more">{{ __('Read more') }} →</a>
     @endif
 </aside>

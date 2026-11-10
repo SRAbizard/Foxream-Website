@@ -13,23 +13,27 @@ class CmsSeeder extends Seeder
     public function run(): void
     {
         $this->seedSettings();
+    }
+
+    /** Sample FAQs and testimonials (SampleContentSeeder). */
+    public function seedSamples(): void
+    {
         $this->seedFaqs();
         $this->seedTestimonials();
-        // Blog posts and events: see LaunchContentSeeder.
     }
 
     private function seedSettings(): void
     {
         $defaults = [
-            'contact.email'    => 'info@example.com',
+            'contact.email'    => null,
             'contact.phone'    => null,
             'contact.whatsapp' => null,
             'social.instagram' => null,
             'social.facebook'  => null,
             'social.tiktok'    => null,
-            'stats.students'   => '0',
-            'stats.workers'    => '0',
-            'stats.companies'  => '0',
+            'stats.students'   => null,
+            'stats.workers'    => null,
+            'stats.companies'  => null,
             'stats.years'      => null,
         ];
         foreach ($defaults as $k => $v) {

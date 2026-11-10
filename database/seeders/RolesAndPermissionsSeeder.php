@@ -20,6 +20,21 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $bootstrap = config('site.bootstrap_admin');
 
+        // On the live site the first admin must come from .env: never an
+        // empty or guessable login (the defaults are for a laptop only).
+        if (app()->isProduction()) {
+            $weak = blank($bootstrap['email']) || blank($bootstrap['password'])
+                || $bootstrap['email'] === 'admin@example.com'
+                || in_array($bootstrap['password'], ['password', 'secret', '12345678'], true)
+                || strlen((string) $bootstrap['password']) < 12;
+            if ($weak) {
+                throw new \RuntimeException('Set BOOTSTRAP_ADMIN_EMAIL and a strong BOOTSTRAP_ADMIN_PASSWORD (12+ characters) in .env before seeding.');
+            }
+        }
+        $bootstrap['email']    = $bootstrap['email'] ?: 'admin@example.com';
+        $bootstrap['password'] = $bootstrap['password'] ?: 'password';
+        $bootstrap['name']     = $bootstrap['name'] ?: 'Super Admin';
+
         $admin = User::firstOrCreate(
             ['email' => $bootstrap['email']],
             [

@@ -23,7 +23,6 @@ class SitemapController extends Controller
             ['loc' => url('/jobs'),      'priority' => '0.8', 'changefreq' => 'daily',   'lastmod' => $now],
             ['loc' => url('/gallery'),   'priority' => '0.6', 'changefreq' => 'weekly',  'lastmod' => $now],
             ['loc' => url('/services'),  'priority' => '0.8', 'changefreq' => 'monthly', 'lastmod' => $now],
-            ['loc' => url('/fees'),           'priority' => '0.6', 'changefreq' => 'monthly', 'lastmod' => $now],
             ['loc' => url('/privacy-policy'), 'priority' => '0.3', 'changefreq' => 'yearly',  'lastmod' => $now],
             ['loc' => url('/terms'),          'priority' => '0.3', 'changefreq' => 'yearly',  'lastmod' => $now],
         ];

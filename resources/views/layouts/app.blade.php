@@ -227,9 +227,11 @@
                 <p class="mt-4 max-w-xl text-lg opacity-90">{{ __('Create a free account, complete your profile, and apply for your first job today. Our team is ready to help on WhatsApp.') }}</p>
                 <div class="mt-7 flex flex-wrap items-center gap-3">
                     <a href="/dashboard/register" class="site-btn is-gold">{{ __('Start your mission') }} →</a>
-                    <a href="https://wa.me/{{ \App\Support\SiteSettings::contact('whatsapp') }}" target="_blank" rel="noopener" class="site-btn">
-                        {{ __('Talk to us on WhatsApp') }}
-                    </a>
+                    @if($footerWa = \App\Support\SiteSettings::contact('whatsapp'))
+                        <a href="https://wa.me/{{ $footerWa }}" target="_blank" rel="noopener" class="site-btn">
+                            {{ __('Talk to us on WhatsApp') }}
+                        </a>
+                    @endif
                 </div>
             </div>
             <svg class="w-full max-w-[300px] justify-self-start lg:justify-self-end" viewBox="0 0 300 220" aria-hidden="true">
@@ -247,15 +249,21 @@
                 <img src="{{ \App\Support\Brand::logo('stacked', 'dark') }}" alt="{{ \App\Support\Brand::name() }}" class="h-32 w-auto mb-4 select-none" draggable="false">
                 <p class="text-sm leading-relaxed opacity-80">{{ __('Official job matching for Indonesian workers in Japan, from your application to your first day at work.') }}</p>
                 <div class="mt-5 flex items-center gap-3">
-                    <a href="{{ \App\Support\SiteSettings::social('instagram') }}" target="_blank" rel="noopener" aria-label="Instagram" class="opacity-80 hover:opacity-100 transition">
-                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm0 1.5h8.5a4.25 4.25 0 014.25 4.25v8.5a4.25 4.25 0 01-4.25 4.25h-8.5A4.25 4.25 0 013.5 16.25v-8.5A4.25 4.25 0 017.75 3.5zM17 6a1 1 0 100 2 1 1 0 000-2zm-5 1.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zm0 1.5a3 3 0 110 6 3 3 0 010-6z"/></svg>
-                    </a>
-                    <a href="{{ \App\Support\SiteSettings::social('facebook') }}" target="_blank" rel="noopener" aria-label="Facebook" class="opacity-80 hover:opacity-100 transition">
-                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13.5 21.95V13.5h2.85l.43-3.3h-3.28V8.1c0-.95.27-1.6 1.64-1.6H17V3.55c-.3-.04-1.34-.13-2.55-.13-2.52 0-4.25 1.54-4.25 4.37V10.2H7.35v3.3h2.85v8.45h3.3z"/></svg>
-                    </a>
-                    <a href="{{ \App\Support\SiteSettings::social('tiktok') }}" target="_blank" rel="noopener" aria-label="TikTok" class="opacity-80 hover:opacity-100 transition">
-                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 8.2a6.7 6.7 0 01-4.2-1.4v6.7a5.4 5.4 0 11-5.4-5.4c.4 0 .8.04 1.1.12v2.7a2.7 2.7 0 102 2.58V2h2.6a4.1 4.1 0 003.9 3.6v2.6z"/></svg>
-                    </a>
+                    @if($url = \App\Support\SiteSettings::social('instagram'))
+                        <a href="{{ $url }}" target="_blank" rel="noopener" aria-label="Instagram" class="opacity-80 hover:opacity-100 transition">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zm0 1.5h8.5a4.25 4.25 0 014.25 4.25v8.5a4.25 4.25 0 01-4.25 4.25h-8.5A4.25 4.25 0 013.5 16.25v-8.5A4.25 4.25 0 017.75 3.5zM17 6a1 1 0 100 2 1 1 0 000-2zm-5 1.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zm0 1.5a3 3 0 110 6 3 3 0 010-6z"/></svg>
+                        </a>
+                    @endif
+                    @if($url = \App\Support\SiteSettings::social('facebook'))
+                        <a href="{{ $url }}" target="_blank" rel="noopener" aria-label="Facebook" class="opacity-80 hover:opacity-100 transition">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13.5 21.95V13.5h2.85l.43-3.3h-3.28V8.1c0-.95.27-1.6 1.64-1.6H17V3.55c-.3-.04-1.34-.13-2.55-.13-2.52 0-4.25 1.54-4.25 4.37V10.2H7.35v3.3h2.85v8.45h3.3z"/></svg>
+                        </a>
+                    @endif
+                    @if($url = \App\Support\SiteSettings::social('tiktok'))
+                        <a href="{{ $url }}" target="_blank" rel="noopener" aria-label="TikTok" class="opacity-80 hover:opacity-100 transition">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 8.2a6.7 6.7 0 01-4.2-1.4v6.7a5.4 5.4 0 11-5.4-5.4c.4 0 .8.04 1.1.12v2.7a2.7 2.7 0 102 2.58V2h2.6a4.1 4.1 0 003.9 3.6v2.6z"/></svg>
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -265,7 +273,6 @@
                     <li><a href="{{ url('/') }}" wire:navigate>{{ __('Home') }}</a></li>
                     <li><a href="{{ route('job.index') }}" wire:navigate>{{ __('Job Vacancies') }}</a></li>
                     <li><a href="{{ route('services') }}" wire:navigate>{{ __('Services') }}</a></li>
-                    <li><a href="{{ route('fees') }}" wire:navigate>{{ __('Programme Fees') }}</a></li>
                     @if($academyUrl)
                         <li><a href="{{ $academyUrl }}" target="_blank" rel="noopener">{{ __('E-Learning') }} ↗</a></li>
                     @endif
@@ -286,12 +293,21 @@
                 </ul>
             </div>
 
+            {{-- Inline @php() only: this file already uses it, and Blade cannot mix it with @php blocks. --}}
+            @php($footerEmail = \App\Support\SiteSettings::contact('email'))
+            @php($footerPhone = \App\Support\SiteSettings::contact('phone'))
+            @php($footerOffices = \App\Support\SiteSettings::offices())
+            @if($footerEmail || $footerPhone || count($footerOffices))
             <div>
                 <h4 class="font-display text-lg text-white mb-4">{{ __('Contact') }}</h4>
                 <ul class="space-y-3 text-sm opacity-85">
-                    <li><a href="mailto:{{ \App\Support\SiteSettings::contact('email') }}">{{ \App\Support\SiteSettings::contact('email') }}</a></li>
-                    <li><a href="tel:{{ str_replace(' ', '', \App\Support\SiteSettings::contact('phone') ?? '') }}">{{ \App\Support\SiteSettings::contact('phone') }}</a></li>
-                    @foreach(\App\Support\SiteSettings::offices() as $office)
+                    @if($footerEmail)
+                        <li><a href="mailto:{{ $footerEmail }}">{{ $footerEmail }}</a></li>
+                    @endif
+                    @if($footerPhone)
+                        <li><a href="tel:{{ str_replace(' ', '', $footerPhone) }}">{{ $footerPhone }}</a></li>
+                    @endif
+                    @foreach($footerOffices as $office)
                         <li>
                             <a href="{{ $office['maps_url'] }}" target="_blank" rel="noopener noreferrer" title="{{ __('Open in Google Maps') }}" class="inline-flex items-center gap-1.5">
                                 <svg class="h-4 w-4 shrink-0 text-[#F1AF2E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -301,6 +317,7 @@
                     @endforeach
                 </ul>
             </div>
+            @endif
         </div>
         <div class="border-t border-white/10">
             <div class="mx-auto max-w-7xl px-6 pt-5 pb-24 text-xs opacity-70">
@@ -309,18 +326,23 @@
                     <nav class="flex flex-wrap gap-x-4 gap-y-1" aria-label="{{ __('Legal') }}">
                         <a href="{{ route('legal.privacy') }}" wire:navigate>{{ __('Privacy Policy') }}</a>
                         <a href="{{ route('legal.terms') }}" wire:navigate>{{ __('Terms & Conditions') }}</a>
-                        <a href="{{ route('fees') }}#waspada" wire:navigate>{{ __('Beware of fraud') }}</a>
+                        <a href="{{ route('contact') }}#waspada" wire:navigate>{{ __('Beware of fraud') }}</a>
                     </nav>
                 </div>
                 @if($songCredit = \App\Support\SiteSettings::themeAudioCredit())
                     <p class="mt-1 opacity-70">{{ __('Music') }}: {{ $songCredit }}</p>
+                @endif
+                @if($maker = \App\Support\Brand::maker())
+                    <p class="mt-1 opacity-70">{{ __('Made by :maker', ['maker' => $maker]) }}</p>
                 @endif
             </div>
         </div>
     </div>
 </footer>
 
-<x-whatsapp-float />
+@if(\App\Support\SiteSettings::contact('whatsapp'))
+    <x-whatsapp-float />
+@endif
 
 @persist('audio-player')
     <x-audio-player />

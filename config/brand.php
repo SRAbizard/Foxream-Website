@@ -15,6 +15,10 @@ return [
     'company'  => env('BRAND_COMPANY', 'Foxream'),
     'learning' => env('BRAND_LEARNING', 'Foxream Learning'),
 
+    // Who built the site: "Made by …" in the footer. It stays when the
+    // brand above changes; set BRAND_MAKER empty to drop the line.
+    'maker'    => env('BRAND_MAKER', 'Foxream'),
+
     // The first-visit intro video (in public/): a landscape and a portrait cut.
     'intro' => [
         'desktop' => 'videos/intro-desktop.mp4',

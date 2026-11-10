@@ -19,7 +19,7 @@
 
 <h2>4. Biaya dan pembayaran</h2>
 <ul>
-    <li>Biaya resmi hanya yang tercantum di halaman <a href="{{ route('fees', [], false) }}">Biaya Program</a> atau dalam perjanjian tertulis yang Anda tanda tangani.</li>
+    <li>Biaya resmi hanya yang tercantum dalam perjanjian tertulis yang Anda tanda tangani.</li>
     <li>Pembayaran resmi hanya ke rekening atas nama {{ $company }}, dan selalu disertai kuitansi resmi.</li>
     <li>Kami tidak bertanggung jawab atas pembayaran kepada pihak yang mengatasnamakan kami tanpa melalui kanal resmi.</li>
 </ul>

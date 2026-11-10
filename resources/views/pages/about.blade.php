@@ -99,7 +99,8 @@
     </div>
 </section>
 
-{{-- STATS --}}
+{{-- STATS (only the numbers filled in Website Settings) --}}
+@if(count($stats))
 <section class="py-16 bg-surface-900/40">
     <div class="mx-auto max-w-5xl px-6">
         <div class="grid gap-4 sm:grid-cols-2 {{ count($stats) === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }} text-center">
@@ -112,6 +113,7 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- For companies in Japan --}}
 <section class="site-section">

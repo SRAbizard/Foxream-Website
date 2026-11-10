@@ -333,7 +333,7 @@ final class HomepageDemoData
     {
         // Common building blocks reused across visas
         $preScreen = ['Pre-Screening Document', 'Pre-Screening Document', '事前書類審査'];
-        $explainJob = ['Penjelasan Job dan Biaya', 'Job & Cost Briefing', '仕事と費用の説明'];
+        $explainJob = ['Penjelasan Pekerjaan', 'Job Briefing', '仕事の説明'];
         $interviewTSK = ['Interview dengan TSK', 'Interview with TSK', 'TSK面接'];
         $training = ['Pelatihan Pra Interview dan Bahasa', 'Pre-Interview & Language Training', '面接前トレーニング'];
         $interviewCo = ['Interview dengan Perusahaan', 'Interview with Company', '企業面接'];
@@ -362,30 +362,19 @@ final class HomepageDemoData
                 'steps' => [
                     ['n' => 1,  'title' => $title($preScreen)],
                     ['n' => 2,  'title' => $title($explainJob)],
-                    ['n' => 3,  'title' => $title($interviewTSK), 'badge' => ['label' => ['id' => 'Deposit Rp 2 Juta', 'en' => 'IDR 2M Deposit', 'ja' => '保証金200万Rp'], 'color' => 'warning']],
+                    ['n' => 3,  'title' => $title($interviewTSK)],
                     ['n' => 4,  'title' => $title($training)],
                     ['n' => 5,  'title' => $title($interviewCo)],
                     ['n' => 6,  'title' => $title($medical)],
                     ['n' => 7,  'title' => $title($sending)],
-                    ['n' => 8,  'title' => $title($contract), 'badge' => ['label' => ['id' => 'Pembiayaan Tahap 1 (50%)', 'en' => 'Stage 1 Payment (50%)', 'ja' => '第1期支払い (50%)'], 'color' => 'brand']],
+                    ['n' => 8,  'title' => $title($contract)],
                     ['n' => 9,  'title' => $title($passport)],
-                    ['n' => 10, 'title' => $title($coe), 'badge' => ['label' => ['id' => 'Pembiayaan Tahap 2 (50%)', 'en' => 'Stage 2 Payment (50%)', 'ja' => '第2期支払い (50%)'], 'color' => 'brand']],
+                    ['n' => 10, 'title' => $title($coe)],
                     ['n' => 11, 'title' => $title($visa)],
                     ['n' => 12, 'title' => $title($departPrep)],
                     ['n' => 13, 'title' => $title($pickup)],
                 ],
-                'notes' => [
-                    [
-                        'id' => 'Passport dan Medical Check Up ditanggung masing-masing kandidat.',
-                        'en' => 'Passport and Medical Check-up are paid by each candidate.',
-                        'ja' => 'パスポートと健康診断は各候補者の自己負担です。',
-                    ],
-                    [
-                        'id' => 'Biaya tiket pesawat bisa dipinjamkan oleh perusahaan penerima.',
-                        'en' => 'Flight ticket costs may be advanced by the receiving company.',
-                        'ja' => '航空券費用は受入企業から立替可能です。',
-                    ],
-                ],
+                'notes' => [],
             ],
 
             // ─── Engineer / Gijinkoku ──────────────────────────────
@@ -440,7 +429,7 @@ final class HomepageDemoData
                     ['n' => 12, 'title' => $title($visa)],
                     ['n' => 13, 'title' => $title($departPrep)],
                     ['n' => 14, 'title' => $title($pickup)],
-                    ['n' => 15, 'title' => $title($work), 'badge' => ['label' => ['id' => 'Gaji Bersih Rp 8-10 Juta', 'en' => 'Net IDR 8-10M Salary', 'ja' => '手取り月8-10百万Rp'], 'color' => 'success']],
+                    ['n' => 15, 'title' => $title($work)],
                 ],
                 'notes' => [],
             ],

@@ -13,7 +13,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Real launch content: blog and event categories, the first blog post,
+ * Sample content (via SampleContentSeeder): blog and event categories, the first blog post,
  * the electrical-internship interview event, the Kaneyo gallery album
  * and avatars for testimonials that have none. Photos are bundled in
  * database/seeders/content and copied to the public disk.

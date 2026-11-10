@@ -30,9 +30,7 @@ class HomeController extends Controller
             'categories'   => $matching->categories(),
             'visas'        => $matching->visas(),
             'workflows'    => HomepageDemoData::visaWorkflows(),
-            'faqs'         => $faqs->isNotEmpty()
-                ? $faqs->map(fn ($f) => ['q' => $f->t('question'), 'a' => $f->t('answer')])->all()
-                : collect(HomepageDemoData::faqs())->map(fn ($f) => ['q' => HomepageDemoData::pick($f['q']), 'a' => HomepageDemoData::pick($f['a'])])->all(),
+            'faqs'         => $faqs->map(fn ($f) => ['q' => $f->t('question'), 'a' => $f->t('answer')])->all(),
             'testimonials' => Testimonial::published()->get(),
             'partners'     => Company::query()->where('is_active', true)->orderBy('name')->get(),
             'albums'       => Gallery::published()
@@ -43,11 +41,12 @@ class HomeController extends Controller
             'heroSlides'   => SiteSettings::heroSlides(),
             'companyVideo' => SiteSettings::companyVideo(),
             'academyUrl'   => SiteSettings::academyUrl(),
-            'stats'        => [
+            // A stat left empty in Website Settings is not shown.
+            'stats'        => array_values(array_filter([
                 ['value' => SiteSettings::stat('students'),  'label' => __('students trained')],
                 ['value' => SiteSettings::stat('workers'),   'label' => __('workers placed in Japan')],
                 ['value' => SiteSettings::stat('companies'), 'label' => __('partner companies in Japan')],
-            ],
+            ], fn ($s) => filled($s['value']))),
         ]);
     }
 }

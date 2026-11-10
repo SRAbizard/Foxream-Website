@@ -14,7 +14,7 @@ class VisaWorkflowSeeder extends Seeder
         $blocks = [
             'preScreen'    => [['Pre-Screening Document', 'Pre-Screening Document', '事前書類審査'],            'heroicon-o-document-magnifying-glass'],
             'mouUni'       => [['MOU dengan Universitas', 'University MOU', '大学とのMOU'],                       'heroicon-o-document-text'],
-            'explainJob'   => [['Penjelasan Job dan Biaya', 'Job & Cost Briefing', '仕事と費用の説明'],          'heroicon-o-chat-bubble-left-right'],
+            'explainJob'   => [['Penjelasan Pekerjaan', 'Job Briefing', '仕事の説明'],                'heroicon-o-chat-bubble-left-right'],
             'interviewTSK' => [['Interview dengan TSK', 'Interview with TSK', 'TSK面接'],                         'heroicon-o-user-group'],
             'training'     => [['Pelatihan Pra Interview dan Bahasa', 'Pre-Interview & Language Training', '面接前トレーニング'], 'heroicon-o-academic-cap'],
             'interviewCo'  => [['Interview dengan Perusahaan', 'Interview with Company', '企業面接'],            'heroicon-o-briefcase'],
@@ -36,14 +36,14 @@ class VisaWorkflowSeeder extends Seeder
         $this->seed('tokutei-ginou', [
             ['preScreen'],
             ['explainJob'],
-            ['interviewTSK', ['warning', ['id' => 'Deposit Rp 2 Juta', 'en' => 'IDR 2M Deposit', 'ja' => '保証金200万Rp']]],
+            ['interviewTSK'],
             ['training'],
             ['interviewCo'],
             ['medical'],
             ['sending'],
-            ['contract', ['brand', ['id' => 'Pembiayaan Tahap 1 (50%)', 'en' => 'Stage 1 Payment (50%)', 'ja' => '第1期支払い (50%)']]],
+            ['contract'],
             ['passport'],
-            ['coe', ['brand', ['id' => 'Pembiayaan Tahap 2 (50%)', 'en' => 'Stage 2 Payment (50%)', 'ja' => '第2期支払い (50%)']]],
+            ['coe'],
             ['visa'],
             ['departPrep'],
             ['pickup'],
@@ -83,7 +83,7 @@ class VisaWorkflowSeeder extends Seeder
             ['visa'],
             ['departPrep'],
             ['pickup'],
-            ['work', ['success', ['id' => 'Gaji Bersih Rp 8-10 Juta', 'en' => 'Net IDR 8-10M Salary', 'ja' => '手取り月8-10百万Rp']]],
+            ['work'],
         ], $title, $icon);
     }
 

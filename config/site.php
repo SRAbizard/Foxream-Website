@@ -53,13 +53,14 @@ return [
     ],
 
     /*
-    | Headline stats shown on the homepage. Phase 3 will pull live counts.
+    | Headline stats on the homepage and About page; edited in Website Settings.
     */
     'stats' => [
-        'students'  => '0',
-        'workers'   => '0',
-        'companies' => '0',
-        'years'     => null,   // years of experience, About page; empty hides it
+        // Empty hides the number (and, on the homepage, the claim above it).
+        'students'  => null,
+        'workers'   => null,
+        'companies' => null,
+        'years'     => null,   // About page only
     ],
 
     /*

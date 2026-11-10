@@ -19,7 +19,7 @@
 
 <h2>4. Fees and payment</h2>
 <ul>
-    <li>The only official fees are those listed on the <a href="{{ route('fees', [], false) }}">Programme Fees</a> page or in a written agreement you sign.</li>
+    <li>The only official fees are those set out in a written agreement you sign.</li>
     <li>Official payments go only to a bank account in the name of {{ $company }}, always with an official receipt.</li>
     <li>We are not responsible for payments made to anyone claiming to act for us outside our official channels.</li>
 </ul>

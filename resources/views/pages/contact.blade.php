@@ -176,6 +176,8 @@
                 @endif
             </aside>
         </div>
+
+        <x-fraud-notice class="mt-10" />
     </section>
 </div>
 @endsection

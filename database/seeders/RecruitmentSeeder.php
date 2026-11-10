@@ -14,6 +14,11 @@ class RecruitmentSeeder extends Seeder
     {
         $this->seedJobCategories();
         $this->seedVisaCategories();
+    }
+
+    /** Sample companies and vacancies (SampleContentSeeder). */
+    public function seedSamples(): void
+    {
         $this->seedCompanies();
         $this->seedVacancies();
     }

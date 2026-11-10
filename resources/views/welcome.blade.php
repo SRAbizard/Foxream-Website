@@ -131,14 +131,17 @@
 <section class="site-statement">
     <div class="site-wrap">
         <p class="big" data-site-statement>
-            <span data-words>{{ __('Hundreds of Indonesians have already departed with :brand.') }}</span>
+            {{-- The "hundreds departed" claim only stands next to real numbers. --}}
+            <span data-words>{{ count($stats) ? __('Hundreds of Indonesians have already departed with :brand.') : __('Your career in Japan starts with :brand.') }}</span>
             <span data-words data-hl>{{ __('The next mission is yours.') }}</span>
         </p>
-        <div class="site-stats">
-            @foreach($stats as $s)
-                <div class="site-stat site-card"><b data-site-countup>{{ $s['value'] }}</b><span>{{ $s['label'] }}</span></div>
-            @endforeach
-        </div>
+        @if(count($stats))
+            <div class="site-stats">
+                @foreach($stats as $s)
+                    <div class="site-stat site-card"><b data-site-countup>{{ $s['value'] }}</b><span>{{ $s['label'] }}</span></div>
+                @endforeach
+            </div>
+        @endif
 
         @php
             $points = [
@@ -390,6 +393,7 @@
 @endif
 
 {{-- ========== FAQ ========== --}}
+@if(count($faqs))
 <section class="site-section pt-0!">
     <div class="site-wrap">
         <div class="site-head">
@@ -405,6 +409,7 @@
         </div>
     </div>
 </section>
+@endif
 
 </div>
 

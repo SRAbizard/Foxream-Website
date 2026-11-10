@@ -6,8 +6,8 @@ use App\Models\Setting;
 use Illuminate\Support\HtmlString;
 
 /**
- * Privacy policy, terms, anti-fraud notice and programme fees — all
- * editable in Admin → Legal & Fees. Anything left empty falls back to
+ * Privacy policy, terms and the anti-fraud notice — all
+ * editable in Admin → Legal. Anything left empty falls back to
  * the bundled defaults (resources/views/legal/defaults), so the pages
  * are never blank.
  */
@@ -95,32 +95,6 @@ class Legal
             $facts['email'] ? ['label' => __('Email'), 'value' => $facts['email'], 'url' => 'mailto:'.$facts['email']] : null,
             $wa ? ['label' => 'WhatsApp', 'value' => $facts['phone'] ?: '+'.$wa, 'url' => 'https://wa.me/'.preg_replace('/\D/', '', $wa)] : null,
         ]));
-    }
-
-    /**
-     * Programme fee rows in the current locale.
-     *
-     * @return array<int, array{name: string, amount: string, note: ?string}>
-     */
-    public static function fees(): array
-    {
-        $locale = app()->getLocale();
-
-        return collect((array) Setting::get('legal.fees', []))
-            ->map(fn ($f) => [
-                'name'   => ($f["name_{$locale}"] ?? null) ?: ($f['name_id'] ?? ''),
-                'amount' => (string) ($f['amount'] ?? ''),
-                'note'   => ($f["note_{$locale}"] ?? null) ?: ($f['note_id'] ?? null),
-            ])
-            ->filter(fn ($f) => $f['name'] !== '')
-            ->values()
-            ->all();
-    }
-
-    /** Free-text note under the fee table, current locale. */
-    public static function feesNote(): ?string
-    {
-        return self::pick((array) Setting::get('legal.fees_note', []));
     }
 
     /** Company details used inside the default texts. */
