@@ -1721,5 +1721,21 @@
     "Made by :maker": "Dibuat oleh :maker",
     "Read more": "Selengkapnya",
     "Your career in Japan starts with :brand.": "Karier Anda di Jepang dimulai bersama :brand.",
-    "One warning per line. Shown on the Contact page and next to every job, together with your official channels from Website Settings → Contact. Make sure every line matches company policy.": "Satu peringatan per baris. Tampil di halaman Kontak dan di samping setiap lowongan, bersama kanal resmi dari Pengaturan Situs → Kontak. Pastikan setiap baris sesuai kebijakan perusahaan."
+    "One warning per line. Shown on the Contact page and next to every job, together with your official channels from Website Settings → Contact. Make sure every line matches company policy.": "Satu peringatan per baris. Tampil di halaman Kontak dan di samping setiap lowongan, bersama kanal resmi dari Pengaturan Situs → Kontak. Pastikan setiap baris sesuai kebijakan perusahaan.",
+    "Withdraw": "Tarik lamaran",
+    "Withdraw this application?": "Tarik lamaran ini?",
+    "The company will no longer consider you for this job. You can apply for other jobs at any time.": "Perusahaan tidak akan lagi mempertimbangkan Anda untuk lowongan ini. Anda tetap bisa melamar lowongan lain kapan saja.",
+    "Reason (optional)": "Alasan (opsional)",
+    "This application can no longer be withdrawn here. Please contact our team.": "Lamaran ini tidak bisa lagi ditarik dari sini. Silakan hubungi tim kami.",
+    "Withdrawn by the candidate": "Ditarik oleh kandidat",
+    "Application withdrawn": "Lamaran ditarik",
+    ":name withdrew their application for \":title\".": ":name menarik lamarannya untuk \":title\".",
+    "Reason: :reason": "Alasan: :reason",
+    "Delete my account": "Hapus akun saya",
+    "Delete your account?": "Hapus akun Anda?",
+    "Your profile, CV, documents, applications and uploaded files are deleted for good. This cannot be undone.": "Profil, CV, dokumen, lamaran, dan semua file yang Anda unggah akan dihapus permanen. Ini tidak bisa dibatalkan.",
+    "Your password": "Kata sandi Anda",
+    "Your departure process is under way": "Proses keberangkatan Anda sedang berjalan",
+    "Please contact our team to delete your account, so your contract, COE or visa can be closed properly.": "Silakan hubungi tim kami untuk menghapus akun, agar kontrak, COE, atau visa Anda bisa diselesaikan dengan benar.",
+    "Your account and all your data have been deleted.": "Akun dan semua data Anda sudah dihapus."
 }

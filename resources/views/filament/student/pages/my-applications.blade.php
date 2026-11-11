@@ -83,8 +83,13 @@
                     @endunless
                     <div class="site-app-field">
                         <small>{{ __('Applied') }}</small>
-                        <strong>{{ $app->created_at->translatedFormat('d M Y') }}</strong>
+                        <strong>{{ $app->created_at->isoFormat('ll') }}</strong>
                     </div>
+                    @if($app->canBeWithdrawn())
+                        <div class="site-app-field">
+                            {{ ($this->withdrawAction)(['application' => $app->id]) }}
+                        </div>
+                    @endif
                 </aside>
             </article>
 

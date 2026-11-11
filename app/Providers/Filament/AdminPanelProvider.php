@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->brandName(fn () => \App\Support\Brand::name())
             ->brandLogo(fn () => view('filament.partials.brand-logo'))
             ->brandLogoHeight('2rem')
@@ -92,7 +93,8 @@ class AdminPanelProvider extends PanelProvider
                     // Auth pages (login / register / password-reset / email-verification)
                     // get the Mt Fuji background + falling sakura BEFORE the main content
                     // so they sit behind the form. BODY_END would render them on top.
-                    if (str_contains($route, '.auth.')) {
+                    // The sign-in pages; the profile page sits in the panel like any other.
+                    if (str_contains($route, '.auth.') && ! str_ends_with($route, '.auth.profile')) {
                         return view('filament.partials.login-background')->render();
                     }
 

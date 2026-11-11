@@ -55,7 +55,7 @@ class StudentPanelProvider extends PanelProvider
             ->registration(\App\Filament\Auth\Register::class)
             ->passwordReset()
             ->emailVerification()
-            ->profile(isSimple: false)
+            ->profile(\App\Filament\Student\Pages\EditProfile::class, isSimple: false)
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
             ->viteTheme('resources/css/filament/theme.css')
@@ -93,7 +93,8 @@ class StudentPanelProvider extends PanelProvider
                 PanelsRenderHook::BODY_START,
                 function (): string {
                     $route = request()->route()?->getName() ?? '';
-                    if (str_contains($route, '.auth.')) {
+                    // The sign-in pages; the profile page sits in the panel like any other.
+                    if (str_contains($route, '.auth.') && ! str_ends_with($route, '.auth.profile')) {
                         return view('filament.partials.login-background')->render();
                     }
                     // Same nav-version reset as the admin panel — keeps

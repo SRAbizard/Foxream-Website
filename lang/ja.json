@@ -1722,5 +1722,21 @@
     "Made by :maker": "制作：:maker",
     "Read more": "詳しく見る",
     "Your career in Japan starts with :brand.": "日本でのキャリアは、:brandから始まります。",
-    "One warning per line. Shown on the Contact page and next to every job, together with your official channels from Website Settings → Contact. Make sure every line matches company policy.": "1行に1つの注意事項を記入します。お問い合わせページと各求人の横に、サイト設定 → 連絡先の公式窓口と一緒に表示されます。各行が会社の方針に沿っているか確認してください。"
+    "One warning per line. Shown on the Contact page and next to every job, together with your official channels from Website Settings → Contact. Make sure every line matches company policy.": "1行に1つの注意事項を記入します。お問い合わせページと各求人の横に、サイト設定 → 連絡先の公式窓口と一緒に表示されます。各行が会社の方針に沿っているか確認してください。",
+    "Withdraw": "辞退する",
+    "Withdraw this application?": "この応募を辞退しますか？",
+    "The company will no longer consider you for this job. You can apply for other jobs at any time.": "この求人では選考の対象外となります。他の求人にはいつでも応募できます。",
+    "Reason (optional)": "理由（任意）",
+    "This application can no longer be withdrawn here. Please contact our team.": "この応募はここから辞退できません。担当チームにご連絡ください。",
+    "Withdrawn by the candidate": "候補者が辞退",
+    "Application withdrawn": "応募が辞退されました",
+    ":name withdrew their application for \":title\".": ":nameさんが「:title」への応募を辞退しました。",
+    "Reason: :reason": "理由：:reason",
+    "Delete my account": "アカウントを削除する",
+    "Delete your account?": "アカウントを削除しますか？",
+    "Your profile, CV, documents, applications and uploaded files are deleted for good. This cannot be undone.": "プロフィール、履歴書、書類、応募、アップロードしたファイルはすべて完全に削除されます。元に戻すことはできません。",
+    "Your password": "パスワード",
+    "Your departure process is under way": "出国手続きが進行中です",
+    "Please contact our team to delete your account, so your contract, COE or visa can be closed properly.": "アカウントの削除は担当チームにご連絡ください。契約・COE・ビザの手続きを適切に終了するためです。",
+    "Your account and all your data have been deleted.": "アカウントとすべてのデータを削除しました。"
 }

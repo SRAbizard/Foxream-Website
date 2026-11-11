@@ -72,6 +72,52 @@ class MyApplications extends Page
         return $text ? ['text' => $text, 'link' => $link] : null;
     }
 
+    /**
+     * The candidate withdraws an application that has not reached
+     * "passed" yet (Application::WITHDRAWABLE); the team is told, with the
+     * reason when one is given.
+     */
+    public function withdrawAction(): Action
+    {
+        return Action::make('withdraw')
+            ->label(__('Withdraw'))
+            ->icon('heroicon-o-x-mark')
+            ->color('danger')->link()->size('sm')
+            ->requiresConfirmation()
+            ->modalHeading(__('Withdraw this application?'))
+            ->modalDescription(__('The company will no longer consider you for this job. You can apply for other jobs at any time.'))
+            ->modalSubmitActionLabel(__('Withdraw'))
+            ->schema([
+                \Filament\Forms\Components\Textarea::make('reason')->label(__('Reason (optional)'))->rows(3)->maxLength(500),
+            ])
+            ->action(function (array $data, array $arguments) {
+                $app = Application::where('user_id', auth()->id())->findOrFail($arguments['application'] ?? 0);
+                if (! $app->canBeWithdrawn()) {
+                    Notification::make()->title(__('This application can no longer be withdrawn here. Please contact our team.'))->warning()->send();
+
+                    return;
+                }
+
+                $reason = trim((string) ($data['reason'] ?? ''));
+                $app->update([
+                    'status'      => 'withdrawn',
+                    'admin_notes' => trim($app->admin_notes."\n\n".now()->isoFormat('lll').' · '.__('Withdrawn by the candidate').($reason !== '' ? ': '.$reason : '.')),
+                ]);
+                \App\Models\AccessLog::record('application_withdrawn', $app->jobVacancy?->t('title'));
+
+                foreach (User::studentManagers() as $admin) {
+                    $admin->notify(new ApplicationNews(
+                        __('Application withdrawn'),
+                        __(':name withdrew their application for ":title".', ['name' => auth()->user()->name, 'title' => $app->jobVacancy?->t('title')])
+                            .($reason !== '' ? ' '.__('Reason: :reason', ['reason' => $reason]) : ''),
+                        ApplicationResource::getUrl('edit', ['record' => $app], panel: 'admin'),
+                    ));
+                }
+
+                Notification::make()->title(__('Application withdrawn'))->success()->send();
+            });
+    }
+
     /** The student uploads the employment contract they signed; the team is told. */
     public function uploadSignedAction(): Action
     {

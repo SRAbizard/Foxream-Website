@@ -113,7 +113,8 @@ class Application extends Model
             if (! $app->user) {
                 return;
             }
-            if ($app->wasChanged('status')) {
+            // The candidate is not told about a step they took themselves (withdrawing).
+            if ($app->wasChanged('status') && auth()->id() !== $app->user_id) {
                 $old = $app->getOriginal('status');
                 $app->user->notify(new \App\Notifications\ApplicationStatusChanged($app, $old, $app->status));
             }
@@ -151,6 +152,18 @@ class Application extends Model
     public function getStatusLabelAttribute(): string
     {
         return __('application.status.'.$this->status);
+    }
+
+    /**
+     * Steps at which the candidate may still withdraw on their own. From
+     * "passed" on the company has chosen them and contracts follow, so
+     * they talk to the team instead.
+     */
+    public const WITHDRAWABLE = ['submitted', 'screening_id', 'screening_jp', 'interview'];
+
+    public function canBeWithdrawn(): bool
+    {
+        return in_array($this->status, self::WITHDRAWABLE, true);
     }
 
     /** The step after this one, or null at the end or when the application ended. */

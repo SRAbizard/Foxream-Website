@@ -213,6 +213,13 @@
 </header>
 
 <main>
+    {{-- A one-off notice after leaving the dashboard (e.g. an account deleted). --}}
+    @if($notice = session('notice'))
+        <div role="status" x-data x-init="setTimeout(() => $el.remove(), 9000)"
+             class="fixed inset-x-4 bottom-24 z-50 mx-auto max-w-md rounded-2xl bg-[#1D1730] px-5 py-4 text-sm text-white shadow-lg">
+            {{ $notice }}
+        </div>
+    @endif
     @yield('content')
 </main>
 
