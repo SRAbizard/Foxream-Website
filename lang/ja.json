@@ -1654,7 +1654,6 @@
     ":document form": ":documentの様式",
     "Download the :document form, fill it in, then upload it here.": ":documentの様式をダウンロードして記入し、ここにアップロードしてください。",
     "Now upload the rest of the documents for your visa, such as the passport and the MCU.": "パスポートや健康診断書など、ビザに必要な残りの書類をアップロードしてください。",
-    "Your profile has been sent to the team and the company in Japan, who may screen you more than once. Meanwhile, practise kaiwa with our Indonesia team and in :learning.": "プロフィールを日本のチームと企業に送りました。面談は複数回になることがあります。その間、インドネシアのチームや:learningで会話の練習をしましょう。",
     "Candidate assessment": "候補者評価",
     "Character": "人間性",
     "Growth & staying power": "成長・定着",
@@ -1736,7 +1735,10 @@
     "Delete your account?": "アカウントを削除しますか？",
     "Your profile, CV, documents, applications and uploaded files are deleted for good. This cannot be undone.": "プロフィール、履歴書、書類、応募、アップロードしたファイルはすべて完全に削除されます。元に戻すことはできません。",
     "Your password": "パスワード",
-    "Your departure process is under way": "出国手続きが進行中です",
-    "Please contact our team to delete your account, so your contract, COE or visa can be closed properly.": "アカウントの削除は担当チームにご連絡ください。契約・COE・ビザの手続きを適切に終了するためです。",
-    "Your account and all your data have been deleted.": "アカウントとすべてのデータを削除しました。"
+    "Your account and all your data have been deleted.": "アカウントとすべてのデータを削除しました。",
+    "application.status.proposed": "企業へ推薦済み",
+    "Our Japan team will talk with you (mendan) before proposing you to the company. Meanwhile, practise kaiwa with our Indonesia team and in :learning.": "日本チームが企業へ推薦する前に面談を行います。その間、インドネシアチームや:learningで会話の練習をしましょう。",
+    "You passed the screening with our Japan team and have been proposed to the company. The company now decides whom to interview. Keep practising kaiwa in :learning.": "日本チームの面談に合格し、企業へ推薦されました。面接に進む候補者は企業が決定します。引き続き:learningで会話の練習をしましょう。",
+    "You have been proposed to a company": "企業へ推薦済みです",
+    "Please contact our team to delete your account, so your application with the company can be closed properly.": "アカウントの削除は担当チームにご連絡ください。企業への応募を適切に終了するためです。"
 }

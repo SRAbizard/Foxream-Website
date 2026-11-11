@@ -2,7 +2,7 @@
     @php
         $applications = $this->getApplications();
         // The steps shown on each pass; contract … departure come after passing.
-        $steps = ['submitted', 'screening_id', 'screening_jp', 'interview', 'passed', 'contract', 'coe', 'visa', 'departure'];
+        $steps = ['submitted', 'screening_id', 'screening_jp', 'proposed', 'interview', 'passed', 'contract', 'coe', 'visa', 'departure'];
     @endphp
 
     <div class="site-app">

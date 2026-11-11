@@ -52,7 +52,7 @@ class CandidateList
     ];
 
     /** Steps whose applications go on the list unless the admin picks others. */
-    public const DEFAULT_STATUSES = ['submitted', 'screening_id', 'screening_jp', 'interview', 'passed', 'contract', 'coe', 'visa', 'departure'];
+    public const DEFAULT_STATUSES = ['submitted', 'screening_id', 'screening_jp', 'proposed', 'interview', 'passed', 'contract', 'coe', 'visa', 'departure'];
 
     private const HEADER_BLUE = '4A86E8';
     private const SCORE_YELLOW = 'FFF2CC';

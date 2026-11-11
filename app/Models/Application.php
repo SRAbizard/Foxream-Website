@@ -23,6 +23,7 @@ class Application extends Model
         'submitted',
         'screening_id',
         'screening_jp',
+        'proposed',      // passed the Japan screening: on the candidate list sent to the company
         'interview',
         'passed',
         'contract',
@@ -38,6 +39,7 @@ class Application extends Model
         'submitted'    => 'gray',
         'screening_id' => 'info',
         'screening_jp' => 'info',
+        'proposed'     => 'info',
         'interview'    => 'warning',
         'passed'       => 'success',
         'contract'     => 'success',
@@ -54,6 +56,7 @@ class Application extends Model
         'submitted'    => 'screening_id',
         'screening_id' => 'screening_id',
         'screening_jp' => 'screening_jp',
+        'proposed'     => 'interview',
         'interview'    => 'interview',
     ];
 
@@ -155,11 +158,11 @@ class Application extends Model
     }
 
     /**
-     * Steps at which the candidate may still withdraw on their own. From
-     * "passed" on the company has chosen them and contracts follow, so
-     * they talk to the team instead.
+     * Steps at which the candidate may still withdraw on their own. Once
+     * the Japan team has approved them (mendan) they are proposed to the
+     * company, so from "proposed" on they talk to the team instead.
      */
-    public const WITHDRAWABLE = ['submitted', 'screening_id', 'screening_jp', 'interview'];
+    public const WITHDRAWABLE = ['submitted', 'screening_id', 'screening_jp'];
 
     public function canBeWithdrawn(): bool
     {

@@ -20,7 +20,7 @@ use Tests\TestCase;
 /** What candidates and admins can do on their own: withdraw, reset a password, delete an account. */
 class SelfServiceTest extends TestCase
 {
-    private function application(User $student, string $status = 'interview'): Application
+    private function application(User $student, string $status = 'screening_jp'): Application
     {
         return Application::query()->forceCreate([
             'user_id' => $student->id, 'job_vacancy_id' => $this->vacancy()->id, 'status' => $status,
@@ -47,18 +47,31 @@ class SelfServiceTest extends TestCase
         Notification::assertNotSentTo($student, ApplicationStatusChanged::class);
     }
 
-    public function test_after_passing_a_candidate_cannot_withdraw_alone(): void
+    public function test_once_proposed_to_the_company_a_candidate_cannot_withdraw_alone(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('student'));
         $student = $this->student();
-        $app = $this->application($student, 'contract');
+        $app = $this->application($student, 'proposed');
 
         $this->actingAs($student);
         Livewire::test(MyApplications::class)
             ->callAction('withdraw', arguments: ['application' => $app->id]);
 
-        $this->assertSame('contract', $app->fresh()->status);
-        $this->assertFalse($app->canBeWithdrawn());
+        $this->assertSame('proposed', $app->fresh()->status);
+        foreach (['proposed', 'interview', 'passed', 'contract', 'coe', 'visa', 'departure', 'departed'] as $status) {
+            $this->assertFalse($app->forceFill(['status' => $status])->canBeWithdrawn(), $status);
+        }
+        foreach (['submitted', 'screening_id', 'screening_jp'] as $status) {
+            $this->assertTrue($app->forceFill(['status' => $status])->canBeWithdrawn(), $status);
+        }
+    }
+
+    public function test_proposed_comes_right_after_the_japan_screening(): void
+    {
+        $app = $this->application($this->student(), 'screening_jp');
+
+        $this->assertSame('proposed', $app->nextStage());
+        $this->assertSame('interview', $app->forceFill(['status' => 'proposed'])->nextStage());
     }
 
     public function test_a_candidate_cannot_withdraw_someone_elses_application(): void
@@ -70,7 +83,7 @@ class SelfServiceTest extends TestCase
         Livewire::test(MyApplications::class)
             ->callAction('withdraw', arguments: ['application' => $app->id]);
 
-        $this->assertSame('interview', $app->fresh()->status);
+        $this->assertSame('screening_jp', $app->fresh()->status);
     }
 
     public function test_an_admin_can_reset_a_forgotten_password(): void
@@ -121,17 +134,20 @@ class SelfServiceTest extends TestCase
         $this->assertNotNull(User::find($student->id));
     }
 
-    public function test_an_account_with_a_departure_under_way_is_not_deleted(): void
+    public function test_an_account_proposed_to_a_company_is_not_deleted(): void
     {
         Filament::setCurrentPanel(Filament::getPanel('student'));
-        $student = $this->student();
-        $this->application($student, 'coe');
 
-        $this->actingAs($student);
-        Livewire::test(EditProfile::class)
-            ->callAction('deleteMyAccount', data: ['password' => 'password']);
+        foreach (['proposed', 'interview', 'coe'] as $status) {
+            $student = $this->student();
+            $this->application($student, $status);
 
-        $this->assertNotNull(User::find($student->id));
+            $this->actingAs($student);
+            Livewire::test(EditProfile::class)
+                ->callAction('deleteMyAccount', data: ['password' => 'password']);
+
+            $this->assertNotNull(User::find($student->id), $status);
+        }
     }
 
     public function test_the_profile_page_offers_deleting_the_account(): void

@@ -1653,7 +1653,6 @@
     ":document form": "Formulir :document",
     "Download the :document form, fill it in, then upload it here.": "Unduh formulir :document, isi, lalu unggah di sini.",
     "Now upload the rest of the documents for your visa, such as the passport and the MCU.": "Sekarang unggah dokumen lain untuk visamu, misalnya paspor dan MCU.",
-    "Your profile has been sent to the team and the company in Japan, who may screen you more than once. Meanwhile, practise kaiwa with our Indonesia team and in :learning.": "Profilmu sudah dikirim ke tim dan perusahaan di Jepang. Screening bisa lebih dari sekali. Sambil menunggu, latihan kaiwa dengan Tim Indonesia dan di :learning.",
     "Candidate assessment": "Penilaian kandidat",
     "Character": "Kepribadian",
     "Growth & staying power": "Berkembang & bertahan",
@@ -1735,7 +1734,10 @@
     "Delete your account?": "Hapus akun Anda?",
     "Your profile, CV, documents, applications and uploaded files are deleted for good. This cannot be undone.": "Profil, CV, dokumen, lamaran, dan semua file yang Anda unggah akan dihapus permanen. Ini tidak bisa dibatalkan.",
     "Your password": "Kata sandi Anda",
-    "Your departure process is under way": "Proses keberangkatan Anda sedang berjalan",
-    "Please contact our team to delete your account, so your contract, COE or visa can be closed properly.": "Silakan hubungi tim kami untuk menghapus akun, agar kontrak, COE, atau visa Anda bisa diselesaikan dengan benar.",
-    "Your account and all your data have been deleted.": "Akun dan semua data Anda sudah dihapus."
+    "Your account and all your data have been deleted.": "Akun dan semua data Anda sudah dihapus.",
+    "application.status.proposed": "Diajukan ke perusahaan",
+    "Our Japan team will talk with you (mendan) before proposing you to the company. Meanwhile, practise kaiwa with our Indonesia team and in :learning.": "Tim kami di Jepang akan mewawancarai Anda (mendan) sebelum mengajukan Anda ke perusahaan. Sambil menunggu, latihan kaiwa bersama tim Indonesia dan di :learning.",
+    "You passed the screening with our Japan team and have been proposed to the company. The company now decides whom to interview. Keep practising kaiwa in :learning.": "Anda lolos screening dengan tim Jepang dan sudah diajukan ke perusahaan. Sekarang perusahaan yang menentukan siapa yang diwawancarai. Tetap latihan kaiwa di :learning.",
+    "You have been proposed to a company": "Anda sudah diajukan ke perusahaan",
+    "Please contact our team to delete your account, so your application with the company can be closed properly.": "Silakan hubungi tim kami untuk menghapus akun, agar lamaran Anda di perusahaan bisa diselesaikan dengan benar."
 }

@@ -55,7 +55,7 @@ class ApplicationStatusChanged extends Notification
             ->icon($this->newStatus === 'passed' ? 'heroicon-o-trophy' : 'heroicon-o-briefcase')
             ->iconColor(match ($this->newStatus) {
                 'rejected', 'withdrawn' => 'danger',
-                'submitted', 'screening_id', 'screening_jp' => 'info',
+                'submitted', 'screening_id', 'screening_jp', 'proposed' => 'info',
                 'interview' => 'warning',
                 default     => 'success',
             })

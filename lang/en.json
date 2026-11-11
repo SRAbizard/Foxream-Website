@@ -490,5 +490,6 @@
     "schedule.type.interview": "Job interview",
     "schedule.type.kaiwa": "Kaiwa practice",
     "schedule.result.passed": "Passed",
-    "schedule.result.failed": "Not passed"
+    "schedule.result.failed": "Not passed",
+    "application.status.proposed": "Proposed to the company"
 }

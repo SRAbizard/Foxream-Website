@@ -21,6 +21,7 @@ class StudentJourney
         'submitted'    => 5,
         'screening_id' => 5,
         'screening_jp' => 6,
+        'proposed'     => 6,
         'interview'    => 7,
         'passed'       => 8,
         'contract'     => 9,
