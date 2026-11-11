@@ -74,3 +74,9 @@ Artisan::command('demo:cv {email}', function (string $email) {
 Artisan::command('demo:clear', function () {
     $this->info('Removed '.\App\Support\DemoAccounts::clear().' demo account(s) with their applications and files.');
 })->purpose('Remove every @demo.test account with its applications and files');
+
+// Nightly backup of the database and uploaded files (needs the Laravel
+// cron line on the server: * * * * * php artisan schedule:run).
+\Illuminate\Support\Facades\Schedule::command('backup:run')
+    ->dailyAt(config('ops.backup.at'))
+    ->withoutOverlapping();

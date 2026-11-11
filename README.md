@@ -32,7 +32,11 @@ Never run these two on the live site.
 - Optional: LibreOffice, for the rirekisho (CV) PDF; without it a simpler
   PDF is made instead
 
-No queue worker or cron job is needed.
+No queue worker is needed. One cron line runs the nightly backup:
+
+```
+* * * * * cd /path/to/foxream-website && php artisan schedule:run >> /dev/null 2>&1
+```
 
 ### The `.env` file
 
@@ -49,6 +53,10 @@ Copy `.env.example` to `.env` and set at least:
 | `BRAND_NAME`, `BRAND_COMPANY`, `BRAND_LEARNING`, `BRAND_MAKER` | the brand; `BRAND_MAKER` is the "Made by" line in the footer |
 | `DEEPL_API_KEY`, `GEMINI_API_KEY` | optional: Japanese translation for the CV, and reading job orders |
 | `LIBREOFFICE_BIN` | optional: path to `soffice` if it is not in a standard place |
+| `ALERT_EMAIL` | who is emailed when the site hits an error or a backup fails |
+| `BACKUP_PASSWORD` | encrypts the backups, which hold passports and documents; keep it in a password manager |
+| `BACKUP_KEEP_DAYS`, `BACKUP_AT`, `BACKUP_DISK` | optional: days kept (14), time of the nightly run (02:00), where backups go |
+| `LOG_STACK` | `daily`, so the log is one file a day and old ones are removed |
 
 Keep passwords and API keys in the server's `.env` only, never in the code
 or in chat.
@@ -99,3 +107,37 @@ Sign in at `/admin` with the bootstrap admin, change its password, then fill in:
 
 Uploaded files live in `storage/app/public`. To move them from another
 install, copy that folder; the database only stores their paths.
+
+## Backups
+
+Every night `php artisan backup:run` puts the database and all uploaded
+files into one zip, encrypted with `BACKUP_PASSWORD`, in
+`storage/app/backups` (or the disk set in `BACKUP_DISK`). Backups older
+than `BACKUP_KEEP_DAYS` are deleted. A failed backup is emailed to
+`ALERT_EMAIL`. Run it by hand any time with `php artisan backup:run`.
+
+A backup on the same server is lost with the server: copy the newest zip
+somewhere else regularly (download it, or point `BACKUP_DISK` at another
+server's disk).
+
+To restore, open the zip with the password (7-Zip or another AES-capable
+tool), then put `database.sqlite` back in `database/` (or import
+`database.sql` into MySQL) and copy `public/` and `private/` into
+`storage/app/`. Keep a copy of the server's `.env` too: it is not in the
+zip because it holds the passwords.
+
+## When something breaks
+
+Errors are written to `storage/logs` and, on the live site, emailed to
+`ALERT_EMAIL`: what went wrong, on which page, and where in the code,
+never what people typed into forms. The same error is emailed once an
+hour at most, and no more than 30 a day. `/up` answers 200 while the site
+is running, for an uptime monitor.
+
+## Tests
+
+```bash
+php artisan test
+```
+
+They run on a fresh in-memory database and touch none of your data.

@@ -25,5 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Errors are logged as usual and, on the live site, emailed to
+        // ALERT_EMAIL (see App\Support\ErrorAlert).
+        $exceptions->report(fn (\Throwable $e) => \App\Support\ErrorAlert::send($e));
     })->create();
