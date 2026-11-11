@@ -18,9 +18,9 @@ class AccountRemoval
         abort_if($user->hasAnyRole(['superadmin', 'admin']), 403, 'Admin accounts are managed under Admin accounts.');
 
         $user->loadMissing('studentProfile', 'studentDocuments', 'applications');
-        $files = collect([$user->studentProfile?->photo_path])
-            ->merge($user->studentDocuments->pluck('file_path'))
-            ->merge($user->applications->flatMap(fn ($a) => [$a->contract_path, $a->signed_contract_path, $a->coe_path, $a->visa_path, $a->ticket_path]))
+        $photo = $user->studentProfile?->photo_path;
+        $files = $user->studentDocuments->pluck('file_path')
+            ->merge($user->applications->flatMap(fn ($a) => array_map(fn ($c) => $a->{$c}, \App\Models\Application::FILES)))
             ->filter()->unique()->values()->all();
 
         DB::transaction(function () use ($user) {
@@ -31,7 +31,10 @@ class AccountRemoval
             $user->delete();
         });
 
-        Storage::disk('public')->delete($files);
+        \App\Support\PrivateFiles::disk()->delete($files);
+        if ($photo) {
+            Storage::disk('public')->delete($photo);
+        }
 
         // Kept under the admin who deleted it, so the history shows who removed which account.
         \App\Models\AccessLog::record('account_deleted', $user->name.' <'.$user->email.'>');

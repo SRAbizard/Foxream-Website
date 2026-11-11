@@ -74,7 +74,7 @@ class DocumentResource extends Resource
                     ->placeholder(__('Optional label or note')),
                 FileUpload::make('file_path')->label(__('File'))
                     ->required()
-                    ->disk('public')->directory('students/documents')
+                    ->disk(\App\Support\PrivateFiles::DISK)->visibility('private')->directory('students/documents')
                     ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(5120) // 5MB
                     ->columnSpanFull(),

@@ -181,7 +181,7 @@ class MyVisaTarget extends Page implements HasForms
         $existing = fn (Get $get) => $this->existingDocument($part, $get("{$part}_type"));
 
         return FileUpload::make("{$part}_file")->label($label)
-            ->disk('public')->directory('students/documents')
+            ->disk(\App\Support\PrivateFiles::DISK)->visibility('private')->directory('students/documents')
             ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
             ->maxSize(5120)
             ->required(fn (Get $get) => ! $existing($get))

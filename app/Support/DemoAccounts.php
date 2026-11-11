@@ -82,10 +82,8 @@ class DemoAccounts
 
         foreach ($users as $user) {
             Application::where('user_id', $user->id)->get()->each->delete();
-            Storage::disk('public')->delete(array_filter([
-                ...StudentDocument::where('user_id', $user->id)->pluck('file_path')->all(),
-                $user->studentProfile?->photo_path,
-            ]));
+            \App\Support\PrivateFiles::disk()->delete(StudentDocument::where('user_id', $user->id)->pluck('file_path')->filter()->all());
+            Storage::disk('public')->delete(array_filter([$user->studentProfile?->photo_path]));
             $user->notifications()->delete();
             $user->delete();
         }

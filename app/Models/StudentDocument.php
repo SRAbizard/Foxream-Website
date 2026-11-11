@@ -45,7 +45,8 @@ class StudentDocument extends Model
 
     public function getFileUrlAttribute(): ?string
     {
-        return $this->file_path ? asset('storage/'.$this->file_path) : null;
+        // Through FileController: the owner and student managers only.
+        return $this->file_path ? route('files.document', $this) : null;
     }
 
     protected static function booted(): void

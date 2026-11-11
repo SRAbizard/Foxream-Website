@@ -70,9 +70,13 @@ class Application extends Model
     }
 
     /** Public URL of one of the application's files (contract, COE, visa, ticket). */
+    /** The application's files, kept on the private disk (App\Support\PrivateFiles). */
+    public const FILES = ['contract_path', 'signed_contract_path', 'coe_path', 'visa_path', 'ticket_path'];
+
+    /** Through FileController: the candidate and student managers only. */
     public function fileUrl(string $column): ?string
     {
-        return $this->{$column} ? asset('storage/'.$this->{$column}) : null;
+        return $this->{$column} ? route('files.application', [$this, $column]) : null;
     }
 
     public function user(): BelongsTo
@@ -102,9 +106,7 @@ class Application extends Model
     {
         // The application's files go with it (schedules cascade in the database).
         static::deleted(function (self $app) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete(array_filter([
-                $app->contract_path, $app->signed_contract_path, $app->coe_path, $app->visa_path, $app->ticket_path,
-            ]));
+            \App\Support\PrivateFiles::disk()->delete(array_filter(array_map(fn ($c) => $app->{$c}, self::FILES)));
         });
 
         static::updated(function (self $app) {

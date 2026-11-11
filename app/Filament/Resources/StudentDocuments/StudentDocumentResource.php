@@ -54,7 +54,7 @@ class StudentDocumentResource extends Resource
                     ->formatStateUsing(fn ($state) => DocumentType::labelFor($state))
                     ->disabled(),
                 TextInput::make('label')->label(__('Label'))->disabled(),
-                FileUpload::make('file_path')->label(__('File'))->disk('public')->disabled()->columnSpanFull(),
+                FileUpload::make('file_path')->label(__('File'))->disk(\App\Support\PrivateFiles::DISK)->visibility('private')->disabled()->columnSpanFull(),
             ]),
             Section::make(__('Verification'))->columns(2)->components([
                 Select::make('status')->label(__('Status'))

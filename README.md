@@ -105,8 +105,11 @@ Sign in at `/admin` with the bootstrap admin, change its password, then fill in:
 - the content itself: companies, job vacancies, FAQs, testimonials, blog,
   events and gallery
 
-Uploaded files live in `storage/app/public`. To move them from another
-install, copy that folder; the database only stores their paths.
+Uploaded files live in `storage/app/public` (pictures shown on the site)
+and `storage/app/private` (candidates' documents, contracts, COE, visa,
+tickets: opened only by the candidate and admins who manage students,
+never through a public link). To move them from another install, copy
+both folders; the database only stores their paths.
 
 ## Backups
 

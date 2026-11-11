@@ -27,6 +27,12 @@ Route::get('jobs/{slug}',         [\App\Http\Controllers\JobController::class, '
 Route::get('jobs/{slug}/job-order.pdf', [\App\Http\Controllers\JobOrderPdfController::class, 'public'])->name('job.order-pdf');
 Route::get('admin/job-vacancies/{vacancy}/job-order.pdf', [\App\Http\Controllers\JobOrderPdfController::class, 'admin'])
     ->name('admin.job-order-pdf');
+// Candidates' private files: the owner and admins who manage students only.
+Route::middleware('auth')->group(function () {
+    Route::get('files/documents/{document}', [\App\Http\Controllers\FileController::class, 'document'])->name('files.document');
+    Route::get('files/applications/{application}/{file}', [\App\Http\Controllers\FileController::class, 'application'])->name('files.application');
+});
+
 Route::get('cv/rirekisho.pdf', [\App\Http\Controllers\CvPdfController::class, 'mine'])->name('cv.mine');
 Route::get('cv/rirekisho.docx', [\App\Http\Controllers\CvPdfController::class, 'mine'])->defaults('format', 'docx')->name('cv.mine-docx');
 Route::get('cv/shared/{user}/rirekisho.pdf', [\App\Http\Controllers\CvPdfController::class, 'shared'])->middleware('signed')->name('cv.shared');

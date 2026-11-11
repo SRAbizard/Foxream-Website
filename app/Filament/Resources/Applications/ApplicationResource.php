@@ -137,7 +137,7 @@ class ApplicationResource extends Resource
     private static function file(string $column, string $label): FileUpload
     {
         return FileUpload::make($column)->label($label)
-            ->disk('public')->directory('students/applications')
+            ->disk(\App\Support\PrivateFiles::DISK)->visibility('private')->directory('students/applications')
             ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
             ->maxSize(10240)
             ->openable()->downloadable();

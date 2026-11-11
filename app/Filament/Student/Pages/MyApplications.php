@@ -83,7 +83,7 @@ class MyApplications extends Page
             ->schema([
                 FileUpload::make('file')->label(__('Signed contract'))
                     ->helperText(__('A scan or clear photos of every signed page, as one PDF if you can.'))
-                    ->disk('public')->directory('students/applications')
+                    ->disk(\App\Support\PrivateFiles::DISK)->visibility('private')->directory('students/applications')
                     ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(10240)->required(),
             ])

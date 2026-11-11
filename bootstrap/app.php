@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SecurityHeaders::class,
         ]);
 
+        // Outside the panels (private files, the CV), a guest signs in on the candidate login.
+        $middleware->redirectGuestsTo(fn () => route('filament.student.auth.login'));
+
         $middleware->alias([
             'role'              => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission'        => \Spatie\Permission\Middleware\PermissionMiddleware::class,
